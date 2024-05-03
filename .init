@@ -1,0 +1,7 @@
+<?php
+require_once('IO/.init');
+require_once('Html/.init');
+
+require_once('Version.php');
+
+const UT_PHP_VERSION = new \UT_Php\Version(1, 0, 0, 0);

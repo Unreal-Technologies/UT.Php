@@ -1,0 +1,3 @@
+<?php
+require_once('Directory.php');
+require_once('File.php');
