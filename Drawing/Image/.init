@@ -1,0 +1,3 @@
+<?php
+require_once('Png.php');
+require_once('Bmp.php');

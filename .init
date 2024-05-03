@@ -1,6 +1,7 @@
 <?php
 require_once('IO/.init');
 require_once('Html/.init');
+require_once('Drawing/.init');
 
 require_once('Version.php');
 

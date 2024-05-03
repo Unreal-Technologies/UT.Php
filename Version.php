@@ -44,6 +44,9 @@ class Version
         $this -> subVersions = $subVersions;
     }
     
+    /**
+     * @return string
+     */
     public function __toString(): string 
     {
         $version = $this -> major.'.'.$this -> minor.'.'.$this -> patch.'.'.$this -> build;
