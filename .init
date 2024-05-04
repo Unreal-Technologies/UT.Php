@@ -2,7 +2,10 @@
 require_once('IO/.init');
 require_once('Html/.init');
 require_once('Drawing/.init');
+require_once('Collections/.init');
+require_once('Enums/.init');
+require_once('Exceptions/.init');
 
 require_once('Version.php');
 
-const UT_PHP_VERSION = new \UT_Php\Version(1, 0, 0, 0);
+const UT_PHP_VERSION = new \UT_Php\Version(1, 0, 0, 1);
