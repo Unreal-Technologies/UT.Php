@@ -1,4 +1,5 @@
 <?php
+
 namespace UT_Php\Collections;
 
 class Dictionary
@@ -7,7 +8,7 @@ class Dictionary
      * @var array
      */
     private array $buffer = [];
-    
+
     /**
      * @param  mixed $key
      * @param  mixed $value
@@ -22,7 +23,7 @@ class Dictionary
         $this -> buffer[$key] = $setAsArray ? [$value] : $value;
         return true;
     }
-    
+
     /**
      * @param  mixed $key
      * @return mixed
@@ -34,7 +35,7 @@ class Dictionary
         }
         return null;
     }
-    
+
     /**
      * @param  mixed $key
      * @return bool
@@ -47,7 +48,7 @@ class Dictionary
         }
         return false;
     }
-    
+
     /**
      * @return array
      */
@@ -55,7 +56,7 @@ class Dictionary
     {
         return $this -> buffer;
     }
-    
+
     /**
      * @return array
      */
@@ -63,7 +64,7 @@ class Dictionary
     {
         return array_keys($this -> buffer);
     }
-    
+
     /**
      * @return array
      */

@@ -1,4 +1,5 @@
 <?php
+
 namespace UT_Php\Drawing;
 
 class Color
@@ -7,22 +8,22 @@ class Color
      * @var int
      */
     private $r_;
-    
+
     /**
      * @var int
      */
     private $g_;
-    
+
     /**
      * @var int
      */
     private $b_;
-    
+
     /**
      * @var int
      */
     private $a_;
-    
+
     /**
      * @param  int $r
      * @param  int $g
@@ -33,7 +34,7 @@ class Color
     {
         return new Color($r, $g, $b, 0);
     }
-    
+
     /**
      * @param  int $r
      * @param  int $g
@@ -45,7 +46,7 @@ class Color
     {
         return new Color($r, $g, $b, $a);
     }
-    
+
     /**
      * @return int
      */
@@ -53,7 +54,7 @@ class Color
     {
         return $this -> r_;
     }
-    
+
     /**
      * @return int
      */
@@ -61,7 +62,7 @@ class Color
     {
         return $this -> g_;
     }
-    
+
     /**
      * @return int
      */
@@ -69,7 +70,7 @@ class Color
     {
         return $this -> b_;
     }
-    
+
     /**
      * @return int
      */
@@ -77,7 +78,7 @@ class Color
     {
         return $this -> a_;
     }
-    
+
     /**
      * @param int $r
      * @param int $g

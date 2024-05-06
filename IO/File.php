@@ -1,11 +1,12 @@
 <?php
+
 namespace UT_Php\IO;
 
 class File implements IDiskManager
 {
     private $path_;
     private $exists_;
-    
+
     /**
      * @param  string $path
      * @return File
@@ -14,7 +15,7 @@ class File implements IDiskManager
     {
         return new File($path);
     }
-    
+
     /**
      * @param  Directory $dir
      * @return string|null
@@ -25,14 +26,14 @@ class File implements IDiskManager
         if (stristr($this -> path_, $dir -> path())) {
             return substr($this -> path_, strlen($dir -> path()) + 1);
         }
-        
+
         throw new \Exception('Not implemented');
         echo '<xmp>';
         print_r($this);
         print_r($dir);
         echo '</xmp>';
     }
-    
+
     /**
      * @param  Directory $dir
      * @param  string    $name
@@ -46,9 +47,9 @@ class File implements IDiskManager
         if ($name === null) {
             $name = $this -> name();
         }
-        return copy($this -> path(), $dir -> path().'/'.$name);
+        return copy($this -> path(), $dir -> path() . '/' . $name);
     }
-    
+
     /**
      * @return Directory|null
      */
@@ -65,7 +66,7 @@ class File implements IDiskManager
         $new = implode('\\', $parts);
         return Directory::fromString($new);
     }
-    
+
     /**
      * @param  Directory $dir
      * @param  string    $name
@@ -76,9 +77,9 @@ class File implements IDiskManager
         if (!$dir -> exists()) {
             return null;
         }
-        return self::fromString($dir -> path().'\\'.$name);
+        return self::fromString($dir -> path() . '\\' . $name);
     }
-    
+
     /**
      * @return string
      */
@@ -86,14 +87,14 @@ class File implements IDiskManager
     {
         $name = $this -> name();
         $segments = explode('.', $name);
-        
+
         if (count($segments) === 1) {
             return $name;
         }
-        
+
         return $segments[count($segments) - 1];
     }
-    
+
     /**
      * @return string
      */
@@ -101,14 +102,14 @@ class File implements IDiskManager
     {
         $name = $this -> name();
         $segments = explode('.', $name);
-        
+
         if (count($segments) === 1) {
             return $name;
         }
         unset($segments[count($segments) - 1]);
         return implode('.', $segments);
     }
-    
+
     /**
      * @return string
      */
@@ -133,7 +134,7 @@ class File implements IDiskManager
     {
         return $this -> exists_;
     }
-    
+
     /**
      * @return string
      */
@@ -141,7 +142,7 @@ class File implements IDiskManager
     {
         return $this -> path_;
     }
-    
+
     /**
      * @param  string $path
      * @throws \Exception
@@ -153,7 +154,7 @@ class File implements IDiskManager
         if ($this -> exists_) {
             $this -> path_ = realpath($path);
             if (!is_file($this -> path_)) {
-                throw new \Exception($this -> path_.' is not a '.get_class($this));
+                throw new \Exception($this -> path_ . ' is not a ' . get_class($this));
             }
         }
     }

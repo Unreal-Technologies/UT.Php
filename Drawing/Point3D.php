@@ -1,4 +1,5 @@
 <?php
+
 namespace UT_Php\Drawing;
 
 class Point3D extends Point2D
@@ -7,7 +8,7 @@ class Point3D extends Point2D
      * @var float
      */
     private $z_;
-    
+
     /**
      * @param float $x
      * @param float $y
@@ -18,7 +19,7 @@ class Point3D extends Point2D
         parent::__construct($x, $y);
         $this -> z_ = $z;
     }
-    
+
     /**
      * @return float
      */

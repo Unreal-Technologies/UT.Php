@@ -1,4 +1,5 @@
 <?php
+
 namespace UT_Php\Collections;
 
 class Linq
@@ -9,27 +10,27 @@ class Linq
     private const SUM = 8;
     private const AVG = 16;
     private const ORDERBY = 32;
-    
+
     /**
      * @var array
      */
     private array $inCollection;
-    
+
     /**
      * @var array
      */
     private array $outCollection = [];
-    
+
     /**
      * @var array
      */
     private array $query = [];
-    
+
     /**
      * @var bool
      */
     private bool $isGrouped = false;
-    
+
     /**
      * @var int[]
      */
@@ -42,7 +43,7 @@ class Linq
     {
         $this -> inCollection = $collection;
     }
-    
+
     /**
      * @param  \Closure $lambda
      * @return Linq
@@ -61,7 +62,7 @@ class Linq
         }
         return $this;
     }
-    
+
     /**
      * @param  \Closure $lambda
      * @return Linq
@@ -71,7 +72,7 @@ class Linq
         $this -> query[] = [$this::SELECT, $lambda];
         return $this;
     }
-    
+
     /**
      * @param  \Closure $lambda
      * @return Linq
@@ -82,7 +83,7 @@ class Linq
         $this -> isGrouped = true;
         return $this;
     }
-    
+
     /**
      * @param  \Closure $lambda
      * @return array
@@ -95,7 +96,7 @@ class Linq
         }
         return $self -> outCollection;
     }
-    
+
     /**
      * @param  \Closure $lambda
      * @return mixed
@@ -112,7 +113,7 @@ class Linq
         $key = array_keys($self -> outCollection)[0];
         return $self -> outCollection[$key];
     }
-    
+
     /**
      * @return int
      */
@@ -123,7 +124,7 @@ class Linq
         }
         return count($this -> outCollection);
     }
-    
+
     /**
      * @param  \Closure $lambda
      * @return Linq
@@ -133,7 +134,7 @@ class Linq
         $this -> query[] = [$this::SUM, $lambda];
         return $this;
     }
-    
+
     /**
      * @param  \Closure $lambda
      * @return Linq
@@ -144,7 +145,7 @@ class Linq
         $self -> query[] = [$this::AVG, null];
         return $self;
     }
-    
+
     /**
      * @param  \Closure                     $lambda
      * @param  \UT_Php\Enums\SortDirections $direction
@@ -157,7 +158,7 @@ class Linq
         $this -> query[] = [$this::ORDERBY, $lambda, $direction];
         return $this;
     }
-    
+
     /**
      * @param  int      $index
      * @param  array    $buffer
@@ -171,7 +172,7 @@ class Linq
             $buffer[$index] = $item;
         }
     }
-    
+
     /**
      * @param  mixed    $buffer
      * @param  \Closure $lambda
@@ -192,7 +193,7 @@ class Linq
             $buffer -> add($key, $list);
         }
     }
-    
+
     /**
      * @param  int      $index
      * @param  mixed    $buffer
@@ -211,7 +212,7 @@ class Linq
         if (!isset($this -> counts[$index])) {
             $this -> counts[$index] = 0;
         }
-        
+
         if ($this -> isGrouped) {
             if (count($buffer) === 0) {
                 $buffer = array_fill_keys(array_keys($collection), 0);
@@ -225,12 +226,12 @@ class Linq
             if (is_array($buffer)) {
                 $buffer = 0;
             }
-            
+
             $buffer += $lambda == null ? $item : $lambda($item);
             $this -> counts[$index]++;
         }
     }
-    
+
     /**
      * @param int           $index
      * @param mixed         $buffer
@@ -250,7 +251,7 @@ class Linq
             $buffer[$key][] = $item;
         }
     }
-    
+
     /**
      * @param  int           $type
      * @param  int           $index
@@ -285,21 +286,21 @@ class Linq
             case $this::SUM:
                 $this -> executeSwitchSum($index, $buffer, $lambda, $item, $collection);
                 break;
-            
+
             case $this::AVG:
                 $buffer[$index] = $item / $this -> counts[$index];
                 unset($this -> counts[$index]);
                 break;
-            
+
             case $this::ORDERBY:
                 $this -> executeSwitchOrderBy($index, $buffer, $lambda, $item);
                 break;
-            
+
             default:
                 throw new \UT_Php\Exceptions\NotImplementedException($type);
         }
     }
-    
+
     /**
      * @return void
      */
@@ -309,16 +310,16 @@ class Linq
         foreach ($this -> query as $query) {
             $type = $query[0];
             $lambda = $query[1];
-            
+
             if ($type === $this::SUM) {
                 $this -> counts = [];
             }
-            
+
             $buffer = [];
             foreach ($collection as $i => $item) {
                 $this -> executeSwitch($type, $i, $buffer, $lambda, $item, $collection);
             }
-            
+
             if ($type === $this::ORDERBY) {
                 $direction = $query[2];
                 if ($direction == \UT_Php\Enums\SortDirections::Asc) {
@@ -332,7 +333,7 @@ class Linq
         }
         $this -> outCollection = $collection;
     }
-    
+
     /**
      * @param  array $data
      * @return array
@@ -340,13 +341,13 @@ class Linq
     private function multiToSingleArray(array $data): array
     {
         $buffer = [];
-        
+
         foreach ($data as $items) {
             foreach ($items as $item) {
                 $buffer[] = $item;
             }
         }
-        
+
         return $buffer;
     }
 }

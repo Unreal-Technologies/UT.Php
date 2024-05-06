@@ -1,4 +1,5 @@
 <?php
+
 namespace UT_Php\Drawing\Image;
 
 class Bmp extends \UT_Php\Drawing\Image
@@ -10,7 +11,7 @@ class Bmp extends \UT_Php\Drawing\Image
     {
         return imagecreatefrombmp($this -> path());
     }
-    
+
     /**
      * @param  \GdImage $image
      * @return bool

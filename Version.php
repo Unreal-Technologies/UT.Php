@@ -1,4 +1,5 @@
 <?php
+
 namespace UT_Php;
 
 class Version
@@ -7,27 +8,27 @@ class Version
      * @var int
      */
     private int $major;
-    
+
     /**
      * @var int
      */
     private int $minor;
-    
+
     /**
      * @var int
      */
     private int $patch;
-    
+
     /**
      * @var int
      */
     private int $build;
-    
+
     /**
      * @var Version[]
      */
     private array $subVersions;
-    
+
     /**
      * @param int       $major
      * @param int       $minor
@@ -43,21 +44,21 @@ class Version
         $this -> build = $build;
         $this -> subVersions = $subVersions;
     }
-    
+
     /**
      * @return string
      */
     public function __toString(): string
     {
-        $version = $this -> major.'.'.$this -> minor.'.'.$this -> patch.'.'.$this -> build;
+        $version = $this -> major . '.' . $this -> minor . '.' . $this -> patch . '.' . $this -> build;
         if (count($this -> subVersions) > 0) {
             $version .= ' [';
             foreach ($this -> subVersions as $name => $sub) {
-                $version .= $name.' ('.$sub.')';
+                $version .= $name . ' (' . $sub . ')';
             }
             $version .= ']';
         }
-        
+
         return $version;
     }
 }

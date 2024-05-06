@@ -1,4 +1,5 @@
 <?php
+
 namespace UT_Php\Drawing;
 
 class Point2D
@@ -7,12 +8,12 @@ class Point2D
      * @var float
      */
     private $x_;
-    
+
     /**
      * @var float
      */
     private $y_;
-    
+
     /**
      * @param float $x
      * @param float $y
@@ -22,7 +23,7 @@ class Point2D
         $this -> x_ = $x;
         $this -> y_ = $y;
     }
-    
+
     /**
      * @return float
      */
@@ -30,7 +31,7 @@ class Point2D
     {
         return $this -> x_;
     }
-    
+
     /**
      * @return float
      */
