@@ -1,35 +1,33 @@
 <?php
 namespace UT_Php\IO;
 
-require_once 'IDiskManager.php';
-
 class Directory implements IDiskManager
 {
     /**
      * @var string
      */
-    private $_path;
+    private $path_;
     
     /**
      * @var bool
      */
-    private $_exists;
+    private $exists_;
     
     /**
      * @var resource
      */
-    private $_handler;
+    private $handler_;
     
     /**
      * @var IDiskManager[]
      */
-    private static $_ram;
+    private static $ram_;
     
     /**
      * @param  string $dir
      * @return Directory
      */
-    public static function FromString(string $dir): Directory
+    public static function fromString(string $dir): Directory
     {
         return new Directory($dir);
     }
@@ -39,23 +37,22 @@ class Directory implements IDiskManager
      * @param  string    $name
      * @return Directory|null
      */
-    public static function FromDirectory(Directory $dir, string $name): ?Directory
+    public static function fromDirectory(Directory $dir, string $name): ?Directory
     {
-        if(!$dir -> Exists()) {
+        if (!$dir -> exists()) {
             return null;
         }
-        return self::FromString($dir -> Path().'\\'.$name);
+        return self::fromString($dir -> path().'\\'.$name);
     }
     
     /**
      * @param  string $regex
      * @return bool
      */
-    public function Contains(string $regex): bool
+    public function contains(string $regex): bool
     {
-        foreach($this -> List() as $iDiskManager)
-        {
-            if(preg_match($regex, $iDiskManager -> Name())) {
+        foreach ($this -> list() as $iDiskManager) {
+            if (preg_match($regex, $iDiskManager -> name())) {
                 return true;
             }
         }
@@ -65,11 +62,11 @@ class Directory implements IDiskManager
     /**
      * @return string
      */
-    public function Name(): string 
+    public function name(): string
     {
-        $segments = explode('\\', $this -> _path);
-        if(count($segments) === 0) {
-            $segments = explode('/', $this -> _path);
+        $segments = explode('\\', $this -> path_);
+        if (count($segments) === 0) {
+            $segments = explode('/', $this -> path_);
         }
         
         return $segments[count($segments) - 1];
@@ -78,28 +75,28 @@ class Directory implements IDiskManager
     /**
      * @return string
      */
-    public function Path(): string
+    public function path(): string
     {
-        return $this -> _path;
+        return $this -> path_;
     }
     
     /**
      * @return bool
      */
-    public function Exists(): bool
+    public function exists(): bool
     {
-        return $this -> _exists;
+        return $this -> exists_;
     }
     
     /**
      * @return bool
      */
-    public function Create(): bool
+    public function create(): bool
     {
-        if(!$this -> Exists()) {
-            mkdir($this -> _path, 0777);
-            $this -> _path = realpath($this -> _path);
-            $this -> _exists = true;
+        if (!$this -> exists()) {
+            mkdir($this -> path_, 0777);
+            $this -> path_ = realpath($this -> path_);
+            $this -> exists_ = true;
             return true;
         }
         return false;
@@ -109,39 +106,36 @@ class Directory implements IDiskManager
      * @param  bool $refresh
      * @return IDiskManager[]
      */
-    public function List(string $regex = null, bool $refresh = false): array
+    public function list(string $regex = null, bool $refresh = false): array
     {
-        $key = $this -> _path;
-        if(isset(self::$_ram[$key]) && !$refresh) {
-            return self::$_ram[$key];
+        $key = $this -> path_;
+        if (isset(self::$ram_[$key]) && !$refresh) {
+            return self::$ram_[$key];
         }
         
         $output = [];
-        if($this -> Open()) {
+        if ($this -> open()) {
             $out = null;
-            while($this -> Read($out) !== false)
-            {
-                if($out === '.' || $out === '..') {
+            while ($this -> read($out) !== false) {
+                if ($out === '.' || $out === '..') {
                     continue;
                 }
-                if($regex !== null && !preg_match($regex, $out)) {
+                if ($regex !== null && !preg_match($regex, $out)) {
                     continue;
                 }
                 
-                $path = $this -> _path.'\\'.$out;
+                $path = $this -> path_.'\\'.$out;
                 
-                if(is_dir($path)) {
-                    $output[] = self::FromString($path);
-                }
-                else
-                {
-                    $output[] = File::FromString($path);
+                if (is_dir($path)) {
+                    $output[] = self::fromString($path);
+                } else {
+                    $output[] = File::fromString($path);
                 }
             }
-            $this -> Close();
+            $this -> close();
         }
         
-        self::$_ram[$key] = $output;
+        self::$ram_[$key] = $output;
         
         return $output;
     }
@@ -150,10 +144,10 @@ class Directory implements IDiskManager
      * @param  string|null $out
      * @return bool
      */
-    public function Read(?string &$out): bool
+    public function read(?string &$out): bool
     {
-        $out = readdir($this -> _handler);
-        if($out === false) {
+        $out = readdir($this -> handler_);
+        if ($out === false) {
             $out = null;
             return false;
         }
@@ -163,14 +157,14 @@ class Directory implements IDiskManager
     /**
      * @return bool
      */
-    public function Open(): bool
+    public function open(): bool
     {
-        if($this -> _handler !== null || !$this -> _exists) {
+        if ($this -> handler_ !== null || !$this -> exists_) {
             return false;
         }
-        $this -> _handler = opendir($this -> _path);
-        if($this -> _handler === false) {
-            $this -> _handler = null;
+        $this -> handler_ = opendir($this -> path_);
+        if ($this -> handler_ === false) {
+            $this -> handler_ = null;
             return false;
         }
         return true;
@@ -179,10 +173,10 @@ class Directory implements IDiskManager
     /**
      * @return void
      */
-    public function Close(): void
+    public function close(): void
     {
-        if($this -> _handler !== null) {
-            closedir($this -> _handler);
+        if ($this -> handler_ !== null) {
+            closedir($this -> handler_);
         }
     }
     
@@ -192,15 +186,15 @@ class Directory implements IDiskManager
      */
     private function __construct(string $dir)
     {
-        if(self::$_ram === null) {
-            self::$_ram = [];
+        if (self::$ram_ === null) {
+            self::$ram_ = [];
         }
-        $this -> _path = $dir;
-        $this -> _exists = file_exists($dir);
-        if($this -> _exists) {
-            $this -> _path = realpath($dir);
-            if(!is_dir($this -> _path)) {
-                throw new \Exception($this -> _path.' is not a '.get_class($this));
+        $this -> path_ = $dir;
+        $this -> exists_ = file_exists($dir);
+        if ($this -> exists_) {
+            $this -> path_ = realpath($dir);
+            if (!is_dir($this -> path_)) {
+                throw new \Exception($this -> path_.' is not a '.get_class($this));
             }
         }
     }

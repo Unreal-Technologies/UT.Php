@@ -47,13 +47,12 @@ class Version
     /**
      * @return string
      */
-    public function __toString(): string 
+    public function __toString(): string
     {
         $version = $this -> major.'.'.$this -> minor.'.'.$this -> patch.'.'.$this -> build;
-        if(count($this -> subVersions) > 0) {
+        if (count($this -> subVersions) > 0) {
             $version .= ' [';
-            foreach($this -> subVersions as $name => $sub)
-            {
+            foreach ($this -> subVersions as $name => $sub) {
                 $version .= $name.' ('.$sub.')';
             }
             $version .= ']';

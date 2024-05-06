@@ -1,24 +1,22 @@
 <?php
 namespace UT_Php\Drawing\Image;
 
-require_once __DIR__.'/../Image.php';
-
 class Png extends \UT_Php\Drawing\Image
 {
     /**
      * @return mixed
      */
-    public function ImageCreate(): mixed 
+    public function imageCreate(): mixed
     {
-        return imagecreatefrompng($this -> Path());
+        return imagecreatefrompng($this -> path());
     }
     
-    /** 
+    /**
      * @param  \GdImage $image
      * @return bool
      */
-    public function ImageSave(\GdImage $image): bool 
+    public function imageSave(\GdImage $image): bool
     {
-        return imagepng($image, $this -> Path());
+        return imagepng($image, $this -> path());
     }
 }
