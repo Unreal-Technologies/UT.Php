@@ -29,10 +29,10 @@ class Version
     private array $subVersions;
     
     /**
-     * @param int $major
-     * @param int $minor
-     * @param int $patch
-     * @param int $build
+     * @param int       $major
+     * @param int       $minor
+     * @param int       $patch
+     * @param int       $build
      * @param Version[] $subVersions
      */
     public function __construct(int $major, int $minor, int $patch, int $build, array $subVersions = [])
@@ -50,8 +50,7 @@ class Version
     public function __toString(): string 
     {
         $version = $this -> major.'.'.$this -> minor.'.'.$this -> patch.'.'.$this -> build;
-        if(count($this -> subVersions) > 0)
-        {
+        if(count($this -> subVersions) > 0) {
             $version .= ' [';
             foreach($this -> subVersions as $name => $sub)
             {

@@ -24,9 +24,9 @@ class Color
     private $_a;
     
     /**
-     * @param int $r
-     * @param int $g
-     * @param int $b
+     * @param  int $r
+     * @param  int $g
+     * @param  int $b
      * @return Color
      */
     public static function FromRGB(int $r, int $g, int $b): Color
@@ -35,10 +35,10 @@ class Color
     }
     
     /**
-     * @param int $r
-     * @param int $g
-     * @param int $b
-     * @param int $a
+     * @param  int $r
+     * @param  int $g
+     * @param  int $b
+     * @param  int $a
      * @return Color
      */
     public static function FromRGBA(int $r, int $g, int $b, int $a): Color

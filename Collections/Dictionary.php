@@ -9,15 +9,14 @@ class Dictionary
     private array $buffer = [];
     
     /**
-     * @param mixed $key
-     * @param mixed $value
-     * @param bool $setAsArray
+     * @param  mixed $key
+     * @param  mixed $value
+     * @param  bool  $setAsArray
      * @return bool
      */
     public function Add(mixed $key, mixed $value, bool $setAsArray = false): bool
     {
-        if(isset($this -> buffer[$key]))
-        {
+        if(isset($this -> buffer[$key])) {
             return false;
         }
         $this -> buffer[$key] = $setAsArray ? [$value] : $value;
@@ -25,26 +24,24 @@ class Dictionary
     }
     
     /**
-     * @param mixed $key
+     * @param  mixed $key
      * @return mixed
      */
     public function Get(mixed $key): mixed
     {
-        if(isset($this -> buffer[$key]))
-        {
+        if(isset($this -> buffer[$key])) {
             return $this -> buffer[$key];
         }
         return null;
     }
     
     /**
-     * @param mixed $key
+     * @param  mixed $key
      * @return bool
      */
     public function Remove(mixed $key): bool
     {
-        if(isset($this -> buffer[$key]))
-        {
+        if(isset($this -> buffer[$key])) {
             unset($this -> buffer[$key]);
             return true;
         }

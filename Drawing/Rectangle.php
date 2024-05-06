@@ -21,7 +21,7 @@ class Rectangle
     /**
      * @param Point2D $size
      * @param Point2D $location
-     * @param int $rotation
+     * @param int     $rotation
      */
     public function __construct(Point2D $size, Point2D $location, int $rotation = 0) 
     {

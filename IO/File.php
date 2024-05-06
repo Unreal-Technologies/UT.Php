@@ -1,7 +1,7 @@
 <?php
 namespace UT_Php\IO;
 
-require_once('IDiskManager.php');
+require_once 'IDiskManager.php';
 
 class File implements IDiskManager
 {
@@ -9,7 +9,7 @@ class File implements IDiskManager
     private $_exists;
     
     /** 
-     * @param string $path
+     * @param  string $path
      * @return File
      */
     public static function FromString(string $path): File
@@ -18,14 +18,13 @@ class File implements IDiskManager
     }
     
     /**
-     * @param Directory $dir
+     * @param  Directory $dir
      * @return string|null
      * @throws \Exception
      */
     public function RelativeTo(Directory $dir): ?string
     {
-        if(stristr($this -> _path, $dir -> Path()))
-        {
+        if(stristr($this -> _path, $dir -> Path())) {
             return substr($this -> _path, strlen($dir -> Path()) + 1);
         }
         
@@ -37,18 +36,16 @@ class File implements IDiskManager
     }
     
     /**
-     * @param Directory $dir
-     * @param string $name
+     * @param  Directory $dir
+     * @param  string    $name
      * @return bool
      */
     public function CopyTo(Directory $dir, string $name = null): bool
     {
-        if(!$dir -> Exists())
-        {
+        if(!$dir -> Exists()) {
             return false;
         }
-        if($name === null)
-        {
+        if($name === null) {
             $name = $this -> Name();
         }
         return copy($this -> Path(), $dir -> Path().'/'.$name);
@@ -59,14 +56,12 @@ class File implements IDiskManager
      */
     public function Parent(): ?Directory
     {
-        if(!$this -> Exists())
-        {
+        if(!$this -> Exists()) {
             return null;
         }
         $parts = explode('\\', $this -> _path);
         unset($parts[count($parts) - 1]);
-        if(count($parts) === 0)
-        {
+        if(count($parts) === 0) {
             return null;
         }
         $new = implode('\\', $parts);
@@ -74,14 +69,13 @@ class File implements IDiskManager
     }
     
     /**
-     * @param Directory $dir
-     * @param string $name
+     * @param  Directory $dir
+     * @param  string    $name
      * @return File|null
      */
     public static function FromDirectory(Directory $dir, string $name): ?File
     {
-        if(!$dir -> Exists())
-        {
+        if(!$dir -> Exists()) {
             return null;
         }
         return self::FromString($dir -> Path().'\\'.$name);
@@ -95,8 +89,7 @@ class File implements IDiskManager
         $name = $this -> Name();
         $segments = explode('.', $name);
         
-        if(count($segments) === 1)
-        {
+        if(count($segments) === 1) {
             return $name;
         }
         
@@ -111,8 +104,7 @@ class File implements IDiskManager
         $name = $this -> Name();
         $segments = explode('.', $name);
         
-        if(count($segments) === 1)
-        {
+        if(count($segments) === 1) {
             return $name;
         }
         unset($segments[count($segments) - 1]);
@@ -125,8 +117,7 @@ class File implements IDiskManager
     public function Name(): string 
     {
         $segments = explode('\\', $this -> _path);
-        if(count($segments) === 0)
-        {
+        if(count($segments) === 0) {
             $segments = explode('/', $this -> _path);
         }
         return $segments[count($segments) - 1];
@@ -154,18 +145,16 @@ class File implements IDiskManager
     }
     
     /**
-     * @param string $path
+     * @param  string $path
      * @throws \Exception
      */
     protected function __construct(string $path)
     {
         $this -> _path = $path;
         $this -> _exists = file_exists($path);
-        if($this -> _exists)
-        {
+        if($this -> _exists) {
             $this -> _path = realpath($path);
-            if(!is_file($this -> _path))
-            {
+            if(!is_file($this -> _path)) {
                 throw new \Exception($this -> _path.' is not a '.get_class($this));
             }
         }
