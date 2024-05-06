@@ -21,7 +21,7 @@ final class Doctype
     /**
      * @param string $start
      * @param string $end
-     * @param array $attributes
+     * @param array  $attributes
      */
     function __construct(string $start, string $end, array $attributes)
     {
@@ -36,18 +36,17 @@ final class Doctype
     function __toString(): string
     {
         $key = key($this -> attributes);
-        if(!is_numeric($key))
-        {
+        if(!is_numeric($key)) {
             $list = array();
             foreach($this -> attributes as $key => $value)
             {
                 $list[] = $key.'="'.$value.'"';
             }
-            return $this -> start.(isset($list[0]) ? ' ' : null).implode(' ',$list).' '.$this  -> end;
+            return $this -> start.(isset($list[0]) ? ' ' : null).implode(' ', $list).' '.$this  -> end;
         }
         else
         {
-            return $this -> start.(isset($this -> attributes[0]) ? ' ' : null).implode(' ',$this -> attributes).' '.$this  -> end;
+            return $this -> start.(isset($this -> attributes[0]) ? ' ' : null).implode(' ', $this -> attributes).' '.$this  -> end;
         }
     }
 
@@ -60,9 +59,9 @@ final class Doctype
     }
     
     /**
-     * @param string $version
-     * @param string $encoding
-     * @param boolean $standalone
+     * @param  string  $version
+     * @param  string  $encoding
+     * @param  boolean $standalone
      * @return Doctype
      */
     public static function Xml(string $version='1.0', string $encoding='utf-8', bool $standalone=true) : Doctype

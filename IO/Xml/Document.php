@@ -1,7 +1,7 @@
 <?php
 namespace UT_Php\IO\Xml;
 
-require_once('Element.php');
+require_once 'Element.php';
 
 final class Document extends Element
 {
@@ -16,15 +16,14 @@ final class Document extends Element
     private $closed;
 
     /**
-     * @param string $name
+     * @param string  $name
      * @param Doctype $doctype
      */
     function __construct(string $name, Doctype $doctype=null)
     {
         $this -> closed = false;
         parent::__construct($name);
-        if($doctype === null)
-        {
+        if($doctype === null) {
             $doctype = Doctype::Xml();
         }
         $this -> doctype = $doctype;
@@ -64,13 +63,12 @@ final class Document extends Element
     }
     
     /**
-     * @param boolean $value default null
+     * @param  boolean $value default null
      * @return null|boolean
      */
     final public function Closed(bool $value=null): ?bool
     {
-        if($value === null)
-        {
+        if($value === null) {
             return $this -> closed;
         }
         $this -> closed = $value;
@@ -78,10 +76,10 @@ final class Document extends Element
     }
     
     /**
-     * @param string $stream
-     * @param string $root
-     * @param boolean $output
-     * @param string $encoding
+     * @param  string  $stream
+     * @param  string  $root
+     * @param  boolean $output
+     * @param  string  $encoding
      * @return boolean
      */
     final public function ValidateDTDStream(string $stream, string $root, bool $output=true, string $encoding='utf-8'): bool
@@ -95,8 +93,8 @@ final class Document extends Element
     }
     
     /**
-     * @param string $stream
-     * @param boolean $output default true
+     * @param  string  $stream
+     * @param  boolean $output default true
      * @return boolean
      */
     final public function ValidateXSDStream(string $stream, bool $output=true): bool
@@ -110,8 +108,8 @@ final class Document extends Element
     }
     
     /**
-     * @param \Data\IO\File $xsdSchemaFile
-     * @param boolean $output
+     * @param  \Data\IO\File $xsdSchemaFile
+     * @param  boolean       $output
      * @return boolean
      */
     final public function ValidateXSD(\Data\IO\File $xsdSchemaFile, bool $output=true): bool
@@ -122,8 +120,7 @@ final class Document extends Element
         $dom -> loadXML($xml);
         
         $result = $output ? $dom -> schemaValidate($xsdSchemaFile) : @$dom -> schemaValidate($xsdSchemaFile);
-        if(!$result)
-        {
+        if(!$result) {
             echo $xml;
         }
         
@@ -131,17 +128,16 @@ final class Document extends Element
     }
     
     /**
-     * @param string $dtdSchemaFile
-     * @param string $root
-     * @param boolean $output default true
-     * @param string $encoding default utf-8
+     * @param  string  $dtdSchemaFile
+     * @param  string  $root
+     * @param  boolean $output        default true
+     * @param  string  $encoding      default utf-8
      * @return boolean
      */
     final public function ValidateDTD(\Data\IO\File $dtdSchemaFile, string $root, bool $output=true, string $encoding='utf-8'): bool
     {
         $xml = (string)$this;
-        if(!file_exists($dtdSchemaFile))
-        {
+        if(!file_exists($dtdSchemaFile)) {
             $dtdSchemaFile = dirname(__FILE__).'/'.$dtdSchemaFile;
         }
         

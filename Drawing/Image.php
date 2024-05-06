@@ -1,7 +1,7 @@
 <?php
 namespace UT_Php\Drawing;
 
-require_once(__DIR__.'/../IO/File.php');
+require_once __DIR__.'/../IO/File.php';
 
 abstract class Image extends \UT_Php\IO\File
 {
@@ -26,7 +26,7 @@ abstract class Image extends \UT_Php\IO\File
     private $_mime = null;
     
     /**
-     * @param \UT_Php\IO\File $file
+     * @param  \UT_Php\IO\File $file
      * @return Image|null
      * @throws \Exception
      */
@@ -35,12 +35,12 @@ abstract class Image extends \UT_Php\IO\File
         $ext = strtolower($file -> Extension());
         switch($ext)
         {
-            case 'bmp':
-                return new Image\Bmp($file -> Path());
-            case 'png':
-                return new Image\Png($file -> Path());
-            default:
-                throw new \Exception('Extension "'.$ext.'" is not implemented');
+        case 'bmp':
+            return new Image\Bmp($file -> Path());
+        case 'png':
+            return new Image\Png($file -> Path());
+        default:
+            throw new \Exception('Extension "'.$ext.'" is not implemented');
         }
         return null;
     }
@@ -49,9 +49,9 @@ abstract class Image extends \UT_Php\IO\File
     abstract function ImageSave(\GdImage $image): bool;
     
     /**
-     * @param Rectangle $rectangle
-     * @param Color $fillColor
-     * @param Color $borderColor
+     * @param  Rectangle $rectangle
+     * @param  Color     $fillColor
+     * @param  Color     $borderColor
      * @return void
      */
     public function GD_Draw_Rectangle(Rectangle $rectangle, Color $fillColor, Color $borderColor = null): void
@@ -76,17 +76,16 @@ abstract class Image extends \UT_Php\IO\File
         $fc = imagecolorallocatealpha($this -> _image, $fillColor -> R(), $fillColor -> G(), $fillColor -> B(), $fillColor -> A());
         imagefilledrectangle($this -> _image, $x1, $y1, $x2, $y2, $fc);
         
-        if($borderColor !== null)
-        {
+        if($borderColor !== null) {
             $bc = imagecolorallocatealpha($this -> _image, $borderColor -> R(), $borderColor -> G(), $borderColor -> B(), $borderColor -> A());
             imagerectangle($this -> _image, $x1, $y1, $x2, $y2, $bc);
         }
     }
     
     /**
-     * @param Rectangle $rectangle
-     * @param Color $fillColor
-     * @param Color $borderColor
+     * @param  Rectangle $rectangle
+     * @param  Color     $fillColor
+     * @param  Color     $borderColor
      * @return void
      */
     public function GD_Draw_Ellipse(Rectangle $rectangle, Color $fillColor, Color $borderColor = null): void
@@ -108,8 +107,7 @@ abstract class Image extends \UT_Php\IO\File
         $fc = imagecolorallocatealpha($this -> _image, $fillColor -> R(), $fillColor -> G(), $fillColor -> B(), $fillColor -> A());
         imagefilledellipse($this -> _image, $x, $y, $w, $h, $fc);
         
-        if($borderColor !== null)
-        {
+        if($borderColor !== null) {
             $bc = imagecolorallocatealpha($this -> _image, $borderColor -> R(), $borderColor -> G(), $borderColor -> B(), $borderColor -> A());
             imageellipse($this -> _image, $x, $y, $w, $h, $bc);
         }
@@ -128,8 +126,7 @@ abstract class Image extends \UT_Php\IO\File
      */
     public function GD_Open(): bool
     {
-        if($this -> _image !== null)
-        {
+        if($this -> _image !== null) {
             return false;
         }
         
@@ -144,8 +141,7 @@ abstract class Image extends \UT_Php\IO\File
         $this -> _mime = $mime;
         
         $src = $this -> ImageCreate();
-        if($src === false)
-        {
+        if($src === false) {
             return false;
         }
         $dest = imagecreatetruecolor($w, $h);
@@ -156,13 +152,12 @@ abstract class Image extends \UT_Php\IO\File
     }
     
     /**
-     * @param \UT_Php\IO\File $file
+     * @param  \UT_Php\IO\File $file
      * @return bool
      */
     public function GD_SaveAs(\UT_Php\IO\File $file): bool
     {
-        if($this -> _image === null)
-        {
+        if($this -> _image === null) {
             return false;
         }
         $newImg = Image::GetImage($file);
