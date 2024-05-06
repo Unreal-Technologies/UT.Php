@@ -8,39 +8,39 @@ class Directory
     /**
      * @var DirectoryBranch[]
      */
-    private array $branches = [];
+    private array $branches_ = [];
     
     /**
      * @var \UT_Php\IO\File[]
      */
-    private array $files = [];
+    private array $files_ = [];
     
     /**
      * @var int
      */
-    private int $offset;
+    private int $offset_;
     
     /**
      * @var string
      */
-    private string $name;
+    private string $name_;
     
     /**
      * @var bool
      */
-    private bool $parentHasFiles = false;
+    private bool $parentHasFiles_ = false;
     
     /**
      * @var int
      */
-    private int $depthOffset = 0;
+    private int $depthOffset_ = 0;
     
     /**
      * @var bool
      */
-    private bool $isLastBranch = true;
+    private bool $isLastBranch_ = true;
 
-    private \UT_Php\IO\Directory $root;
+    private \UT_Php\IO\Directory $root_;
 
 
     /**
@@ -48,25 +48,21 @@ class Directory
      * @param \UT_Php\IO\Directory $root
      * @param int                  $offset
      */
-    public function __construct(\UT_Php\IO\Directory $directory, \UT_Php\IO\Directory $root , int $offset = 0)
+    public function __construct(\UT_Php\IO\Directory $directory, \UT_Php\IO\Directory $root, int $offset = 0)
     {
-        $this -> root = $root;
-        $this -> name = $directory -> Name();
-        $this -> offset = $offset;
-        foreach($directory -> List() as $item)
-        {
-            if($item instanceof \UT_Php\IO\Directory) {
-                $this -> AddBranch(new Directory($item, $root, $offset + 1));
-            }
-            else
-            {
-                $this -> AddFile($item);
+        $this -> root_ = $root;
+        $this -> name_ = $directory -> name();
+        $this -> offset_ = $offset;
+        foreach ($directory -> list() as $item) {
+            if ($item instanceof \UT_Php\IO\Directory) {
+                $this -> addBranch(new Directory($item, $root, $offset + 1));
+            } else {
+                $this -> addFile($item);
             }
         }
-        if(count($this -> files) != 0) {
-            foreach($this -> branches as $branch)
-            {
-                $branch -> ParentHasFiles(true);
+        if (count($this -> files_) != 0) {
+            foreach ($this -> branches_ as $branch) {
+                $branch -> parentHasFiles(true);
             }
         }
     }
@@ -74,9 +70,9 @@ class Directory
     /**
      * @return string
      */
-    private function TableStart(): string
+    private function tableStart(): string
     {
-        if($this -> offset == 0) {
+        if ($this -> offset_ == 0) {
             return '<table id="DirectoryRender">'.$this::EOL;
         }
         return '';
@@ -85,9 +81,9 @@ class Directory
     /**
      * @return string
      */
-    private function TableEnd(): string
+    private function tableEnd(): string
     {
-        if($this -> offset == 0) {
+        if ($this -> offset_ == 0) {
             return '</table>'.$this::EOL;
         }
         return '';
@@ -97,21 +93,30 @@ class Directory
      * @param  int $depth
      * @return string
      */
-    private function RenderHeader(int $depth): string
+    private function renderHeader(int $depth): string
     {
         $html = '<tr>'.$this::EOL;
-        if($this -> offset != 0) {
-            for($i=0; $i<$this -> offset - 1; $i++)
-            {
+        if ($this -> offset_ != 0) {
+            for ($i=0; $i<$this -> offset_ - 1; $i++) {
                 $html .= '<td class="down"></td>'.$this::EOL;
             }
             
-            $hasFiles = count($this -> files) != 0;
+            $hasFiles = count($this -> files_) != 0;
 
-            $class = !$hasFiles && !$this -> parentHasFiles ? 'right' : ($hasFiles && !$this -> parentHasFiles && $this -> isLastBranch ? 'right' : 'down-right');
+            $class = !$hasFiles && !$this -> parentHasFiles_ ?
+                'right' :
+                (
+                    $hasFiles && !$this -> parentHasFiles_ && $this -> isLastBranch_ ?
+                    'right' :
+                    'down-right'
+                );
             $html .= '<td class="'.$class.'"></td>'.$this::EOL;
         }
-        $html .= '<td colspan="'.($depth + $this -> depthOffset - $this -> offset + 1).'" class="header">'.$this -> name.'</td>'.$this::EOL;
+        $html .= '<td colspan="'.
+                ($depth + $this -> depthOffset_ - $this -> offset_ + 1).
+                '" class="header">'.
+                $this -> name_.'</td>'.
+                $this::EOL;
         $html .= '</tr>'.$this::EOL;
         return $html;
     }
@@ -120,16 +125,15 @@ class Directory
      * @param  int $depth
      * @return string
      */
-    private function RenderBranches(int $depth): string
+    private function renderBranches(int $depth): string
     {
         $html = '';
-        $count = count($this -> branches);
-        foreach($this -> branches as $i => $branch)
-        {
-            if($this -> isLastBranch) {
-                $branch -> isLastBranch = $i == $count - 1;
+        $count = count($this -> branches_);
+        foreach ($this -> branches_ as $i => $branch) {
+            if ($this -> isLastBranch_) {
+                $branch -> isLastBranch_ = $i == $count - 1;
             }
-            $branch -> depthOffset = $depth - $branch -> GetDepth();
+            $branch -> depthOffset_ = $depth - $branch -> getDepth();
             $html .= $branch;
         }
         return $html;
@@ -139,22 +143,27 @@ class Directory
      * @param  int $depth
      * @return string
      */
-    private function RenderFiles(int $depth): string
+    private function renderFiles(int $depth): string
     {
         $html = '';
         $f = 0;
-        foreach($this -> files as $file)
-        {
+        foreach ($this -> files_ as $file) {
             $html .= '<tr>'.$this::EOL;
-            for($i=0; $i<$this -> offset + 1; $i++)
-            {
-                $isSubLast = $i == $this -> offset;
-                $isLast =  $isSubLast && $f == count($this -> files) - 1;
-                $class = $isLast ? 'right' : ($isSubLast ? 'down-right"' : ($this -> isLastBranch ? null : 'down'));
+            for ($i=0; $i<$this -> offset_ + 1; $i++) {
+                $isSubLast = $i == $this -> offset_;
+                $isLast =  $isSubLast && $f == count($this -> files_) - 1;
+                $class = $isLast ? 'right' : ($isSubLast ? 'down-right"' : ($this -> isLastBranch_ ? null : 'down'));
                 
                 $html .= '<td class="'.$class.'"></td>'.$this::EOL;
             }
-            $html .= '<td colspan="'.($depth + $this -> depthOffset - $this -> offset).'"><a href="'.$file -> RelativeTo($this -> root).'" target="_blank">'.$file -> Name().'</a></td>'.$this::EOL;
+            $html .= '<td colspan="'.
+                    ($depth + $this -> depthOffset_ - $this -> offset_).
+                    '"><a href="'.
+                    $file -> relativeTo($this -> root_).
+                    '" target="_blank">'.
+                    $file -> name().
+                    '</a></td>'.
+                    $this::EOL;
             $html .= '</tr>'.$this::EOL;
             
             $f++;
@@ -165,15 +174,15 @@ class Directory
     /**
      * @return string
      */
-    public function __toString(): string 
+    public function __toString(): string
     {
-        $depth = $this -> GetDepth();
+        $depth = $this -> getDepth();
         
-        $html = $this -> TableStart();
-        $html .= $this -> RenderHeader($depth);
-        $html .= $this -> RenderBranches($depth);
-        $html .= $this -> RenderFiles($depth);
-        $html .= $this -> TableEnd();
+        $html = $this -> tableStart();
+        $html .= $this -> renderHeader($depth);
+        $html .= $this -> renderBranches($depth);
+        $html .= $this -> renderFiles($depth);
+        $html .= $this -> tableEnd();
         
         return $html;
     }
@@ -182,24 +191,23 @@ class Directory
      * @param  bool $state
      * @return void
      */
-    private function ParentHasFiles(bool $state): void
+    private function parentHasFiles(bool $state): void
     {
-        $this -> parentHasFiles = $state;
+        $this -> parentHasFiles_ = $state;
     }
     
     /**
      * @return int
      */
-    private function GetDepth(): int
+    private function getDepth(): int
     {
-        if(count($this -> branches) == 0) {
-            return $this -> offset + 1;
+        if (count($this -> branches_) == 0) {
+            return $this -> offset_ + 1;
         }
-        $depth = $this -> offset + 1;
-        foreach($this -> branches as $branch)
-        {
-            $d = $branch -> GetDepth();
-            if($d > $depth) {
+        $depth = $this -> offset_ + 1;
+        foreach ($this -> branches_ as $branch) {
+            $d = $branch -> getDepth();
+            if ($d > $depth) {
                 $depth = $d;
             }
         }
@@ -211,19 +219,19 @@ class Directory
      * @param  DirectoryBranch $branch
      * @return void
      */
-    private function AddBranch(Directory $branch): void
+    private function addBranch(Directory $branch): void
     {
-        $branch -> index = count($this -> branches);
-        $branch -> isLastBranch = false;
-        $this -> branches[] = $branch;
+        $branch -> index = count($this -> branches_);
+        $branch -> isLastBranch_ = false;
+        $this -> branches_[] = $branch;
     }
     
     /**
      * @param  \UT_Php\IO\File $file
      * @return void
      */
-    private function AddFile(\UT_Php\IO\File $file): void
+    private function addFile(\UT_Php\IO\File $file): void
     {
-        $this -> files[] = $file;
+        $this -> files_[] = $file;
     }
 }

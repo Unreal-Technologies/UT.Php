@@ -3,12 +3,12 @@ namespace UT_Php\IO\Xml;
 
 class Element
 {
-    const Search_Name = 'name';
-    const Search_Id = 'id';
-    const Search_Text = 'text';
-    const Search_Position = 'position';
-    const Search_Parent = 'parent';
-    const Search_Attributes = 'attributes';
+    const SEARCH_NAME = 'name';
+    const SEARCH_ID = 'id';
+    const SEARCH_TEXT = 'text';
+    const SEARCH_POSITION = 'position';
+    const SEARCH_PARENT = 'parent';
+    const SEARCH_ATTRIBUTES = 'attributes';
     
     /**
      * @var array
@@ -48,7 +48,7 @@ class Element
     /**
      * @param string $name
      */
-    function __construct(string $name)
+    public function __construct(string $name)
     {
         $this -> attributes = array();
         $this -> name = $name;
@@ -60,10 +60,9 @@ class Element
     /**
      * @return void
      */
-    function __clone(): void
+    public function __clone(): void
     {
-        foreach($this -> children as $index => $child)
-        {
+        foreach ($this -> children as $index => $child) {
             $this -> children[$index] = clone $child;
         }
     }
@@ -72,21 +71,20 @@ class Element
      * @param  Element $element
      * @return boolean
      */
-    function Remove(Element $element): bool
+    public function remove(Element $element): bool
     {
-        if($element -> Parent() !== $this -> id) {
+        if ($element -> parent() !== $this -> id) {
             return false;
         }
         
         $pos = -1;
-        foreach($this -> children as $index => $child)
-        {
-            if($child -> Id() === $element -> Id()) {
+        foreach ($this -> children as $index => $child) {
+            if ($child -> id() === $element -> id()) {
                 $pos = $index;
                 break;
             }
         }
-        if($pos !== -1) {
+        if ($pos !== -1) {
             unset($this -> children[$pos]);
             return true;
         }
@@ -96,29 +94,24 @@ class Element
     /**
      * @return string
      */
-    function __toString(): string
+    public function __toString(): string
     {
         $xml = '';
         $tab = str_repeat("\t", $this -> position);
         
         $list = array();
-        foreach($this -> attributes as $key => $value)
-        {
+        foreach ($this -> attributes as $key => $value) {
             $list[] = $key.'="'.$value.'"';
         }
         $attributeString = (isset($list[0]) ? ' ' : null).implode(' ', $list);
         
-        if($this -> text === null && !isset($this -> children[0])) {
+        if ($this -> text === null && !isset($this -> children[0])) {
             $xml .= $tab.'<'.$this -> name.''.$attributeString.'/>'."\r\n";
-        }
-        elseif($this -> text !== null) {
+        } elseif ($this -> text !== null) {
             $xml .= $tab.'<'.$this -> name.''.$attributeString.'>'.$this -> text.'</'.$this -> name.'>'."\r\n";
-        }
-        else
-        {
+        } else {
             $xml .= $tab.'<'.$this -> name.''.$attributeString.'>'."\r\n";
-            foreach($this -> children as $child)
-            {
+            foreach ($this -> children as $child) {
                 $xml .= $child;
             }
             $xml .= $tab.'</'.$this -> name.'>'."\r\n";
@@ -130,41 +123,39 @@ class Element
      * @param  string $xmlstring
      * @return Element
      */
-    final public static function CreateFromXml(string $xmlstring, Doctype $doctype=null): Element
+    final public static function createFromXml(string $xmlstring, Doctype $doctype = null): Element
     {
         $xml = simplexml_load_string($xmlstring);
-        return Element::CreateFromSimpleXml($xml, $doctype);
+        return Element::createFromSimpleXml($xml, $doctype);
     }
     
     /**
      * @param  SimpleXMLElement $element
      * @return Element
      */
-    final public static function CreateFromSimpleXml(\SimpleXMLElement $element, Doctype $doctype=null): Element
+    final public static function createFromSimpleXml(\SimpleXMLElement $element, Doctype $doctype = null): Element
     {
         $node = new Element($element -> getName());
-        foreach($element -> attributes() as $key => $value)
-        {
+        foreach ($element -> attributes() as $key => $value) {
             $node -> attributes[$key] = (string)$value;
         }
-        foreach($element -> children() as $child)
-        {
-            $node -> AddChild(Element::CreateFromSimpleXml($child));
+        foreach ($element -> children() as $child) {
+            $node -> addChild(Element::createFromSimpleXml($child));
         }
         $string = (string)$element;
-        if($string !== null && $string !== '') {
-            $node -> Text($string);
+        if ($string !== null && $string !== '') {
+            $node -> text($string);
         }
         
-        return $doctype == null ? $node : $node -> AsDocument($doctype);
+        return $doctype == null ? $node : $node -> asDocument($doctype);
     }
 
     /**
      * @return array
      */
-    final public function Attributes(array $list=null): array
+    final public function attributes(array $list = null): array
     {
-        if($list !== null) {
+        if ($list !== null) {
             $this -> attributes = array_merge($this -> attributes, $list);
         }
         
@@ -174,7 +165,7 @@ class Element
     /**
      * @return string
      */
-    final public function Parent(): string
+    final public function parent(): string
     {
         return $this -> parent;
     }
@@ -182,30 +173,27 @@ class Element
     /**
      * @return string
      */
-    final public function Id(): string
+    final public function id(): string
     {
         return $this -> id;
     }
     
-    /** 
+    /**
      * @param  string $text
      * @return string
      */
-    private function AmpParser(string $text): string
+    private function ampParser(string $text): string
     {
         $apos = strpos($text, '&');
-        while($apos !== false)
-        {
+        while ($apos !== false) {
             $qpos = strpos($text, ';', $apos);
-            if($qpos === false) {
+            if ($qpos === false) {
                 $left = substr($text, 0, $apos);
                 $right = substr($text, $apos + 1);
                 $text = $left.'&amp;'.$right;
-            }
-            else
-            {
+            } else {
                 $spos = strpos($text, ' ', $apos);
-                if($spos < $qpos && !$qpos) {
+                if ($spos < $qpos && !$qpos) {
                     var_dump($text);
                     var_dump($apos);
                     var_dump($qpos);
@@ -223,25 +211,25 @@ class Element
      * @param  string $text
      * @return null|string
      */
-    private function TextParser(string $text): ?string
+    private function textParser(string $text): ?string
     {
-        if($text === null || trim($text) === '') {
+        if ($text === null || trim($text) === '') {
             return null;
         }
-        return $this -> AmpParser(str_replace('<br />', "\n", $text));
+        return $this -> ampParser(str_replace('<br />', "\n", $text));
     }
     
     /**
      * @param  string $text
      * @return string
      */
-    final public function Text(string $text=null): ?string
+    final public function text(string $text = null): ?string
     {
-        if($text === null) {
+        if ($text === null) {
             return $this -> text;
         }
-        if(count($this -> children) === 0) {
-            $this -> text = $this -> TextParser($text);
+        if (count($this -> children) === 0) {
+            $this -> text = $this -> textParser($text);
         }
         return null;
     }
@@ -249,7 +237,7 @@ class Element
     /**
      * @return string
      */
-    final public function Name(): string
+    final public function name(): string
     {
         return $this -> name;
     }
@@ -258,11 +246,11 @@ class Element
      * @param  string $name
      * @return Element|null
      */
-    final public function CreateChild(string $name): ?Element
+    final public function createChild(string $name): ?Element
     {
-        if($this -> text === null) {
+        if ($this -> text === null) {
             $element = new Element($name);
-            $this -> AddChild($element);
+            $this -> addChild($element);
             return $element;
         }
         return null;
@@ -272,11 +260,11 @@ class Element
      * @param  Element $element
      * @return boolean
      */
-    final public function AddChild(Element $element): bool
+    final public function addChild(Element $element): bool
     {
-        if($this -> text === null) {
+        if ($this -> text === null) {
             $element -> parent = $this -> id;
-            $element -> UpdatePosition($this -> position + 1);
+            $element -> updatePosition($this -> position + 1);
             $this -> children[] = $element;
             return true;
         }
@@ -287,17 +275,16 @@ class Element
      * @param  Doctype $doctype default null
      * @return \Document
      */
-    final public function AsDocument(Doctype $doctype=null): Document
+    final public function asDocument(Doctype $doctype = null): Document
     {
-        if($doctype === null) {
-            $doctype = Doctype::Xml();
+        if ($doctype === null) {
+            $doctype = Doctype::xml();
         }
         
-        $children = $this -> Search('/^'.$this -> id.'$/', null, self::Search_Parent, false);
+        $children = $this -> search('/^'.$this -> id.'$/', null, self::SEARCH_PARENT, false);
         $doc = new Document($this -> name, $doctype);
-        foreach($children as $child)
-        {
-            $doc -> AddChild(clone $child);
+        foreach ($children as $child) {
+            $doc -> addChild(clone $child);
         }
 
         return $doc;
@@ -309,31 +296,31 @@ class Element
      * @param  string $type        default self::Search_Name
      * @return array|Element|null
      */
-    final public function Search(string $regex, int $returnIndex=null, string $type=self::Search_Name, $recursive=true, $recursivePos=0): ?array
-    {
+    final public function search(
+        string $regex,
+        int $returnIndex = null,
+        string $type = self::SEARCH_NAME,
+        $recursive = true,
+        $recursivePos = 0
+    ): ?array {
         $list = array();
-        if($type == self::Search_Attributes) {
+        if ($type == self::SEARCH_ATTRIBUTES) {
             $keys = array_keys($this -> attributes);
-            foreach($keys as $key)
-            {
-                if(preg_match($regex, $key)) {
+            foreach ($keys as $key) {
+                if (preg_match($regex, $key)) {
                     $list[] = $this;
                 }
             }
-        }
-        elseif(preg_match($regex, $this -> $type)) {
+        } elseif (preg_match($regex, $this -> $type)) {
             $list[] = $this;
         }
-        if($recursive || (!$recursive && $recursivePos === 0)) {
-            foreach($this -> children as $child)
-            {
-                $result = $child -> Search($regex, null, $type, $recursive, $recursivePos + 1);
-                if($result !== null) {
-                    if(is_array($result)) {
+        if ($recursive || (!$recursive && $recursivePos === 0)) {
+            foreach ($this -> children as $child) {
+                $result = $child -> search($regex, null, $type, $recursive, $recursivePos + 1);
+                if ($result !== null) {
+                    if (is_array($result)) {
                         $list = array_merge($list, $result);
-                    }
-                    else
-                    {
+                    } else {
                         $list[] = $result;
                     }
                 }
@@ -345,12 +332,11 @@ class Element
     /**
      * @param int $pos
      */
-    final public function UpdatePosition(int $pos): void
+    final public function updatePosition(int $pos): void
     {
         $this -> position = $pos;
-        foreach($this -> children as $child)
-        {
-            $child -> UpdatePosition($pos + 1);
+        foreach ($this -> children as $child) {
+            $child -> updatePosition($pos + 1);
         }
     }
 }

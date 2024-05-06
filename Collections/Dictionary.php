@@ -14,9 +14,9 @@ class Dictionary
      * @param  bool  $setAsArray
      * @return bool
      */
-    public function Add(mixed $key, mixed $value, bool $setAsArray = false): bool
+    public function add(mixed $key, mixed $value, bool $setAsArray = false): bool
     {
-        if(isset($this -> buffer[$key])) {
+        if (isset($this -> buffer[$key])) {
             return false;
         }
         $this -> buffer[$key] = $setAsArray ? [$value] : $value;
@@ -27,9 +27,9 @@ class Dictionary
      * @param  mixed $key
      * @return mixed
      */
-    public function Get(mixed $key): mixed
+    public function get(mixed $key): mixed
     {
-        if(isset($this -> buffer[$key])) {
+        if (isset($this -> buffer[$key])) {
             return $this -> buffer[$key];
         }
         return null;
@@ -39,9 +39,9 @@ class Dictionary
      * @param  mixed $key
      * @return bool
      */
-    public function Remove(mixed $key): bool
+    public function remove(mixed $key): bool
     {
-        if(isset($this -> buffer[$key])) {
+        if (isset($this -> buffer[$key])) {
             unset($this -> buffer[$key]);
             return true;
         }
@@ -51,7 +51,7 @@ class Dictionary
     /**
      * @return array
      */
-    public function ToArray(): array
+    public function toArray(): array
     {
         return $this -> buffer;
     }
@@ -59,15 +59,15 @@ class Dictionary
     /**
      * @return array
      */
-    public function Keys(): array
+    public function keys(): array
     {
         return array_keys($this -> buffer);
     }
     
-    /** 
+    /**
      * @return array
      */
-    public function Values(): array
+    public function values(): array
     {
         return array_values($this -> buffer);
     }

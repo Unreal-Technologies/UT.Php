@@ -3,8 +3,8 @@ namespace UT_Php\IO;
 
 interface IDiskManager
 {
-    public function Path(): string;
-    public function Exists(): bool;
-    public function Contains(string $data): bool;
-    public function Name(): string;
+    public function path(): string;
+    public function exists(): bool;
+    public function contains(string $data): bool;
+    public function name(): string;
 }

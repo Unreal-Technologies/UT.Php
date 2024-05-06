@@ -6,51 +6,51 @@ class Rectangle
     /**
      * @var Point2D
      */
-    private $_size;
+    private $size_;
     
     /**
      * @var Point2D
      */
-    private $_location;
+    private $location_;
     
     /**
      * @var int
      */
-    private $_rotation;
+    private $rotation_;
     
     /**
      * @param Point2D $size
      * @param Point2D $location
      * @param int     $rotation
      */
-    public function __construct(Point2D $size, Point2D $location, int $rotation = 0) 
+    public function __construct(Point2D $size, Point2D $location, int $rotation = 0)
     {
-        $this -> _size = $size;
-        $this -> _location = $location;
-        $this -> _rotation = $rotation;
+        $this -> size_ = $size;
+        $this -> location_ = $location;
+        $this -> rotation_ = $rotation;
     }
     
     /**
      * @return Point2D
      */
-    public function Location(): Point2D
+    public function location(): Point2D
     {
-        return $this -> _location;
+        return $this -> location_;
     }
     
     /**
      * @return Point2D
      */
-    public function Size(): Point2D
+    public function size(): Point2D
     {
-        return $this -> _size;
+        return $this -> size_;
     }
     
     /**
      * @return int
      */
-    public function Rotation(): int
+    public function rotation(): int
     {
-        return $this -> _rotation;
+        return $this -> rotation_;
     }
 }

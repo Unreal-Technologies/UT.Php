@@ -23,7 +23,7 @@ final class Doctype
      * @param string $end
      * @param array  $attributes
      */
-    function __construct(string $start, string $end, array $attributes)
+    public function __construct(string $start, string $end, array $attributes)
     {
         $this -> start = $start;
         $this -> end = $end;
@@ -33,27 +33,28 @@ final class Doctype
     /**
      * @return string
      */
-    function __toString(): string
+    public function __toString(): string
     {
         $key = key($this -> attributes);
-        if(!is_numeric($key)) {
+        if (!is_numeric($key)) {
             $list = array();
-            foreach($this -> attributes as $key => $value)
-            {
+            foreach ($this -> attributes as $key => $value) {
                 $list[] = $key.'="'.$value.'"';
             }
             return $this -> start.(isset($list[0]) ? ' ' : null).implode(' ', $list).' '.$this  -> end;
-        }
-        else
-        {
-            return $this -> start.(isset($this -> attributes[0]) ? ' ' : null).implode(' ', $this -> attributes).' '.$this  -> end;
+        } else {
+            return $this -> start.
+                (isset($this -> attributes[0]) ? ' ' : null).
+                implode(' ', $this -> attributes).
+                ' '.
+                $this  -> end;
         }
     }
 
     /**
      * @return array
      */
-    public function Attributes(): array
+    public function attributes(): array
     {
         return $this -> attributes;
     }
@@ -64,7 +65,7 @@ final class Doctype
      * @param  boolean $standalone
      * @return Doctype
      */
-    public static function Xml(string $version='1.0', string $encoding='utf-8', bool $standalone=true) : Doctype
+    public static function xml(string $version = '1.0', string $encoding = 'utf-8', bool $standalone = true) : Doctype
     {
         $attr = array();
         $attr['version'] = $version;
@@ -77,7 +78,7 @@ final class Doctype
     /**
      * @return Doctype
      */
-    public static function Html5(): Doctype
+    public static function html5(): Doctype
     {
         return new Doctype('<!DOCTYPE html', '>', array());
     }
@@ -85,7 +86,7 @@ final class Doctype
     /**
      * @return Doctype
      */
-    public static function Html4_01Strict(): Doctype
+    public static function htmlStrict(): Doctype
     {
         $attr = array();
         $attr[] = '-//W3C//DTD HTML 4.01//EN';
@@ -97,7 +98,7 @@ final class Doctype
     /**
      * @return Doctype
      */
-    public static function Html4_01Transitional(): Doctype
+    public static function htmlTransitional(): Doctype
     {
         $attr = array();
         $attr[] = '-//W3C//DTD HTML 4.01 Transitional//EN';
@@ -109,7 +110,7 @@ final class Doctype
     /**
      * @return Doctype
      */
-    public static function Html4_01Frameset(): Doctype
+    public static function htmlFrameset(): Doctype
     {
         $attr = array();
         $attr[] = '-//W3C//DTD HTML 4.01 Frameset//EN';
@@ -121,7 +122,7 @@ final class Doctype
     /**
      * @return Doctype
      */
-    public static function XHtml1_0Strict(): Doctype
+    public static function xHtmlStrict(): Doctype
     {
         $attr = array();
         $attr[] = '-//W3C//DTD XHTML 1.0 Strict//EN';
@@ -133,7 +134,7 @@ final class Doctype
     /**
      * @return Doctype
      */
-    public static function XHtml1_0Transitional(): Doctype
+    public static function xHtmlTransitional(): Doctype
     {
         $attr = array();
         $attr[] = '-//W3C//DTD XHTML 1.0 Transitional//EN';
@@ -145,7 +146,7 @@ final class Doctype
     /**
      * @return Doctype
      */
-    public static function XHtml1_0Frameset(): Doctype
+    public static function xHtmlFrameset(): Doctype
     {
         $attr = array();
         $attr[] = '-//W3C//DTD XHTML 1.0 Frameset//EN';
@@ -157,7 +158,7 @@ final class Doctype
     /**
      * @return Doctype
      */
-    public static function XHtml1_1(): Doctype
+    public static function xHtml(): Doctype
     {
         $attr = array();
         $attr[] = '-//W3C//DTD XHTML 1.1//EN';

@@ -3,39 +3,39 @@ namespace UT_Php\Drawing;
 
 class Point2D
 {
-    /** 
+    /**
      * @var float
      */
-    private $_x;
+    private $x_;
     
-    /** 
+    /**
      * @var float
      */
-    private $_y;
+    private $y_;
     
     /**
      * @param float $x
      * @param float $y
      */
-    function __construct(float $x, float $y)
+    public function __construct(float $x, float $y)
     {
-        $this -> _x = $x;
-        $this -> _y = $y;
+        $this -> x_ = $x;
+        $this -> y_ = $y;
     }
     
     /**
      * @return float
      */
-    public function X(): float
+    public function x(): float
     {
-        return $this -> _x;
+        return $this -> x_;
     }
     
     /**
      * @return float
      */
-    public function Y(): float
+    public function y(): float
     {
-        return $this -> _y;
+        return $this -> y_;
     }
 }

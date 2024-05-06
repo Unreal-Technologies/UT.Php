@@ -6,22 +6,22 @@ class Color
     /**
      * @var int
      */
-    private $_r;
+    private $r_;
     
     /**
      * @var int
      */
-    private $_g;
+    private $g_;
     
     /**
      * @var int
      */
-    private $_b;
+    private $b_;
     
     /**
      * @var int
      */
-    private $_a;
+    private $a_;
     
     /**
      * @param  int $r
@@ -29,7 +29,7 @@ class Color
      * @param  int $b
      * @return Color
      */
-    public static function FromRGB(int $r, int $g, int $b): Color
+    public static function fromRGB(int $r, int $g, int $b): Color
     {
         return new Color($r, $g, $b, 0);
     }
@@ -41,7 +41,7 @@ class Color
      * @param  int $a
      * @return Color
      */
-    public static function FromRGBA(int $r, int $g, int $b, int $a): Color
+    public static function fromRGBA(int $r, int $g, int $b, int $a): Color
     {
         return new Color($r, $g, $b, $a);
     }
@@ -49,33 +49,33 @@ class Color
     /**
      * @return int
      */
-    public function R(): int
+    public function r(): int
     {
-        return $this -> _r;
+        return $this -> r_;
     }
     
     /**
      * @return int
      */
-    public function G(): int
+    public function g(): int
     {
-        return $this -> _g;
+        return $this -> g_;
     }
     
     /**
      * @return int
      */
-    public function B(): int
+    public function b(): int
     {
-        return $this -> _b;
+        return $this -> b_;
     }
     
     /**
      * @return int
      */
-    public function A(): int
+    public function a(): int
     {
-        return $this -> _a;
+        return $this -> a_;
     }
     
     /**
@@ -86,9 +86,9 @@ class Color
      */
     private function __construct(int $r, int $g, int $b, int $a)
     {
-        $this -> _r = min([max([$r, 0]), 255]);
-        $this -> _g = min([max([$g, 0]), 255]);
-        $this -> _b = min([max([$b, 0]), 255]);
-        $this -> _a = min([max([$a, 0]), 127]);
+        $this -> r_ = min([max([$r, 0]), 255]);
+        $this -> g_ = min([max([$g, 0]), 255]);
+        $this -> b_ = min([max([$b, 0]), 255]);
+        $this -> a_ = min([max([$a, 0]), 127]);
     }
 }

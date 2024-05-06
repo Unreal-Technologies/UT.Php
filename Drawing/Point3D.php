@@ -1,56 +1,29 @@
 <?php
 namespace UT_Php\Drawing;
 
-class Point3D
+class Point3D extends Point2D
 {
-    /** 
+    /**
      * @var float
      */
-    private $_x;
-    
-    /** 
-     * @var float
-     */
-    private $_y;
-    
-    /** 
-     * @var float
-     */
-    private $_z;
+    private $z_;
     
     /**
      * @param float $x
      * @param float $y
      * @param float $z
      */
-    function __construct(float $x, float $y, float $z)
+    public function __construct(float $x, float $y, float $z)
     {
-        $this -> _x = $x;
-        $this -> _y = $y;
-        $this -> _z = $z;
+        parent::__construct($x, $y);
+        $this -> z_ = $z;
     }
     
     /**
      * @return float
      */
-    public function X(): float
+    public function z(): float
     {
-        return $this -> _x;
-    }
-    
-    /**
-     * @return float
-     */
-    public function Y(): float
-    {
-        return $this -> _y;
-    }
-    
-    /**
-     * @return float
-     */
-    public function Z(): float
-    {
-        return $this -> _z;
+        return $this -> z_;
     }
 }
