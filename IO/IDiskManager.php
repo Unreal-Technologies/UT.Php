@@ -1,4 +1,5 @@
 <?php
+
 namespace UT_Php\IO;
 
 interface IDiskManager

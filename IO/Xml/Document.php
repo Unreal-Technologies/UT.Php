@@ -1,4 +1,5 @@
 <?php
+
 namespace UT_Php\IO\Xml;
 
 final class Document extends Element
@@ -7,7 +8,7 @@ final class Document extends Element
      * @var Doctype
      */
     private $doctype;
-    
+
     /**
      * @var boolean
      */
@@ -26,31 +27,31 @@ final class Document extends Element
         }
         $this -> doctype = $doctype;
     }
-    
+
     /**
      * @return string
      */
     public function __toString(): string
     {
-        $xml = $this -> doctype."\r\n";
+        $xml = $this -> doctype . "\r\n";
         $xml .= parent::__toString();
         return $xml;
     }
-    
+
     /**
      * @return \Element
      */
     final public function asElement(): Element
     {
         $element = new Element($this -> name());
-        $children = $this -> search('/^'.$this -> id().'$/', null, self::SEARCH_PARENT, false);
+        $children = $this -> search('/^' . $this -> id() . '$/', null, self::SEARCH_PARENT, false);
         foreach ($children as $child) {
             $element -> addChild(clone $child);
         }
-        
+
         return $element;
     }
-    
+
     /**
      * @return Doctype
      */
@@ -58,7 +59,7 @@ final class Document extends Element
     {
         return $this -> doctype;
     }
-    
+
     /**
      * @param  boolean $value default null
      * @return null|boolean
@@ -71,7 +72,7 @@ final class Document extends Element
         $this -> closed = $value;
         return null;
     }
-    
+
     /**
      * @param  string  $stream
      * @param  string  $root
@@ -85,14 +86,14 @@ final class Document extends Element
         bool $output = true,
         string $encoding = 'utf-8'
     ): bool {
-        $file = abs(crc32(date('U').rand(0, 0xfff))).'.b';
+        $file = abs(crc32(date('U') . rand(0, 0xfff))) . '.b';
         file_put_contents($file, $stream);
-        
+
         $res = $this -> validateDtd($file, $root, $output, $encoding);
         unlink($file);
         return $res;
     }
-    
+
     /**
      * @param  string  $stream
      * @param  boolean $output default true
@@ -100,14 +101,14 @@ final class Document extends Element
      */
     final public function validateXsdStream(string $stream, bool $output = true): bool
     {
-        $file = abs(crc32(date('U').rand(0, 0xfff))).'.b';
+        $file = abs(crc32(date('U') . rand(0, 0xfff))) . '.b';
         file_put_contents($file, $stream);
-        
+
         $res = $this -> validateXsd($file, $output);
         unlink($file);
         return $res;
     }
-    
+
     /**
      * @param  \Data\IO\File $xsdSchemaFile
      * @param  boolean       $output
@@ -116,18 +117,18 @@ final class Document extends Element
     final public function validateXsd(\Data\IO\File $xsdSchemaFile, bool $output = true): bool
     {
         $xml = (string)$this;
-        
+
         $dom = new DOMDocument();
         $dom -> loadXML($xml);
-        
+
         $result = $output ? $dom -> schemaValidate($xsdSchemaFile) : @$dom -> schemaValidate($xsdSchemaFile);
         if (!$result) {
             echo $xml;
         }
-        
+
         return $result;
     }
-    
+
     /**
      * @param  string  $dtdSchemaFile
      * @param  string  $root
@@ -143,25 +144,25 @@ final class Document extends Element
     ): bool {
         $xml = (string)$this;
         if (!file_exists($dtdSchemaFile)) {
-            $dtdSchemaFile = dirname(__FILE__).'/'.$dtdSchemaFile;
+            $dtdSchemaFile = dirname(__FILE__) . '/' . $dtdSchemaFile;
         }
-        
+
         $dtd = file_get_contents($dtdSchemaFile);
-        
-        $systemId = 'data://text/plain;base64,'.base64_encode($dtd);
-        
+
+        $systemId = 'data://text/plain;base64,' . base64_encode($dtd);
+
         $old = new DOMDocument();
         $old -> loadXML($xml);
-        
+
         $creator = new DOMImplementation();
         $docType = $creator -> createDocumentType($root, null, $systemId);
         $new = $creator -> createDocument(null, null, $docType);
         $new -> encoding = $encoding;
-        
+
         $oldNode = $old -> getElementsByTagName($root) -> item(0);
         $newNode = $new -> importNode($oldNode, true);
         $new -> appendChild($newNode);
-        
+
         return $output ? $new -> validate() : @$new -> validate();
     }
 }

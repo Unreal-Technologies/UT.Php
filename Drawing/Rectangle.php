@@ -1,4 +1,5 @@
 <?php
+
 namespace UT_Php\Drawing;
 
 class Rectangle
@@ -7,17 +8,17 @@ class Rectangle
      * @var Point2D
      */
     private $size_;
-    
+
     /**
      * @var Point2D
      */
     private $location_;
-    
+
     /**
      * @var int
      */
     private $rotation_;
-    
+
     /**
      * @param Point2D $size
      * @param Point2D $location
@@ -29,7 +30,7 @@ class Rectangle
         $this -> location_ = $location;
         $this -> rotation_ = $rotation;
     }
-    
+
     /**
      * @return Point2D
      */
@@ -37,7 +38,7 @@ class Rectangle
     {
         return $this -> location_;
     }
-    
+
     /**
      * @return Point2D
      */
@@ -45,7 +46,7 @@ class Rectangle
     {
         return $this -> size_;
     }
-    
+
     /**
      * @return int
      */

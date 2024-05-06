@@ -1,40 +1,41 @@
 <?php
+
 namespace UT_Php\Html;
 
 class Directory
 {
     private const EOL = "\r\n";
-    
+
     /**
      * @var DirectoryBranch[]
      */
     private array $branches_ = [];
-    
+
     /**
      * @var \UT_Php\IO\File[]
      */
     private array $files_ = [];
-    
+
     /**
      * @var int
      */
     private int $offset_;
-    
+
     /**
      * @var string
      */
     private string $name_;
-    
+
     /**
      * @var bool
      */
     private bool $parentHasFiles_ = false;
-    
+
     /**
      * @var int
      */
     private int $depthOffset_ = 0;
-    
+
     /**
      * @var bool
      */
@@ -66,41 +67,41 @@ class Directory
             }
         }
     }
-    
+
     /**
      * @return string
      */
     private function tableStart(): string
     {
         if ($this -> offset_ == 0) {
-            return '<table id="DirectoryRender">'.$this::EOL;
+            return '<table id="DirectoryRender">' . $this::EOL;
         }
         return '';
     }
-    
+
     /**
      * @return string
      */
     private function tableEnd(): string
     {
         if ($this -> offset_ == 0) {
-            return '</table>'.$this::EOL;
+            return '</table>' . $this::EOL;
         }
         return '';
     }
-    
+
     /**
      * @param  int $depth
      * @return string
      */
     private function renderHeader(int $depth): string
     {
-        $html = '<tr>'.$this::EOL;
+        $html = '<tr>' . $this::EOL;
         if ($this -> offset_ != 0) {
-            for ($i=0; $i<$this -> offset_ - 1; $i++) {
-                $html .= '<td class="down"></td>'.$this::EOL;
+            for ($i = 0; $i < $this -> offset_ - 1; $i++) {
+                $html .= '<td class="down"></td>' . $this::EOL;
             }
-            
+
             $hasFiles = count($this -> files_) != 0;
 
             $class = !$hasFiles && !$this -> parentHasFiles_ ?
@@ -110,17 +111,17 @@ class Directory
                     'right' :
                     'down-right'
                 );
-            $html .= '<td class="'.$class.'"></td>'.$this::EOL;
+            $html .= '<td class="' . $class . '"></td>' . $this::EOL;
         }
-        $html .= '<td colspan="'.
-                ($depth + $this -> depthOffset_ - $this -> offset_ + 1).
-                '" class="header">'.
-                $this -> name_.'</td>'.
+        $html .= '<td colspan="' .
+                ($depth + $this -> depthOffset_ - $this -> offset_ + 1) .
+                '" class="header">' .
+                $this -> name_ . '</td>' .
                 $this::EOL;
-        $html .= '</tr>'.$this::EOL;
+        $html .= '</tr>' . $this::EOL;
         return $html;
     }
-    
+
     /**
      * @param  int $depth
      * @return string
@@ -148,45 +149,45 @@ class Directory
         $html = '';
         $f = 0;
         foreach ($this -> files_ as $file) {
-            $html .= '<tr>'.$this::EOL;
-            for ($i=0; $i<$this -> offset_ + 1; $i++) {
+            $html .= '<tr>' . $this::EOL;
+            for ($i = 0; $i < $this -> offset_ + 1; $i++) {
                 $isSubLast = $i == $this -> offset_;
                 $isLast =  $isSubLast && $f == count($this -> files_) - 1;
                 $class = $isLast ? 'right' : ($isSubLast ? 'down-right"' : ($this -> isLastBranch_ ? null : 'down'));
-                
-                $html .= '<td class="'.$class.'"></td>'.$this::EOL;
+
+                $html .= '<td class="' . $class . '"></td>' . $this::EOL;
             }
-            $html .= '<td colspan="'.
-                    ($depth + $this -> depthOffset_ - $this -> offset_).
-                    '"><a href="'.
-                    $file -> relativeTo($this -> root_).
-                    '" target="_blank">'.
-                    $file -> name().
-                    '</a></td>'.
+            $html .= '<td colspan="' .
+                    ($depth + $this -> depthOffset_ - $this -> offset_) .
+                    '"><a href="' .
+                    $file -> relativeTo($this -> root_) .
+                    '" target="_blank">' .
+                    $file -> name() .
+                    '</a></td>' .
                     $this::EOL;
-            $html .= '</tr>'.$this::EOL;
-            
+            $html .= '</tr>' . $this::EOL;
+
             $f++;
         }
         return $html;
     }
-    
+
     /**
      * @return string
      */
     public function __toString(): string
     {
         $depth = $this -> getDepth();
-        
+
         $html = $this -> tableStart();
         $html .= $this -> renderHeader($depth);
         $html .= $this -> renderBranches($depth);
         $html .= $this -> renderFiles($depth);
         $html .= $this -> tableEnd();
-        
+
         return $html;
     }
-    
+
     /**
      * @param  bool $state
      * @return void
@@ -195,7 +196,7 @@ class Directory
     {
         $this -> parentHasFiles_ = $state;
     }
-    
+
     /**
      * @return int
      */
@@ -211,7 +212,7 @@ class Directory
                 $depth = $d;
             }
         }
-        
+
         return $depth;
     }
 
@@ -225,7 +226,7 @@ class Directory
         $branch -> isLastBranch_ = false;
         $this -> branches_[] = $branch;
     }
-    
+
     /**
      * @param  \UT_Php\IO\File $file
      * @return void

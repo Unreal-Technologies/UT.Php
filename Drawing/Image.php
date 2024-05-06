@@ -1,4 +1,5 @@
 <?php
+
 namespace UT_Php\Drawing;
 
 abstract class Image extends \UT_Php\IO\File
@@ -7,22 +8,22 @@ abstract class Image extends \UT_Php\IO\File
      * @var \GdImage|null
      */
     private $image_ = null;
-    
+
     /**
      * @var Point2D|null
      */
     private $size_ = null;
-    
+
     /**
      * @var int|null
      */
     private $bits_ = null;
-    
+
     /**
      * @var string|null
      */
     private $mime_ = null;
-    
+
     /**
      * @param  \UT_Php\IO\File $file
      * @return Image|null
@@ -37,14 +38,14 @@ abstract class Image extends \UT_Php\IO\File
             case 'png':
                 return new Image\Png($file -> path());
             default:
-                throw new \Exception('Extension "'.$ext.'" is not implemented');
+                throw new \Exception('Extension "' . $ext . '" is not implemented');
         }
         return null;
     }
-    
+
     abstract public function imageCreate(): mixed;
     abstract public function imageSave(\GdImage $image): bool;
-    
+
     /**
      * @param  Rectangle $rectangle
      * @param  Color     $fillColor
@@ -56,16 +57,16 @@ abstract class Image extends \UT_Php\IO\File
         $w = $rectangle -> size() -> x();
         $h = $rectangle -> size() -> y();
         $angle = $rectangle -> rotation();
-        
+
         if (round($angle / 90) % 2 === 1) { //Flip W, H
             $t = $w;
             $w = $h;
             $h = $t;
         }
-        
+
         $x1 = $rectangle -> location() -> x();
         $x2 = $x1 + $w;
-        
+
         $y1 = $rectangle -> location() -> y();
         $y2 = $y1 + $h;
 
@@ -77,7 +78,7 @@ abstract class Image extends \UT_Php\IO\File
             $fillColor -> a()
         );
         imagefilledrectangle($this -> image_, $x1, $y1, $x2, $y2, $fc);
-        
+
         if ($borderColor !== null) {
             $bc = imagecolorallocatealpha(
                 $this -> image_,
@@ -89,7 +90,7 @@ abstract class Image extends \UT_Php\IO\File
             imagerectangle($this -> image_, $x1, $y1, $x2, $y2, $bc);
         }
     }
-    
+
     /**
      * @param  Rectangle $rectangle
      * @param  Color     $fillColor
@@ -101,13 +102,13 @@ abstract class Image extends \UT_Php\IO\File
         $w = $rectangle -> size() -> x();
         $h = $rectangle -> size() -> y();
         $angle = $rectangle -> rotation();
-        
+
         if (round($angle / 90) % 2 === 1) { //Flip W, H
             $t = $w;
             $w = $h;
             $h = $t;
         }
-        
+
         $x = $rectangle -> location() -> x();
         $y = $rectangle -> location() -> y();
 
@@ -119,7 +120,7 @@ abstract class Image extends \UT_Php\IO\File
             $fillColor -> a()
         );
         imagefilledellipse($this -> image_, $x, $y, $w, $h, $fc);
-        
+
         if ($borderColor !== null) {
             $bc = imagecolorallocatealpha(
                 $this -> image_,
@@ -131,7 +132,7 @@ abstract class Image extends \UT_Php\IO\File
             imageellipse($this -> image_, $x, $y, $w, $h, $bc);
         }
     }
-    
+
     /**
      * @return Point2D|null
      */
@@ -139,7 +140,7 @@ abstract class Image extends \UT_Php\IO\File
     {
         return $this -> size_;
     }
-    
+
     /**
      * @return bool
      */
@@ -148,28 +149,28 @@ abstract class Image extends \UT_Php\IO\File
         if ($this -> image_ !== null) {
             return false;
         }
-        
+
         $imgDat = getimagesize($this -> path());
         $w = $imgDat[0];
         $h = $imgDat[1];
         $mime = $imgDat['mime'];
         $bits = $imgDat['bits'];
-        
+
         $this -> size_ = new Point2D($w, $h);
         $this -> bits_ = (int)$bits;
         $this -> mime_ = $mime;
-        
+
         $src = $this -> imageCreate();
         if ($src === false) {
             return false;
         }
         $dest = imagecreatetruecolor($w, $h);
         imagecopy($dest, $src, 0, 0, 0, 0, $w, $h);
-        
+
         $this -> image_ = $dest;
         return true;
     }
-    
+
     /**
      * @param  \UT_Php\IO\File $file
      * @return bool

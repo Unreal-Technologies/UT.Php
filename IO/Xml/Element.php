@@ -1,50 +1,51 @@
 <?php
+
 namespace UT_Php\IO\Xml;
 
 class Element
 {
-    const SEARCH_NAME = 'name';
-    const SEARCH_ID = 'id';
-    const SEARCH_TEXT = 'text';
-    const SEARCH_POSITION = 'position';
-    const SEARCH_PARENT = 'parent';
-    const SEARCH_ATTRIBUTES = 'attributes';
-    
+    public const SEARCH_NAME = 'name';
+    public const SEARCH_ID = 'id';
+    public const SEARCH_TEXT = 'text';
+    public const SEARCH_POSITION = 'position';
+    public const SEARCH_PARENT = 'parent';
+    public const SEARCH_ATTRIBUTES = 'attributes';
+
     /**
      * @var array
      */
     private $attributes = null;
-    
+
     /**
      * @var array
      */
     private $children = null;
-    
+
     /**
      * @var string
      */
     private $text = null;
-    
+
     /**
      * @var string
      */
     private $name = null;
-    
+
     /**
      * @var string
      */
     private $id = null;
-    
+
     /**
      * @var string
      */
     private $parent = null;
-    
+
     /**
      * @var int
      */
     private $position = null;
-    
+
     /**
      * @param string $name
      */
@@ -53,10 +54,10 @@ class Element
         $this -> attributes = array();
         $this -> name = $name;
         $this -> children = array();
-        $this -> id = get_class().$name.rand(0, 0xffff);
+        $this -> id = get_class() . $name . rand(0, 0xffff);
         $this -> position = 0;
     }
-    
+
     /**
      * @return void
      */
@@ -66,7 +67,7 @@ class Element
             $this -> children[$index] = clone $child;
         }
     }
-    
+
     /**
      * @param  Element $element
      * @return boolean
@@ -76,7 +77,7 @@ class Element
         if ($element -> parent() !== $this -> id) {
             return false;
         }
-        
+
         $pos = -1;
         foreach ($this -> children as $index => $child) {
             if ($child -> id() === $element -> id()) {
@@ -90,7 +91,7 @@ class Element
         }
         return false;
     }
-    
+
     /**
      * @return string
      */
@@ -98,27 +99,30 @@ class Element
     {
         $xml = '';
         $tab = str_repeat("\t", $this -> position);
-        
+
         $list = array();
         foreach ($this -> attributes as $key => $value) {
-            $list[] = $key.'="'.$value.'"';
+            $list[] = $key . '="' . $value . '"';
         }
-        $attributeString = (isset($list[0]) ? ' ' : null).implode(' ', $list);
-        
+        $attributeString = (isset($list[0]) ? ' ' : null) . implode(' ', $list);
+
         if ($this -> text === null && !isset($this -> children[0])) {
-            $xml .= $tab.'<'.$this -> name.''.$attributeString.'/>'."\r\n";
+            $xml .= $tab . '<' . $this -> name . '' . $attributeString . '/>' . "\r\n";
         } elseif ($this -> text !== null) {
-            $xml .= $tab.'<'.$this -> name.''.$attributeString.'>'.$this -> text.'</'.$this -> name.'>'."\r\n";
+            $xml .= $tab .
+                '<' . $this -> name . '' . $attributeString . '>' .
+                $this -> text .
+                '</' . $this -> name . '>' . "\r\n";
         } else {
-            $xml .= $tab.'<'.$this -> name.''.$attributeString.'>'."\r\n";
+            $xml .= $tab . '<' . $this -> name . '' . $attributeString . '>' . "\r\n";
             foreach ($this -> children as $child) {
                 $xml .= $child;
             }
-            $xml .= $tab.'</'.$this -> name.'>'."\r\n";
+            $xml .= $tab . '</' . $this -> name . '>' . "\r\n";
         }
         return $xml;
     }
-    
+
     /**
      * @param  string $xmlstring
      * @return Element
@@ -128,7 +132,7 @@ class Element
         $xml = simplexml_load_string($xmlstring);
         return Element::createFromSimpleXml($xml, $doctype);
     }
-    
+
     /**
      * @param  SimpleXMLElement $element
      * @return Element
@@ -146,7 +150,7 @@ class Element
         if ($string !== null && $string !== '') {
             $node -> text($string);
         }
-        
+
         return $doctype == null ? $node : $node -> asDocument($doctype);
     }
 
@@ -158,10 +162,10 @@ class Element
         if ($list !== null) {
             $this -> attributes = array_merge($this -> attributes, $list);
         }
-        
+
         return $this -> attributes;
     }
-    
+
     /**
      * @return string
      */
@@ -169,7 +173,7 @@ class Element
     {
         return $this -> parent;
     }
-    
+
     /**
      * @return string
      */
@@ -177,7 +181,7 @@ class Element
     {
         return $this -> id;
     }
-    
+
     /**
      * @param  string $text
      * @return string
@@ -190,7 +194,7 @@ class Element
             if ($qpos === false) {
                 $left = substr($text, 0, $apos);
                 $right = substr($text, $apos + 1);
-                $text = $left.'&amp;'.$right;
+                $text = $left . '&amp;' . $right;
             } else {
                 $spos = strpos($text, ' ', $apos);
                 if ($spos < $qpos && !$qpos) {
@@ -198,7 +202,7 @@ class Element
                     var_dump($apos);
                     var_dump($qpos);
                     var_dump($spos);
-                    echo '-----------'."\n";
+                    echo '-----------' . "\n";
                 }
             }
             $apos = strpos($text, '&', $apos + 1);
@@ -206,7 +210,7 @@ class Element
 
         return $text;
     }
-    
+
     /**
      * @param  string $text
      * @return null|string
@@ -218,7 +222,7 @@ class Element
         }
         return $this -> ampParser(str_replace('<br />', "\n", $text));
     }
-    
+
     /**
      * @param  string $text
      * @return string
@@ -233,7 +237,7 @@ class Element
         }
         return null;
     }
-    
+
     /**
      * @return string
      */
@@ -241,7 +245,7 @@ class Element
     {
         return $this -> name;
     }
-    
+
     /**
      * @param  string $name
      * @return Element|null
@@ -255,7 +259,7 @@ class Element
         }
         return null;
     }
-    
+
     /**
      * @param  Element $element
      * @return boolean
@@ -270,7 +274,7 @@ class Element
         }
         return false;
     }
-    
+
     /**
      * @param  Doctype $doctype default null
      * @return \Document
@@ -280,8 +284,8 @@ class Element
         if ($doctype === null) {
             $doctype = Doctype::xml();
         }
-        
-        $children = $this -> search('/^'.$this -> id.'$/', null, self::SEARCH_PARENT, false);
+
+        $children = $this -> search('/^' . $this -> id . '$/', null, self::SEARCH_PARENT, false);
         $doc = new Document($this -> name, $doctype);
         foreach ($children as $child) {
             $doc -> addChild(clone $child);
@@ -289,7 +293,7 @@ class Element
 
         return $doc;
     }
-    
+
     /**
      * @param  string $element
      * @param  int    $returnIndex default null
@@ -328,7 +332,7 @@ class Element
         }
         return !isset($list[0]) ? null : ($returnIndex === null ? $list : [$list[$returnIndex]]);
     }
-    
+
     /**
      * @param int $pos
      */

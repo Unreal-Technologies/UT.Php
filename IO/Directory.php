@@ -1,4 +1,5 @@
 <?php
+
 namespace UT_Php\IO;
 
 class Directory implements IDiskManager
@@ -7,22 +8,22 @@ class Directory implements IDiskManager
      * @var string
      */
     private $path_;
-    
+
     /**
      * @var bool
      */
     private $exists_;
-    
+
     /**
      * @var resource
      */
     private $handler_;
-    
+
     /**
      * @var IDiskManager[]
      */
     private static $ram_;
-    
+
     /**
      * @param  string $dir
      * @return Directory
@@ -31,7 +32,7 @@ class Directory implements IDiskManager
     {
         return new Directory($dir);
     }
-    
+
     /**
      * @param  Directory $dir
      * @param  string    $name
@@ -42,9 +43,9 @@ class Directory implements IDiskManager
         if (!$dir -> exists()) {
             return null;
         }
-        return self::fromString($dir -> path().'\\'.$name);
+        return self::fromString($dir -> path() . '\\' . $name);
     }
-    
+
     /**
      * @param  string $regex
      * @return bool
@@ -58,7 +59,7 @@ class Directory implements IDiskManager
         }
         return false;
     }
-    
+
     /**
      * @return string
      */
@@ -68,10 +69,10 @@ class Directory implements IDiskManager
         if (count($segments) === 0) {
             $segments = explode('/', $this -> path_);
         }
-        
+
         return $segments[count($segments) - 1];
     }
-    
+
     /**
      * @return string
      */
@@ -79,7 +80,7 @@ class Directory implements IDiskManager
     {
         return $this -> path_;
     }
-    
+
     /**
      * @return bool
      */
@@ -87,7 +88,7 @@ class Directory implements IDiskManager
     {
         return $this -> exists_;
     }
-    
+
     /**
      * @return bool
      */
@@ -101,7 +102,7 @@ class Directory implements IDiskManager
         }
         return false;
     }
-    
+
     /**
      * @param  bool $refresh
      * @return IDiskManager[]
@@ -112,7 +113,7 @@ class Directory implements IDiskManager
         if (isset(self::$ram_[$key]) && !$refresh) {
             return self::$ram_[$key];
         }
-        
+
         $output = [];
         if ($this -> open()) {
             $out = null;
@@ -123,9 +124,9 @@ class Directory implements IDiskManager
                 if ($regex !== null && !preg_match($regex, $out)) {
                     continue;
                 }
-                
-                $path = $this -> path_.'\\'.$out;
-                
+
+                $path = $this -> path_ . '\\' . $out;
+
                 if (is_dir($path)) {
                     $output[] = self::fromString($path);
                 } else {
@@ -134,12 +135,12 @@ class Directory implements IDiskManager
             }
             $this -> close();
         }
-        
+
         self::$ram_[$key] = $output;
-        
+
         return $output;
     }
-    
+
     /**
      * @param  string|null $out
      * @return bool
@@ -153,7 +154,7 @@ class Directory implements IDiskManager
         }
         return true;
     }
-    
+
     /**
      * @return bool
      */
@@ -169,7 +170,7 @@ class Directory implements IDiskManager
         }
         return true;
     }
-    
+
     /**
      * @return void
      */
@@ -179,7 +180,7 @@ class Directory implements IDiskManager
             closedir($this -> handler_);
         }
     }
-    
+
     /**
      * @param  string $dir
      * @throws \Exception
@@ -194,7 +195,7 @@ class Directory implements IDiskManager
         if ($this -> exists_) {
             $this -> path_ = realpath($dir);
             if (!is_dir($this -> path_)) {
-                throw new \Exception($this -> path_.' is not a '.get_class($this));
+                throw new \Exception($this -> path_ . ' is not a ' . get_class($this));
             }
         }
     }
