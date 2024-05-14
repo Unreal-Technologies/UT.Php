@@ -114,14 +114,14 @@ final class Document extends Element
      * @param  boolean       $output
      * @return boolean
      */
-    final public function validateXsd(\Data\IO\File $xsdSchemaFile, bool $output = true): bool
+    final public function validateXsd(\UT_Php\IO\File $xsdSchemaFile, bool $output = true): bool
     {
         $xml = (string)$this;
 
         $dom = new DOMDocument();
         $dom -> loadXML($xml);
 
-        $result = $output ? $dom -> schemaValidate($xsdSchemaFile) : @$dom -> schemaValidate($xsdSchemaFile);
+        $result = $output ? $dom -> schemaValidate($xsdSchemaFile -> path()) : @$dom -> schemaValidate($xsdSchemaFile -> path());
         if (!$result) {
             echo $xml;
         }
@@ -137,24 +137,23 @@ final class Document extends Element
      * @return boolean
      */
     final public function validateDtd(
-        \Data\IO\File $dtdSchemaFile,
+        \UT_Php\IO\Common\Dtd $dtdSchemaFile,
         string $root,
         bool $output = true,
         string $encoding = 'utf-8'
     ): bool {
         $xml = (string)$this;
-        if (!file_exists($dtdSchemaFile)) {
-            $dtdSchemaFile = dirname(__FILE__) . '/' . $dtdSchemaFile;
+        if(!$dtdSchemaFile -> exists())
+        {
+            return false;
         }
 
-        $dtd = file_get_contents($dtdSchemaFile);
+        $systemId = $dtdSchemaFile -> systemId();
 
-        $systemId = 'data://text/plain;base64,' . base64_encode($dtd);
-
-        $old = new DOMDocument();
+        $old = new \DOMDocument();
         $old -> loadXML($xml);
 
-        $creator = new DOMImplementation();
+        $creator = new \DOMImplementation();
         $docType = $creator -> createDocumentType($root, null, $systemId);
         $new = $creator -> createDocument(null, null, $docType);
         $new -> encoding = $encoding;

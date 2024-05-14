@@ -8,4 +8,4 @@ require_once('Exceptions/.init');
 
 require_once('Version.php');
 
-const UT_PHP_VERSION = new \UT_Php\Version(1, 0, 0, 1);
+const UT_PHP_VERSION = new \UT_Php\Version(1, 0, 0, 2);
