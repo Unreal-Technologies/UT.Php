@@ -4,8 +4,15 @@ namespace UT_Php\IO;
 
 class File implements IDiskManager
 {
-    private $path_;
-    private $exists_;
+    /**
+     * @var string
+     */
+    private $path;
+
+    /**
+     * @var bool
+     */
+    private $exists;
 
     /**
      * @param  string $path
@@ -23,8 +30,8 @@ class File implements IDiskManager
      */
     public function relativeTo(Directory $dir): ?string
     {
-        if (stristr($this -> path_, $dir -> path())) {
-            return substr($this -> path_, strlen($dir -> path()) + 1);
+        if (stristr($this -> path, $dir -> path())) {
+            return substr($this -> path, strlen($dir -> path()) + 1);
         }
 
         throw new \Exception('Not implemented');
@@ -58,13 +65,18 @@ class File implements IDiskManager
         if (!$this -> exists()) {
             return null;
         }
-        $parts = explode('\\', $this -> path_);
+        $parts = explode('\\', $this -> path);
         unset($parts[count($parts) - 1]);
         if (count($parts) === 0) {
             return null;
         }
         $new = implode('\\', $parts);
         return Directory::fromString($new);
+    }
+
+    public function content(): string
+    {
+        return file_get_contents($this -> path);
     }
 
     /**
@@ -115,9 +127,9 @@ class File implements IDiskManager
      */
     public function name(): string
     {
-        $segments = explode('\\', $this -> path_);
+        $segments = explode('\\', $this -> path);
         if (count($segments) === 0) {
-            $segments = explode('/', $this -> path_);
+            $segments = explode('/', $this -> path);
         }
         return $segments[count($segments) - 1];
     }
@@ -132,7 +144,7 @@ class File implements IDiskManager
      */
     public function exists(): bool
     {
-        return $this -> exists_;
+        return $this -> exists;
     }
 
     /**
@@ -140,7 +152,7 @@ class File implements IDiskManager
      */
     public function path(): string
     {
-        return $this -> path_;
+        return $this -> path;
     }
 
     /**
@@ -149,12 +161,12 @@ class File implements IDiskManager
      */
     protected function __construct(string $path)
     {
-        $this -> path_ = $path;
-        $this -> exists_ = file_exists($path);
-        if ($this -> exists_) {
-            $this -> path_ = realpath($path);
-            if (!is_file($this -> path_)) {
-                throw new \Exception($this -> path_ . ' is not a ' . get_class($this));
+        $this -> path = $path;
+        $this -> exists = file_exists($path);
+        if ($this -> exists) {
+            $this -> path = realpath($path);
+            if (!is_file($this -> path)) {
+                throw new \Exception($this -> path . ' is not a ' . get_class($this));
             }
         }
     }

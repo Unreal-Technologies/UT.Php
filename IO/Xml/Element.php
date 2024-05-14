@@ -59,6 +59,14 @@ class Element
     }
 
     /**
+     * @return Element[]
+     */
+    public function children(): array
+    {
+        return $this -> children;
+    }
+
+    /**
      * @return void
      */
     public function __clone(): void
@@ -121,6 +129,16 @@ class Element
             $xml .= $tab . '</' . $this -> name . '>' . "\r\n";
         }
         return $xml;
+    }
+
+    /**
+     * @param \UT_Php\IO\File $file
+     * @param Doctype $doctype
+     * @return Element
+     */
+    final public static function createFromFile(\UT_Php\IO\Common\Xml $file, Doctype $doctype = null): Element
+    {
+        return Element::createFromXml($file -> content(), $doctype);
     }
 
     /**
@@ -285,7 +303,12 @@ class Element
             $doctype = Doctype::xml();
         }
 
-        $children = $this -> search('/^' . $this -> id . '$/', null, self::SEARCH_PARENT, false);
+        $children = $this -> search(
+            '/^' . str_replace('\\', '\\\\', $this -> id) . '$/',
+            null,
+            self::SEARCH_PARENT,
+            false
+        );
         $doc = new Document($this -> name, $doctype);
         foreach ($children as $child) {
             $doc -> addChild(clone $child);

@@ -4,3 +4,5 @@ require_once('Xml/.Init');
 require_once('IDiskManager.php');
 require_once('Directory.php');
 require_once('File.php');
+
+require_once('Common/.Init');

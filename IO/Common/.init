@@ -1,0 +1,3 @@
+<?php
+require_once('Xml.php');
+require_once('Dtd.php');
