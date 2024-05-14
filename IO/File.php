@@ -8,7 +8,7 @@ class File implements IDiskManager
      * @var string
      */
     private $path;
-    
+
     /**
      * @var bool
      */
@@ -78,7 +78,7 @@ class File implements IDiskManager
     {
         return file_get_contents($this -> path);
     }
-    
+
     /**
      * @param  Directory $dir
      * @param  string    $name

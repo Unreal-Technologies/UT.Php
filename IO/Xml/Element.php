@@ -65,7 +65,7 @@ class Element
     {
         return $this -> children;
     }
-    
+
     /**
      * @return void
      */
@@ -136,11 +136,11 @@ class Element
      * @param Doctype $doctype
      * @return Element
      */
-    final public static function CreateFromFile(\UT_Php\IO\Common\Xml $file, Doctype $doctype = null): Element
+    final public static function createFromFile(\UT_Php\IO\Common\Xml $file, Doctype $doctype = null): Element
     {
         return Element::createFromXml($file -> content(), $doctype);
     }
-    
+
     /**
      * @param  string $xmlstring
      * @return Element
@@ -302,8 +302,13 @@ class Element
         if ($doctype === null) {
             $doctype = Doctype::xml();
         }
-        
-        $children = $this -> search('/^' . str_replace('\\', '\\\\', $this -> id) . '$/', null, self::SEARCH_PARENT, false);
+
+        $children = $this -> search(
+            '/^' . str_replace('\\', '\\\\', $this -> id) . '$/',
+            null,
+            self::SEARCH_PARENT,
+            false
+        );
         $doc = new Document($this -> name, $doctype);
         foreach ($children as $child) {
             $doc -> addChild(clone $child);

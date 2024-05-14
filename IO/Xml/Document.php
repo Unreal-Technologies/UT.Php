@@ -121,7 +121,9 @@ final class Document extends Element
         $dom = new DOMDocument();
         $dom -> loadXML($xml);
 
-        $result = $output ? $dom -> schemaValidate($xsdSchemaFile -> path()) : @$dom -> schemaValidate($xsdSchemaFile -> path());
+        $result = $output ?
+            $dom -> schemaValidate($xsdSchemaFile -> path()) :
+            @$dom -> schemaValidate($xsdSchemaFile -> path());
         if (!$result) {
             echo $xml;
         }
@@ -143,8 +145,7 @@ final class Document extends Element
         string $encoding = 'utf-8'
     ): bool {
         $xml = (string)$this;
-        if(!$dtdSchemaFile -> exists())
-        {
+        if (!$dtdSchemaFile -> exists()) {
             return false;
         }
 
