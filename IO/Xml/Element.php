@@ -59,6 +59,14 @@ class Element
     }
 
     /**
+     * @return Element[]
+     */
+    public function children(): array
+    {
+        return $this -> children;
+    }
+    
+    /**
      * @return void
      */
     public function __clone(): void
