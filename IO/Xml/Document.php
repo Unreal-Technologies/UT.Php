@@ -155,8 +155,8 @@ final class Document extends Element implements \UT_Php\Interfaces\IXmlDocument
         $old -> loadXML($xml);
 
         $creator = new \DOMImplementation();
-        $docType = $creator -> createDocumentType($root, null, $systemId);
-        $new = $creator -> createDocument(null, null, $docType);
+        $docType = $creator -> createDocumentType($root, '', $systemId);
+        $new = $creator -> createDocument(null, '', $docType);
         $new -> encoding = $encoding;
 
         $oldNode = $old -> getElementsByTagName($root) -> item(0);

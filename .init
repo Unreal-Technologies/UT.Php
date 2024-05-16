@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ALL);
 require_once('Interfaces/.init');
 
 require_once('IO/.init');
@@ -10,4 +11,4 @@ require_once('Exceptions/.init');
 
 require_once('Version.php');
 
-const UT_PHP_VERSION = new \UT_Php\Version(1, 0, 0, 3);
+const UT_PHP_VERSION = new \UT_Php\Version(1, 0, 0, 4);
