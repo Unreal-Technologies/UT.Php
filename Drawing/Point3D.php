@@ -2,12 +2,12 @@
 
 namespace UT_Php\Drawing;
 
-class Point3D extends Point2D
+class Point3D extends Point2D implements \UT_Php\Interfaces\IPoint3D
 {
     /**
      * @var float
      */
-    private $z_;
+    private $z;
 
     /**
      * @param float $x
@@ -17,7 +17,7 @@ class Point3D extends Point2D
     public function __construct(float $x, float $y, float $z)
     {
         parent::__construct($x, $y);
-        $this -> z_ = $z;
+        $this -> z = $z;
     }
 
     /**
@@ -25,6 +25,6 @@ class Point3D extends Point2D
      */
     public function z(): float
     {
-        return $this -> z_;
+        return $this -> z;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace UT_Php\IO\Common;
 
-class Dtd extends \UT_Php\IO\File
+class Dtd extends \UT_Php\IO\File implements \UT_Php\Interfaces\IDtdFile
 {
     /**
      * @param string $path

@@ -2,34 +2,34 @@
 
 namespace UT_Php\Drawing;
 
-abstract class Image extends \UT_Php\IO\File
+abstract class Image extends \UT_Php\IO\File implements \UT_Php\Interfaces\IImage
 {
     /**
      * @var \GdImage|null
      */
-    private $image_ = null;
+    private $image = null;
 
     /**
-     * @var Point2D|null
+     * @var \UT_Php\Interfaces\ISize2D|null
      */
-    private $size_ = null;
+    private $size = null;
 
     /**
      * @var int|null
      */
-    private $bits_ = null;
+    private $bits = null;
 
     /**
      * @var string|null
      */
-    private $mime_ = null;
+    private $mime = null;
 
     /**
-     * @param  \UT_Php\IO\File $file
+     * @param \UT_Php\Interfaces\IFile $file
      * @return Image|null
      * @throws \Exception
      */
-    public static function getImage(\UT_Php\IO\File $file): ?Image
+    public static function getImage(\UT_Php\Interfaces\IFile $file): ?\UT_Php\Interfaces\IImage
     {
         $ext = strtolower($file -> extension());
         switch ($ext) {
@@ -47,13 +47,16 @@ abstract class Image extends \UT_Php\IO\File
     abstract public function imageSave(\GdImage $image): bool;
 
     /**
-     * @param  Rectangle $rectangle
-     * @param  Color     $fillColor
-     * @param  Color     $borderColor
+     * @param \UT_Php\Interfaces\IRectangle $rectangle
+     * @param \UT_Php\Interfaces\IColor $fillColor
+     * @param \UT_Php\Interfaces\IColor $borderColor
      * @return void
      */
-    public function gdDrawRectangle(Rectangle $rectangle, Color $fillColor, Color $borderColor = null): void
-    {
+    public function gdDrawRectangle(
+        \UT_Php\Interfaces\IRectangle $rectangle,
+        \UT_Php\Interfaces\IColor $fillColor,
+        \UT_Php\Interfaces\IColor $borderColor = null
+    ): void {
         $w = $rectangle -> size() -> x();
         $h = $rectangle -> size() -> y();
         $angle = $rectangle -> rotation();
@@ -71,34 +74,37 @@ abstract class Image extends \UT_Php\IO\File
         $y2 = $y1 + $h;
 
         $fc = imagecolorallocatealpha(
-            $this -> image_,
+            $this -> image,
             $fillColor -> r(),
             $fillColor -> g(),
             $fillColor -> b(),
             $fillColor -> a()
         );
-        imagefilledrectangle($this -> image_, $x1, $y1, $x2, $y2, $fc);
+        imagefilledrectangle($this -> image, $x1, $y1, $x2, $y2, $fc);
 
         if ($borderColor !== null) {
             $bc = imagecolorallocatealpha(
-                $this -> image_,
+                $this -> image,
                 $borderColor -> r(),
                 $borderColor -> g(),
                 $borderColor -> b(),
                 $borderColor -> a()
             );
-            imagerectangle($this -> image_, $x1, $y1, $x2, $y2, $bc);
+            imagerectangle($this -> image, $x1, $y1, $x2, $y2, $bc);
         }
     }
 
     /**
-     * @param  Rectangle $rectangle
-     * @param  Color     $fillColor
-     * @param  Color     $borderColor
+     * @param \UT_Php\Interfaces\IRectangle $rectangle
+     * @param \UT_Php\Interfaces\IColor $fillColor
+     * @param \UT_Php\Interfaces\IColor $borderColor
      * @return void
      */
-    public function gdDrawEllipse(Rectangle $rectangle, Color $fillColor, Color $borderColor = null): void
-    {
+    public function gdDrawEllipse(
+        \UT_Php\Interfaces\IRectangle $rectangle,
+        \UT_Php\Interfaces\IColor $fillColor,
+        \UT_Php\Interfaces\IColor $borderColor = null
+    ): void {
         $w = $rectangle -> size() -> x();
         $h = $rectangle -> size() -> y();
         $angle = $rectangle -> rotation();
@@ -113,32 +119,32 @@ abstract class Image extends \UT_Php\IO\File
         $y = $rectangle -> location() -> y();
 
         $fc = imagecolorallocatealpha(
-            $this -> image_,
+            $this -> image,
             $fillColor -> r(),
             $fillColor -> g(),
             $fillColor -> b(),
             $fillColor -> a()
         );
-        imagefilledellipse($this -> image_, $x, $y, $w, $h, $fc);
+        imagefilledellipse($this -> image, $x, $y, $w, $h, $fc);
 
         if ($borderColor !== null) {
             $bc = imagecolorallocatealpha(
-                $this -> image_,
+                $this -> image,
                 $borderColor -> r(),
                 $borderColor -> g(),
                 $borderColor -> b(),
                 $borderColor -> a()
             );
-            imageellipse($this -> image_, $x, $y, $w, $h, $bc);
+            imageellipse($this -> image, $x, $y, $w, $h, $bc);
         }
     }
 
     /**
-     * @return Point2D|null
+     * @return \UT_Php\Interfaces\ISize2D|null
      */
-    public function size(): ?Point2D
+    public function size(): ?\UT_Php\Interfaces\ISize2D
     {
-        return $this -> size_;
+        return $this -> size;
     }
 
     /**
@@ -146,7 +152,7 @@ abstract class Image extends \UT_Php\IO\File
      */
     public function gdOpen(): bool
     {
-        if ($this -> image_ !== null) {
+        if ($this -> image !== null) {
             return false;
         }
 
@@ -156,9 +162,9 @@ abstract class Image extends \UT_Php\IO\File
         $mime = $imgDat['mime'];
         $bits = $imgDat['bits'];
 
-        $this -> size_ = new Point2D($w, $h);
-        $this -> bits_ = (int)$bits;
-        $this -> mime_ = $mime;
+        $this -> size = new Point2D($w, $h);
+        $this -> bits = (int)$bits;
+        $this -> mime = $mime;
 
         $src = $this -> imageCreate();
         if ($src === false) {
@@ -167,7 +173,7 @@ abstract class Image extends \UT_Php\IO\File
         $dest = imagecreatetruecolor($w, $h);
         imagecopy($dest, $src, 0, 0, 0, 0, $w, $h);
 
-        $this -> image_ = $dest;
+        $this -> image = $dest;
         return true;
     }
 
@@ -177,10 +183,10 @@ abstract class Image extends \UT_Php\IO\File
      */
     public function gdSaveAs(\UT_Php\IO\File $file): bool
     {
-        if ($this -> image_ === null) {
+        if ($this -> image === null) {
             return false;
         }
         $newImg = Image::getImage($file);
-        return $newImg -> imageSave($this -> image_);
+        return $newImg -> imageSave($this -> image);
     }
 }

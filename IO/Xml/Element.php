@@ -2,15 +2,8 @@
 
 namespace UT_Php\IO\Xml;
 
-class Element
+class Element implements \UT_Php\Interfaces\IXmlElement
 {
-    public const SEARCH_NAME = 'name';
-    public const SEARCH_ID = 'id';
-    public const SEARCH_TEXT = 'text';
-    public const SEARCH_POSITION = 'position';
-    public const SEARCH_PARENT = 'parent';
-    public const SEARCH_ATTRIBUTES = 'attributes';
-
     /**
      * @var array
      */
@@ -77,10 +70,10 @@ class Element
     }
 
     /**
-     * @param  Element $element
-     * @return boolean
+     * @param \UT_Php\Interfaces\IXmlElement $element
+     * @return bool
      */
-    public function remove(Element $element): bool
+    public function remove(\UT_Php\Interfaces\IXmlElement $element): bool
     {
         if ($element -> parent() !== $this -> id) {
             return false;
@@ -268,7 +261,7 @@ class Element
      * @param  string $name
      * @return Element|null
      */
-    final public function createChild(string $name): ?Element
+    final public function createChild(string $name): ?\UT_Php\Interfaces\IXmlElement
     {
         if ($this -> text === null) {
             $element = new Element($name);
@@ -279,10 +272,10 @@ class Element
     }
 
     /**
-     * @param  Element $element
-     * @return boolean
+     * @param \UT_Php\Interfaces\IXmlElement $element
+     * @return bool
      */
-    final public function addChild(Element $element): bool
+    final public function addChild(\UT_Php\Interfaces\IXmlElement $element): bool
     {
         if ($this -> text === null) {
             $element -> parent = $this -> id;
@@ -294,10 +287,10 @@ class Element
     }
 
     /**
-     * @param  Doctype $doctype default null
-     * @return \Document
+     * @param \UT_Php\Interfaces\IXmlDoctype $doctype
+     * @return \UT_Php\Interfaces\IXmlDocument
      */
-    final public function asDocument(Doctype $doctype = null): Document
+    final public function asDocument(\UT_Php\Interfaces\IXmlDoctype $doctype = null): \UT_Php\Interfaces\IXmlDocument
     {
         if ($doctype === null) {
             $doctype = Doctype::xml();

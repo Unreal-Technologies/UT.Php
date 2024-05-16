@@ -2,7 +2,7 @@
 
 namespace UT_Php\IO\Xml;
 
-final class Document extends Element
+final class Document extends Element implements \UT_Php\Interfaces\IXmlDocument
 {
     /**
      * @var Doctype
@@ -15,10 +15,10 @@ final class Document extends Element
     private $closed;
 
     /**
-     * @param string  $name
-     * @param Doctype $doctype
+     * @param string $name
+     * @param \UT_Php\Interfaces\IXmlDoctype $doctype
      */
-    public function __construct(string $name, Doctype $doctype = null)
+    public function __construct(string $name, \UT_Php\Interfaces\IXmlDoctype $doctype = null)
     {
         $this -> closed = false;
         parent::__construct($name);
@@ -39,9 +39,9 @@ final class Document extends Element
     }
 
     /**
-     * @return \Element
+     * @return \UT_Php\Interfaces\IXmlElement
      */
-    final public function asElement(): Element
+    final public function asElement(): \UT_Php\Interfaces\IXmlElement
     {
         $element = new Element($this -> name());
         $children = $this -> search('/^' . $this -> id() . '$/', null, self::SEARCH_PARENT, false);
@@ -53,9 +53,9 @@ final class Document extends Element
     }
 
     /**
-     * @return Doctype
+     * @return \UT_Php\Interfaces\IXmlDoctype
      */
-    final public function doctype(): Doctype
+    final public function doctype(): \UT_Php\Interfaces\IXmlDoctype
     {
         return $this -> doctype;
     }
@@ -114,7 +114,7 @@ final class Document extends Element
      * @param  boolean       $output
      * @return boolean
      */
-    final public function validateXsd(\UT_Php\IO\File $xsdSchemaFile, bool $output = true): bool
+    final public function validateXsd(\UT_Php\Interfaces\IFile $xsdSchemaFile, bool $output = true): bool
     {
         $xml = (string)$this;
 
@@ -132,14 +132,14 @@ final class Document extends Element
     }
 
     /**
-     * @param  string  $dtdSchemaFile
-     * @param  string  $root
-     * @param  boolean $output        default true
-     * @param  string  $encoding      default utf-8
-     * @return boolean
+     * @param \UT_Php\Interfaces\IDtdFile $dtdSchemaFile
+     * @param string $root
+     * @param bool $output
+     * @param string $encoding
+     * @return bool
      */
     final public function validateDtd(
-        \UT_Php\IO\Common\Dtd $dtdSchemaFile,
+        \UT_Php\Interfaces\IDtdFile $dtdSchemaFile,
         string $root,
         bool $output = true,
         string $encoding = 'utf-8'

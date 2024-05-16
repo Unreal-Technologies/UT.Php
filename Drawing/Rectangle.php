@@ -2,49 +2,52 @@
 
 namespace UT_Php\Drawing;
 
-class Rectangle
+class Rectangle implements \UT_Php\Interfaces\IRectangle
 {
     /**
-     * @var Point2D
+     * @var \UT_Php\Interfaces\ISize2D
      */
-    private $size_;
+    private $size;
 
     /**
-     * @var Point2D
+     * @var \UT_Php\Interfaces\IPoint2D
      */
-    private $location_;
+    private $location;
 
     /**
      * @var int
      */
-    private $rotation_;
+    private $rotation;
 
     /**
-     * @param Point2D $size
-     * @param Point2D $location
-     * @param int     $rotation
+     * @param \UT_Php\Interfaces\IPoint2D $size
+     * @param \UT_Php\Interfaces\ISize2D $location
+     * @param int $rotation
      */
-    public function __construct(Point2D $size, Point2D $location, int $rotation = 0)
-    {
-        $this -> size_ = $size;
-        $this -> location_ = $location;
-        $this -> rotation_ = $rotation;
+    public function __construct(
+        \UT_Php\Interfaces\IPoint2D $size,
+        \UT_Php\Interfaces\ISize2D $location,
+        int $rotation = 0
+    ) {
+        $this -> size = $size;
+        $this -> location = $location;
+        $this -> rotation = $rotation;
     }
 
     /**
-     * @return Point2D
+     * @return \UT_Php\Interfaces\IPoint2D
      */
-    public function location(): Point2D
+    public function location(): \UT_Php\Interfaces\IPoint2D
     {
-        return $this -> location_;
+        return $this -> location;
     }
 
     /**
-     * @return Point2D
+     * @return \UT_Php\Interfaces\ISize2D
      */
-    public function size(): Point2D
+    public function size(): \UT_Php\Interfaces\ISize2D
     {
-        return $this -> size_;
+        return $this -> size;
     }
 
     /**
@@ -52,6 +55,6 @@ class Rectangle
      */
     public function rotation(): int
     {
-        return $this -> rotation_;
+        return $this -> rotation;
     }
 }
