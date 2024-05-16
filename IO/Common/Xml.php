@@ -2,7 +2,7 @@
 
 namespace UT_Php\IO\Common;
 
-class Xml extends \UT_Php\IO\File
+class Xml extends \UT_Php\IO\File implements \UT_Php\Interfaces\IXmlFile
 {
     /**
      * @param string $path
@@ -19,9 +19,9 @@ class Xml extends \UT_Php\IO\File
     }
 
     /**
-     * @return \UT_Php\IO\Xml\Document|null
+     * @return \UT_Php\Interfaces\IXmlDocument|null
      */
-    public function document(): ?\UT_Php\IO\Xml\Document
+    public function document(): ?\UT_Php\Interfaces\IXmlDocument
     {
         if (!$this -> exists()) {
             return null;

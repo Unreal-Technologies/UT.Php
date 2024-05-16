@@ -2,27 +2,27 @@
 
 namespace UT_Php\Drawing;
 
-class Color
+class Color implements \UT_Php\Interfaces\IColor
 {
     /**
      * @var int
      */
-    private $r_;
+    private $r;
 
     /**
      * @var int
      */
-    private $g_;
+    private $g;
 
     /**
      * @var int
      */
-    private $b_;
+    private $b;
 
     /**
      * @var int
      */
-    private $a_;
+    private $a;
 
     /**
      * @param  int $r
@@ -52,7 +52,7 @@ class Color
      */
     public function r(): int
     {
-        return $this -> r_;
+        return $this -> r;
     }
 
     /**
@@ -60,7 +60,7 @@ class Color
      */
     public function g(): int
     {
-        return $this -> g_;
+        return $this -> g;
     }
 
     /**
@@ -68,7 +68,7 @@ class Color
      */
     public function b(): int
     {
-        return $this -> b_;
+        return $this -> b;
     }
 
     /**
@@ -76,7 +76,7 @@ class Color
      */
     public function a(): int
     {
-        return $this -> a_;
+        return $this -> a;
     }
 
     /**
@@ -87,9 +87,9 @@ class Color
      */
     private function __construct(int $r, int $g, int $b, int $a)
     {
-        $this -> r_ = min([max([$r, 0]), 255]);
-        $this -> g_ = min([max([$g, 0]), 255]);
-        $this -> b_ = min([max([$b, 0]), 255]);
-        $this -> a_ = min([max([$a, 0]), 127]);
+        $this -> r = min([max([$r, 0]), 255]);
+        $this -> g = min([max([$g, 0]), 255]);
+        $this -> b = min([max([$b, 0]), 255]);
+        $this -> a = min([max([$a, 0]), 127]);
     }
 }

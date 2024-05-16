@@ -2,7 +2,7 @@
 
 namespace UT_Php\IO;
 
-class File implements IDiskManager
+class File implements \UT_Php\Interfaces\IFile
 {
     /**
      * @var string
@@ -24,29 +24,25 @@ class File implements IDiskManager
     }
 
     /**
-     * @param  Directory $dir
+     * @param \UT_Php\Interfaces\IDirectory $dir
      * @return string|null
      * @throws \Exception
      */
-    public function relativeTo(Directory $dir): ?string
+    public function relativeTo(\UT_Php\Interfaces\IDirectory $dir): ?string
     {
         if (stristr($this -> path, $dir -> path())) {
             return substr($this -> path, strlen($dir -> path()) + 1);
         }
 
         throw new \Exception('Not implemented');
-        echo '<xmp>';
-        print_r($this);
-        print_r($dir);
-        echo '</xmp>';
     }
 
     /**
-     * @param  Directory $dir
-     * @param  string    $name
+     * @param \UT_Php\Interfaces\IDirectory $dir
+     * @param string $name
      * @return bool
      */
-    public function copyTo(Directory $dir, string $name = null): bool
+    public function copyTo(\UT_Php\Interfaces\IDirectory $dir, string $name = null): bool
     {
         if (!$dir -> exists()) {
             return false;
@@ -58,9 +54,9 @@ class File implements IDiskManager
     }
 
     /**
-     * @return Directory|null
+     * @return \UT_Php\Interfaces\IDirectory|null
      */
-    public function parent(): ?Directory
+    public function parent(): ?\UT_Php\Interfaces\IDirectory
     {
         if (!$this -> exists()) {
             return null;
@@ -80,11 +76,11 @@ class File implements IDiskManager
     }
 
     /**
-     * @param  Directory $dir
-     * @param  string    $name
+     * @param \UT_Php\Interfaces\IDirectory $dir
+     * @param string $name
      * @return File|null
      */
-    public static function fromDirectory(Directory $dir, string $name): ?File
+    public static function fromDirectory(\UT_Php\Interfaces\IDirectory $dir, string $name): ?File
     {
         if (!$dir -> exists()) {
             return null;

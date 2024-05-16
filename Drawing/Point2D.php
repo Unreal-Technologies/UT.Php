@@ -2,17 +2,17 @@
 
 namespace UT_Php\Drawing;
 
-class Point2D
+class Point2D implements \UT_Php\Interfaces\IPoint2D
 {
     /**
      * @var float
      */
-    private $x_;
+    private $x;
 
     /**
      * @var float
      */
-    private $y_;
+    private $y;
 
     /**
      * @param float $x
@@ -20,8 +20,8 @@ class Point2D
      */
     public function __construct(float $x, float $y)
     {
-        $this -> x_ = $x;
-        $this -> y_ = $y;
+        $this -> x = $x;
+        $this -> y = $y;
     }
 
     /**
@@ -29,7 +29,7 @@ class Point2D
      */
     public function x(): float
     {
-        return $this -> x_;
+        return $this -> x;
     }
 
     /**
@@ -37,6 +37,6 @@ class Point2D
      */
     public function y(): float
     {
-        return $this -> y_;
+        return $this -> y;
     }
 }

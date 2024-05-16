@@ -1,15 +1,15 @@
 <?php
 
-namespace UT_Php\Drawing\Image;
+namespace UT_Php\IO\Common;
 
-class Bmp extends \UT_Php\Drawing\Image
+class Png extends \UT_Php\Drawing\Image implements \UT_Php\Interfaces\IPngFile
 {
     /**
      * @return mixed
      */
     public function imageCreate(): mixed
     {
-        return imagecreatefrombmp($this -> path());
+        return imagecreatefrompng($this -> path());
     }
 
     /**
@@ -18,6 +18,6 @@ class Bmp extends \UT_Php\Drawing\Image
      */
     public function imageSave(\GdImage $image): bool
     {
-        return imagebmp($image, $this -> path());
+        return imagepng($image, $this -> path());
     }
 }

@@ -2,7 +2,7 @@
 
 namespace UT_Php\IO\Xml;
 
-final class Doctype
+final class Doctype implements \UT_Php\Interfaces\IXmlDoctype
 {
     /**
      * @var string

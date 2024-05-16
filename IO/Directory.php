@@ -2,7 +2,7 @@
 
 namespace UT_Php\IO;
 
-class Directory implements IDiskManager
+class Directory implements \UT_Php\Interfaces\IDirectory
 {
     /**
      * @var string
@@ -34,11 +34,11 @@ class Directory implements IDiskManager
     }
 
     /**
-     * @param  Directory $dir
-     * @param  string    $name
+     * @param \UT_Php\Interfaces\IDirectory $dir
+     * @param string $name
      * @return Directory|null
      */
-    public static function fromDirectory(Directory $dir, string $name): ?Directory
+    public static function fromDirectory(\UT_Php\Interfaces\IDirectory $dir, string $name): ?Directory
     {
         if (!$dir -> exists()) {
             return null;

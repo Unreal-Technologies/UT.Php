@@ -1,0 +1,22 @@
+<?php
+require_once('IDiskManager.php');
+require_once('IXmlElement.php');
+require_once('IXmlDoctype.php');
+require_once('IColor.php');
+require_once('IPoint2D.php');
+require_once('ISize2D.php');
+require_once('IRectangle.php');
+require_once('IDictionary.php');
+require_once('ILinq.php');
+
+require_once('IDirectory.php'); //IDiskManager
+require_once('IFile.php'); //IDiskManager
+require_once('IXmlDocument.php'); //IXmlElement
+require_once('IPoint3D.php'); //IPoint2D
+
+require_once('IDtdFile.php'); //IFile
+require_once('IXmlFile.php'); //IFile
+require_once('IImage.php'); //IFile
+
+require_once('IBmpFile.php'); //IImage
+require_once('IPngFile.php'); //IImage
