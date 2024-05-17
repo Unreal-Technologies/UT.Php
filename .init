@@ -8,6 +8,7 @@ require_once('Drawing/.init');
 require_once('Collections/.init');
 require_once('Enums/.init');
 require_once('Exceptions/.init');
+require_once('Routing/.init');
 
 require_once('Version.php');
 
