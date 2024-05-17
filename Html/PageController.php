@@ -24,6 +24,14 @@ abstract class PageController
     public abstract function render(): string;
     
     /**
+     * @return \UT_Php\Interfaces\IDirectory
+     */
+    protected final function root(): \UT_Php\Interfaces\IDirectory
+    {
+        return $this -> root;
+    }
+    
+    /**
      * @param \UT_Php\Interfaces\IDirectory $root
      */
     public final function __construct(\UT_Php\Interfaces\IDirectory $root) 
