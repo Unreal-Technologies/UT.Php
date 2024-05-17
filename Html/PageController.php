@@ -9,14 +9,14 @@ abstract class PageController
     private $title = 'nyi';
     
     /**
-     * @var UT_Php\Interfaces\IDirectory
-     */
-    private $root;
-    
-    /**
      * @var UT_Php\Interfaces\IFile[]
      */
     private $css = [];
+    
+    /**
+     * @var \UT_Php\Interfaces\IRouter
+     */
+    private $router;
 
 
     public abstract function initialize(): void;
@@ -28,15 +28,15 @@ abstract class PageController
      */
     protected final function root(): \UT_Php\Interfaces\IDirectory
     {
-        return $this -> root;
+        return $this -> router -> root();
     }
     
     /**
-     * @param \UT_Php\Interfaces\IDirectory $root
+     * @param \UT_Php\Interfaces\IRouter
      */
-    public final function __construct(\UT_Php\Interfaces\IDirectory $root) 
+    public final function __construct(\UT_Php\Interfaces\IRouter $router) 
     {
-        $this -> root = $root;
+        $this -> router = $router;
         $this -> css[] = \UT_Php\IO\File::fromString('default.css');
         
         $this -> initialize();
@@ -55,7 +55,7 @@ abstract class PageController
         {
             if($file -> exists())
             {
-                $html .= '<link rel="stylesheet" type="text/css" href="'.$file -> relativeTo($this -> root).'"/>';
+                $html .= '<link rel="stylesheet" type="text/css" href="'.$file -> relativeTo($this -> root()).'"/>';
             }
         }
         $html .= '<title>'.$this -> title.'</title>';

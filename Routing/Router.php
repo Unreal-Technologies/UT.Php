@@ -2,7 +2,7 @@
 
 namespace UT_Php\Routing;
 
-class Router
+class Router implements \UT_Php\Interfaces\IRouter
 {
     /**
      * @var array
@@ -33,6 +33,14 @@ class Router
         {
             \UT_Php\IO\File::fromString(__DIR__.'/base.htaccess') -> copyTo($root, $htaccessFile -> name());
         }
+    }
+    
+    /**
+     * @return \UT_Php\Interfaces\IDirectory
+     */
+    public function root(): \UT_Php\Interfaces\IDirectory
+    {
+        return $this -> root;
     }
     
     /**
