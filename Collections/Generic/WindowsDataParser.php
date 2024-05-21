@@ -1,4 +1,5 @@
 <?php
+
 namespace UT_Php\Collections\Generic;
 
 class WindowsDataParser extends \UT_Php\Collections\Dictionary
@@ -11,13 +12,13 @@ class WindowsDataParser extends \UT_Php\Collections\Dictionary
     public function __construct(string $header, string $data, ?string $indentations = null)
     {
         $indentations ??= $header;
-        
+
         $indentationIndexes = $this -> getIndentationIndexes($indentations);
         $headers = $this -> getHeaders($header, $indentationIndexes);
-        
+
         $this -> buffer = $this -> getData($headers, $indentationIndexes, $data);
     }
-    
+
     /**
      * @param string[] $headers
      * @param array $indentationIndexes
@@ -27,17 +28,20 @@ class WindowsDataParser extends \UT_Php\Collections\Dictionary
     private function getData(array $headers, array $indentationIndexes, string $data): array
     {
         $buffer = [];
-        foreach($indentationIndexes as $i => $index)
-        {
+        foreach ($indentationIndexes as $i => $index) {
             $end = $index['End'];
             $start = $index['Start'];
             $header = $headers[$i];
-            
-            $buffer[$header] = trim($end === null ? substr($data, $start, strlen($data) - $start) : substr($data, $start, $end - $start));
+
+            $buffer[$header] = trim(
+                $end === null ?
+                substr($data, $start, strlen($data) - $start) :
+                substr($data, $start, $end - $start)
+            );
         }
         return $buffer;
     }
-    
+
     /**
      * @param string $header
      * @param array $indentationIndexes
@@ -46,16 +50,19 @@ class WindowsDataParser extends \UT_Php\Collections\Dictionary
     private function getHeaders(string $header, array $indentationIndexes): array
     {
         $buffer = [];
-        foreach($indentationIndexes as $index)
-        {
+        foreach ($indentationIndexes as $index) {
             $end = $index['End'];
             $start = $index['Start'];
-            
-            $buffer[] = trim($end === null ? substr($header, $start, strlen($header) - $start) : substr($header, $start, $end - $start));
+
+            $buffer[] = trim(
+                $end === null ?
+                substr($header, $start, strlen($header) - $start) :
+                substr($header, $start, $end - $start)
+            );
         }
         return $buffer;
     }
-    
+
     /**
      * @param string $indentations
      * @return array
@@ -63,16 +70,17 @@ class WindowsDataParser extends \UT_Php\Collections\Dictionary
     private function getIndentationIndexes(string $indentations): array
     {
         $list = (new \UT_Php\Collections\Linq(explode(' ', $indentations)))
-            -> toArray(function($x) { return $x !== ''; });
-            
+            -> toArray(function ($x) {
+                return $x !== '';
+            });
+
         $pos = 0;
         $buffer = [];
-        foreach($list as $idx => $item)
-        {
+        foreach ($list as $idx => $item) {
             $next = isset($list[$idx + 1]) ? $list[$idx + 1] : null;
             $start = strpos($indentations, $item, $pos);
             $end = $next === null ? null : strpos($indentations, $next, $pos);
-  
+
             $buffer[] = [
                 'Start' => $start,
                 'End' => $end === null ? null : ($end == $start ? $start + strlen($item) : $end)
@@ -80,7 +88,7 @@ class WindowsDataParser extends \UT_Php\Collections\Dictionary
 
             $pos = $start + strlen($item);
         }
-        
+
         return $buffer;
     }
 }

@@ -45,7 +45,7 @@ class Directory
      * @var int
      */
     private int $index = 0;
-    
+
     /**
      * @var \UT_Php\Interfaces\IDirectory
      */

@@ -1,4 +1,5 @@
 <?php
+
 namespace UT_Php\Interfaces;
 
 interface IRouter

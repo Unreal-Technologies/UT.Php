@@ -17,10 +17,10 @@ class Dictionary implements \UT_Php\Interfaces\IDictionary
     {
         $dic = new Dictionary();
         $dic -> buffer = $kvp;
-        
+
         return $dic;
     }
-    
+
     /**
      * @param  mixed $key
      * @param  mixed $value
