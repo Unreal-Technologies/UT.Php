@@ -1,3 +1,5 @@
 <?php
 require_once('Dictionary.php');
 require_once('Linq.php');
+
+require_once('Generic/.init');

@@ -7,8 +7,20 @@ class Dictionary implements \UT_Php\Interfaces\IDictionary
     /**
      * @var array
      */
-    private array $buffer = [];
+    protected array $buffer = [];
 
+    /**
+     * @param array $kvp
+     * @return Dictionary
+     */
+    public static function fromArray(array $kvp): Dictionary
+    {
+        $dic = new Dictionary();
+        $dic -> buffer = $kvp;
+        
+        return $dic;
+    }
+    
     /**
      * @param  mixed $key
      * @param  mixed $value

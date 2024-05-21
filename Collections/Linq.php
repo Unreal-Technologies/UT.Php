@@ -88,13 +88,13 @@ class Linq implements \UT_Php\Interfaces\ILinq
      * @param  \Closure $lambda
      * @return array
      */
-    public function toArray(\Closure $lambda = null): array
+    public function toArray(\Closure $lambda = null, bool $keepKeys = false): array
     {
         $self = $lambda === null ? $this : $this -> where($lambda);
         if (count($self -> outCollection) === 0) {
             $self -> execute();
         }
-        return $self -> outCollection;
+        return $keepKeys ? $self -> outCollection : array_values($self -> outCollection);
     }
 
     /**
@@ -328,6 +328,11 @@ class Linq implements \UT_Php\Interfaces\ILinq
                     krsort($buffer);
                 }
                 $buffer = $this -> multiToSingleArray($buffer);
+            }
+            
+            if(is_int($buffer))
+            {
+                $buffer = [ $buffer ];
             }
             $collection = is_array($buffer) ? $buffer : $buffer -> toArray();
         }
