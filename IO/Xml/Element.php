@@ -331,7 +331,7 @@ class Element implements \UT_Php\Interfaces\IXmlElement
                     $list[] = $this;
                 }
             }
-        } elseif (preg_match($regex, $this -> $type)) {
+        } elseif ($this -> $type != null && preg_match($regex, $this -> $type)) {
             $list[] = $this;
         }
         if ($recursive || (!$recursive && $recursivePos === 0)) {

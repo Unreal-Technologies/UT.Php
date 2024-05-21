@@ -8,6 +8,7 @@ require_once('ISize2D.php');
 require_once('IRectangle.php');
 require_once('IDictionary.php');
 require_once('ILinq.php');
+require_once('IRouter.php');
 
 require_once('IDirectory.php'); //IDiskManager
 require_once('IFile.php'); //IDiskManager

@@ -42,6 +42,11 @@ class Directory
     private bool $isLastBranch = true;
 
     /**
+     * @var int
+     */
+    private int $index = 0;
+    
+    /**
      * @var \UT_Php\Interfaces\IDirectory
      */
     private \UT_Php\Interfaces\IDirectory $root;
