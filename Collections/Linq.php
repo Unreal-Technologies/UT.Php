@@ -329,9 +329,8 @@ class Linq implements \UT_Php\Interfaces\ILinq
                 }
                 $buffer = $this -> multiToSingleArray($buffer);
             }
-            
-            if(is_int($buffer))
-            {
+
+            if (is_int($buffer)) {
                 $buffer = [ $buffer ];
             }
             $collection = is_array($buffer) ? $buffer : $buffer -> toArray();

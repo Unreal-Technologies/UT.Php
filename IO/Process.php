@@ -1,4 +1,5 @@
 <?php
+
 namespace UT_Php\IO;
 
 class Process
@@ -11,28 +12,29 @@ class Process
         $buffer = [];
         $lines = [];
         exec('tasklist 2>nul', $lines);
-       
-        for($i=3; $i<count($lines); $i++)
-        {
+
+        for ($i = 3; $i < count($lines); $i++) {
             $wdp = new \UT_Php\Collections\Generic\WindowsDataParser($lines[1], $lines[$i], $lines[2]);
 
             $buffer[] = [
                 'Session' => [
-                    'Id' => (int)$wdp -> get('Session#'), 
+                    'Id' => (int)$wdp -> get('Session#'),
                     'Name' => $wdp -> get('Session Name')
-                ], 
-                'Process' => $wdp -> get('Image Name'), 
-                'PID' => (int)$wdp -> get('PID'), 
+                ],
+                'Process' => $wdp -> get('Image Name'),
+                'PID' => (int)$wdp -> get('PID'),
                 'Memory' => Memory::parse($wdp -> get('Mem Usage'))
             ];
         }
         $mergedByProcess = self::mergeByProcess($buffer);
-        
-        return (new \UT_Php\Collections\Linq(array_values($mergedByProcess))) 
-            -> select(function($x) { return new Process($x); }) 
+
+        return (new \UT_Php\Collections\Linq(array_values($mergedByProcess)))
+            -> select(function ($x) {
+                return new Process($x);
+            })
             -> toArray();
     }
-    
+
     /**
      * @param array $data
      * @return array
@@ -40,35 +42,34 @@ class Process
     private static function mergeByProcess(array $data): array
     {
         $sortedData = (new \UT_Php\Collections\Linq($data))
-            -> orderBy(function($x) { return $x['Session']['Name']; }, \UT_Php\Enums\SortDirections::Asc)
+            -> orderBy(function ($x) {
+                return $x['Session']['Name'];
+            }, \UT_Php\Enums\SortDirections::Asc)
             -> toArray();
-            
+
         $buffer = [];
-        foreach($sortedData as $item)
-        {
+        foreach ($sortedData as $item) {
             $sId = $item['Session']['Name'];
-            if(!isset($buffer[$sId]))
-            {
+            if (!isset($buffer[$sId])) {
                 $buffer[$sId] = [];
             }
-            
+
             $buffer[$sId][] = $item;
         }
-        
+
         $output = [];
-        foreach($buffer as $items)
-        {
+        foreach ($buffer as $items) {
             $sortedItems = (new \UT_Php\Collections\Linq($items))
-                -> orderBy(function($x) { return $x['Process']; }, \UT_Php\Enums\SortDirections::Asc)    
+                -> orderBy(function ($x) {
+                    return $x['Process'];
+                }, \UT_Php\Enums\SortDirections::Asc)
                 -> toArray();
-                
+
             $prev = null;
             $mergedBuffer = [];
-            
-            foreach($sortedItems as $item)
-            {
-                if($item['Process'] !== $prev)
-                {
+
+            foreach ($sortedItems as $item) {
+                if ($item['Process'] !== $prev) {
                     $mergedBuffer[$item['Process']] = [
                         'Session' => $item['Session'],
                         'Process' => $item['Process'],
@@ -83,23 +84,23 @@ class Process
 
                 $prev = $item['Process'];
             }
-            
+
             $output = array_merge($output, $mergedBuffer);
         }
-            
+
         return $output;
     }
-    
+
     /**
      * @var array
      */
     private array $session;
-    
+
     /**
      * @var string
      */
     private string $name;
-    
+
     /**
      * @var array
      */
@@ -114,7 +115,7 @@ class Process
         $this -> name = $data['Process'];
         $this -> processes = $data['Data'];
     }
-    
+
     /**
      * @return int
      */
@@ -122,7 +123,7 @@ class Process
     {
         return $this -> session['Id'];
     }
-    
+
     /**
      * @return string
      */
@@ -137,24 +138,24 @@ class Process
      */
     public function pidInfo(int $pid): \UT_Php\Collections\Dictionary
     {
-        $exists = (new \UT_Php\Collections\Linq($this -> processes)) 
-            -> firstOrDefault(function($x) use($pid) { return $x['PID'] === $pid; }) !== null;
-        if(!$exists)
-        {
+        $exists = (new \UT_Php\Collections\Linq($this -> processes))
+            -> firstOrDefault(function ($x) use ($pid) {
+                return $x['PID'] === $pid;
+            }) !== null;
+        if (!$exists) {
             return null;
         }
-        
-        $info = shell_exec('wmic process where (processid='.$pid.') get *');
-        if($info === null || !$info)
-        {
+
+        $info = shell_exec('wmic process where (processid=' . $pid . ') get *');
+        if ($info === null || !$info) {
             return null;
         }
-        
+
         $lines = explode("\r\n", trim($info));
-        
+
         return new \UT_Php\Collections\Generic\WindowsDataParser($lines[0], $lines[1]);
     }
-    
+
     /**
      * @return int
      */
@@ -162,17 +163,19 @@ class Process
     {
         return count($this -> pidList());
     }
-    
+
     /**
      * @return int[]
      */
     public function pidList(): array
     {
         return (new \UT_Php\Collections\Linq($this -> processes))
-            -> select(function($x) { return $x['PID']; })
+            -> select(function ($x) {
+                return $x['PID'];
+            })
             -> toArray();
     }
-    
+
     /**
      * @param bool $format
      * @return string|int
@@ -180,18 +183,19 @@ class Process
     public function totalMemory(bool $format = false): mixed
     {
         $sum = (new \UT_Php\Collections\Linq($this -> processes))
-            -> sum(function($x) { return $x['Memory'] -> value(); })
+            -> sum(function ($x) {
+                return $x['Memory'] -> value();
+            })
             -> firstOrDefault();
-            
+
         $mem = Memory::fromInt($sum);
-        if($format)
-        {
+        if ($format) {
             return $mem -> format();
         }
-        
+
         return $mem -> value();
     }
-   
+
     /**
      * @param int $pid
      * @param bool $format
@@ -200,22 +204,22 @@ class Process
     public function pidMemory(int $pid, bool $format = false): mixed
     {
         $selected = (new \UT_Php\Collections\Linq($this -> processes))
-            -> firstOrDefault(function($x) use ($pid) { return $x['PID'] === $pid; });
-        if($selected == null)
-        {
+            -> firstOrDefault(function ($x) use ($pid) {
+                return $x['PID'] === $pid;
+            });
+        if ($selected == null) {
             return null;
         }
-        
+
         $memory = $selected['Memory'];
-        
-        if($format)
-        {
+
+        if ($format) {
             return $memory -> format();
         }
-        
+
         return $memory -> value();
     }
-    
+
     /**
      * @return string
      */
