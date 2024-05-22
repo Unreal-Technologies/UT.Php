@@ -53,9 +53,10 @@ class Memory
     }
 
     /**
+     * @param int $decimals
      * @return string
      */
-    public function format(): string
+    public function format(int $decimals = 2): string
     {
         $idx = 0;
         $value = $this -> value;
@@ -65,7 +66,7 @@ class Memory
         }
         $list = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'RiB', 'QiB'];
 
-        return round($value, 2) . ' ' . $list[$idx];
+        return number_format($value, $decimals, ',', '.') . ' ' . $list[$idx];
     }
 
     /**

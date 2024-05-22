@@ -5,5 +5,6 @@ require_once('Directory.php');
 require_once('File.php');
 require_once('Process.php');
 require_once('Memory.php');
+require_once('Server.php');
 
 require_once('Common/.Init');
