@@ -52,6 +52,15 @@ class File implements \UT_Php_Core\Interfaces\IFile
         }
         return copy($this -> path(), $dir -> path() . '/' . $name);
     }
+    
+    /**
+     * @param string $stream
+     * @return void
+     */
+    public function write(string $stream): void
+    {
+        file_put_contents($this -> path(), $stream);
+    }
 
     /**
      * @return \UT_Php_Core\Interfaces\IDirectory|null
