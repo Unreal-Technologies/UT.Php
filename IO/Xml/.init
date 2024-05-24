@@ -1,4 +1,0 @@
-<?php
-require_once('Element.php');
-require_once('Doctype.php');
-require_once('Document.php');

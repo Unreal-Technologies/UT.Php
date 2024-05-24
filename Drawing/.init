@@ -1,7 +1,0 @@
-<?php
-require_once('Size2D.php');
-require_once('Point2D.php');
-require_once('Point3D.php');
-require_once('Rectangle.php');
-require_once('Color.php');
-require_once('Image.php');
