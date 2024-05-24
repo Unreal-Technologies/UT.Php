@@ -180,8 +180,12 @@ class Element implements \UT_Php_Core\Interfaces\IXmlElement
     /**
      * @return string
      */
-    final public function parent(): string
+    final public function parent(?string $value = null): string
     {
+        if($value !== null)
+        {
+            $this -> parent = $value;
+        }
         return $this -> parent;
     }
 
@@ -278,7 +282,7 @@ class Element implements \UT_Php_Core\Interfaces\IXmlElement
     final public function addChild(\UT_Php_Core\Interfaces\IXmlElement $element): bool
     {
         if ($this -> text === null) {
-            $element -> parent = $this -> id;
+            $element -> parent($this -> id);
             $element -> updatePosition($this -> position + 1);
             $this -> children[] = $element;
             return true;
@@ -324,6 +328,31 @@ class Element implements \UT_Php_Core\Interfaces\IXmlElement
         $recursivePos = 0
     ): ?array {
         $list = array();
+        $value = null;
+        switch($type)
+        {
+            case self::SEARCH_ATTRIBUTES:
+                $value = $this -> attributes;
+                break;
+            case self::SEARCH_ID:
+                $value = $this -> id;
+                break;
+            case self::SEARCH_NAME:
+                $value = $this -> name;
+                break;
+            case self::SEARCH_PARENT:
+                $value = $this -> parent;
+                break;
+            case self::SEARCH_POSITION:
+                $value = $this -> position;
+                break;
+            case self::SEARCH_TEXT:
+                $value = $this -> text;
+                break;
+            default:
+                throw new \UT_Php_Core\Exceptions\NotImplementedException('Unknown type "'.$type.'"');
+        }
+        
         if ($type == self::SEARCH_ATTRIBUTES) {
             $keys = array_keys($this -> attributes);
             foreach ($keys as $key) {
@@ -331,7 +360,7 @@ class Element implements \UT_Php_Core\Interfaces\IXmlElement
                     $list[] = $this;
                 }
             }
-        } elseif ($this -> $type != null && preg_match($regex, $this -> $type)) {
+        } elseif ($value != null && preg_match($regex, $value)) {
             $list[] = $this;
         }
         if ($recursive || (!$recursive && $recursivePos === 0)) {

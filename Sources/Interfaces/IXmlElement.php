@@ -16,7 +16,7 @@ interface IXmlElement
     public function remove(IXmlElement $element): bool;
     public function __toString(): string;
     public function attributes(array $list = null): array;
-    public function parent(): string;
+    public function parent(?string $value = null): string;
     public function id(): string;
     public function text(string $text = null): ?string;
     public function name(): string;
