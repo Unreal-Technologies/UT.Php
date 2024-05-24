@@ -30,6 +30,38 @@ class Version
     private array $subVersions;
 
     /**
+     * @return int
+     */
+    public function build(): int
+    {
+        return $this -> patch;
+    }
+    
+    /**
+     * @return int
+     */
+    public function patch(): int
+    {
+        return $this -> patch;
+    }
+    
+    /**
+     * @return int
+     */
+    public function minor(): int
+    {
+        return $this -> minor;
+    }
+    
+    /**
+     * @return int
+     */
+    public function major(): int
+    {
+        return $this -> major;
+    }
+    
+    /**
      * @param int       $major
      * @param int       $minor
      * @param int       $patch
