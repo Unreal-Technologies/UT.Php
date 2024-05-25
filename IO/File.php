@@ -24,6 +24,17 @@ class File implements \UT_Php_Core\Interfaces\IFile
     }
 
     /**
+     * @return bool
+     */
+    public function remove(): bool
+    {
+        if (!$this -> exists) {
+            return false;
+        }
+        return unlink($this -> path);
+    }
+
+    /**
      * @param \UT_Php_Core\Interfaces\IDirectory $dir
      * @return string|null
      * @throws \Exception

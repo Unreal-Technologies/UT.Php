@@ -8,4 +8,5 @@ interface IDiskManager
     public function exists(): bool;
     public function contains(string $data): bool;
     public function name(): string;
+    public function remove(): bool;
 }
