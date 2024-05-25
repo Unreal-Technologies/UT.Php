@@ -62,6 +62,19 @@ class Version
     }
 
     /**
+     * @param string $version
+     * @return void
+     */
+    public function update(string $version): void
+    {
+        $self = self::parse($version);
+        $this -> major = $self -> major();
+        $this -> minor = $self -> minor();
+        $this -> patch = $self -> patch();
+        $this -> build = $self -> build();
+    }
+
+    /**
      * @return void
      */
     public function increment(): void
@@ -71,9 +84,10 @@ class Version
 
     /**
      * @param string $value
+     * @param Version[] $subVersions
      * @return Version|null
      */
-    public static function parse(string $value): ?Version
+    public static function parse(string $value, array $subVersions = []): ?Version
     {
         if (!preg_match('/^([0-9]+\.){3}[\-0-9]+$/', $value)) {
             return null;
@@ -83,7 +97,7 @@ class Version
             return null;
         }
 
-        return new Version($parts[0], $parts[1], $parts[2], $parts[3]);
+        return new Version($parts[0], $parts[1], $parts[2], $parts[3], $subVersions);
     }
 
     /**
