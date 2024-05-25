@@ -4,6 +4,8 @@ namespace UT_Php_Core\Routing;
 
 class Router implements \UT_Php_Core\Interfaces\IRouter
 {
+    private const DEFAULT_HTACCESS = 'UmV3cml0ZUVuZ2luZSBPbg0KUmV3cml0ZUNvbmQgJXtSRVFVRVNUX0ZJTEVOQU1FfSAhLWYNClJld3JpdGVDb25kICV7UkVRVUVTVF9GSUxFTkFNRX0gIS1kDQpSZXdyaXRlUnVsZSBeKC4qKSQgaW5kZXgucGhwLyQxIFtMXQ';
+    
     /**
      * @var array
      */
@@ -30,7 +32,7 @@ class Router implements \UT_Php_Core\Interfaces\IRouter
 
         $htaccessFile = \UT_Php_Core\IO\File::fromString('.htaccess');
         if (!$htaccessFile -> exists()) {
-            \UT_Php_Core\IO\File::fromString(__DIR__ . '/base.htaccess') -> copyTo($root, $htaccessFile -> name());
+            $htaccessFile -> write(base64_decode(self::DEFAULT_HTACCESS));
         }
     }
 

@@ -62,6 +62,33 @@ class Version
     }
     
     /**
+     * @return void
+     */
+    public function increment(): void
+    {
+        $this -> build++;
+    }
+    
+    /**
+     * @param string $value
+     * @return Version|null
+     */
+    public static function parse(string $value): ?Version
+    {
+        if(!preg_match('/^([0-9]+\.){3}[\-0-9]+$/', $value))
+        {
+            return null;
+        }
+        $parts = explode('.', $value);
+        if(count($parts) !== 4)
+        {
+            return null;
+        }
+        
+        return new Version($parts[0], $parts[1], $parts[2], $parts[3]);
+    }
+    
+    /**
      * @param int       $major
      * @param int       $minor
      * @param int       $patch
