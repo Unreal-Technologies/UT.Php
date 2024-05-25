@@ -34,6 +34,17 @@ class Directory implements \UT_Php_Core\Interfaces\IDirectory
     }
 
     /**
+     * @return bool
+     */
+    public function remove(): bool
+    {
+        if (!$this -> exists) {
+            return false;
+        }
+        return rmdir($this -> path);
+    }
+
+    /**
      * @param \UT_Php_Core\Interfaces\IDirectory $dir
      * @param string $name
      * @return Directory|null
