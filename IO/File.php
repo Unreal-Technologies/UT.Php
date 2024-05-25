@@ -60,6 +60,8 @@ class File implements \UT_Php_Core\Interfaces\IFile
     public function write(string $stream): void
     {
         file_put_contents($this -> path(), $stream);
+        $this -> exists = true;
+        $this -> path = realpath($this -> path());
     }
 
     /**
