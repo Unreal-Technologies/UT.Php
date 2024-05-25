@@ -34,9 +34,9 @@ class Version
      */
     public function build(): int
     {
-        return $this -> patch;
+        return $this -> build;
     }
-    
+
     /**
      * @return int
      */
@@ -44,7 +44,7 @@ class Version
     {
         return $this -> patch;
     }
-    
+
     /**
      * @return int
      */
@@ -52,7 +52,7 @@ class Version
     {
         return $this -> minor;
     }
-    
+
     /**
      * @return int
      */
@@ -60,7 +60,7 @@ class Version
     {
         return $this -> major;
     }
-    
+
     /**
      * @return void
      */
@@ -68,26 +68,24 @@ class Version
     {
         $this -> build++;
     }
-    
+
     /**
      * @param string $value
      * @return Version|null
      */
     public static function parse(string $value): ?Version
     {
-        if(!preg_match('/^([0-9]+\.){3}[\-0-9]+$/', $value))
-        {
+        if (!preg_match('/^([0-9]+\.){3}[\-0-9]+$/', $value)) {
             return null;
         }
         $parts = explode('.', $value);
-        if(count($parts) !== 4)
-        {
+        if (count($parts) !== 4) {
             return null;
         }
-        
+
         return new Version($parts[0], $parts[1], $parts[2], $parts[3]);
     }
-    
+
     /**
      * @param int       $major
      * @param int       $minor
