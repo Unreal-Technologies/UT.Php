@@ -52,7 +52,7 @@ class File implements \UT_Php_Core\Interfaces\IFile
         }
         return copy($this -> path(), $dir -> path() . '/' . $name);
     }
-    
+
     /**
      * @param string $stream
      * @return void

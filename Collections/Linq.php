@@ -54,7 +54,7 @@ class Linq implements \UT_Php_Core\Interfaces\ILinq
         $this -> query[] = [$this::SKIP, $count];
         return $this;
     }
-    
+
     /**
      * @param \Closure $lambda
      * @return \UT_Php_Core\Interfaces\ILinq
@@ -283,7 +283,6 @@ class Linq implements \UT_Php_Core\Interfaces\ILinq
     ): void {
         switch ($type) {
             case $this::SKIP:
-                
                 break;
             case $this::WHERE:
                 $this -> executeSwitchWhere($index, $buffer, $lambda, $item);
@@ -328,9 +327,8 @@ class Linq implements \UT_Php_Core\Interfaces\ILinq
             if ($type === $this::SUM) {
                 $this -> counts = [];
             }
-            
-            if($type === $this::SKIP)
-            {
+
+            if ($type === $this::SKIP) {
                 $collection = array_slice($collection, $lambda);
                 continue;
             }

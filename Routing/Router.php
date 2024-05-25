@@ -4,8 +4,11 @@ namespace UT_Php_Core\Routing;
 
 class Router implements \UT_Php_Core\Interfaces\IRouter
 {
-    private const DEFAULT_HTACCESS = 'UmV3cml0ZUVuZ2luZSBPbg0KUmV3cml0ZUNvbmQgJXtSRVFVRVNUX0ZJTEVOQU1FfSAhLWYNClJld3JpdGVDb25kICV7UkVRVUVTVF9GSUxFTkFNRX0gIS1kDQpSZXdyaXRlUnVsZSBeKC4qKSQgaW5kZXgucGhwLyQxIFtMXQ';
-    
+    private const DEFAULT_HTACCESS = 'UmV3cml0ZUVuZ2luZSBPbg0KUm'
+            . 'V3cml0ZUNvbmQgJXtSRVFVRVNUX0ZJTEVOQU1FfSAhLWYNClJ'
+            . 'ld3JpdGVDb25kICV7UkVRVUVTVF9GSUxFTkFNRX0gIS1kDQpS'
+            . 'ZXdyaXRlUnVsZSBeKC4qKSQgaW5kZXgucGhwLyQxIFtMXQ';
+
     /**
      * @var array
      */

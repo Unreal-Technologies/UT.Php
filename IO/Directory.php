@@ -50,10 +50,10 @@ class Directory implements \UT_Php_Core\Interfaces\IDirectory
     {
         $parts = preg_split('/[\/|\\\]+/', $this -> path);
         $buffer = array_slice($parts, 0, count($parts) - 1);
-        
+
         return self::fromString(implode('/', $buffer));
     }
-    
+
     /**
      * @param  string $regex
      * @return bool

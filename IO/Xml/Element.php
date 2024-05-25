@@ -182,8 +182,7 @@ class Element implements \UT_Php_Core\Interfaces\IXmlElement
      */
     final public function parent(?string $value = null): string
     {
-        if($value !== null)
-        {
+        if ($value !== null) {
             $this -> parent = $value;
         }
         return $this -> parent;
@@ -294,8 +293,9 @@ class Element implements \UT_Php_Core\Interfaces\IXmlElement
      * @param \UT_Php_Core\Interfaces\IXmlDoctype $doctype
      * @return \UT_Php_Core\Interfaces\IXmlDocument
      */
-    final public function asDocument(\UT_Php_Core\Interfaces\IXmlDoctype $doctype = null): \UT_Php_Core\Interfaces\IXmlDocument
-    {
+    final public function asDocument(
+        \UT_Php_Core\Interfaces\IXmlDoctype $doctype = null
+    ): \UT_Php_Core\Interfaces\IXmlDocument {
         if ($doctype === null) {
             $doctype = Doctype::xml();
         }
@@ -329,8 +329,7 @@ class Element implements \UT_Php_Core\Interfaces\IXmlElement
     ): ?array {
         $list = array();
         $value = null;
-        switch($type)
-        {
+        switch ($type) {
             case self::SEARCH_ATTRIBUTES:
                 $value = $this -> attributes;
                 break;
@@ -350,9 +349,9 @@ class Element implements \UT_Php_Core\Interfaces\IXmlElement
                 $value = $this -> text;
                 break;
             default:
-                throw new \UT_Php_Core\Exceptions\NotImplementedException('Unknown type "'.$type.'"');
+                throw new \UT_Php_Core\Exceptions\NotImplementedException('Unknown type "' . $type . '"');
         }
-        
+
         if ($type == self::SEARCH_ATTRIBUTES) {
             $keys = array_keys($this -> attributes);
             foreach ($keys as $key) {
