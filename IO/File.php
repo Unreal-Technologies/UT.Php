@@ -32,67 +32,62 @@ class File implements \UT_Php_Core\Interfaces\IFile
     {
         return self::fromString($file -> path());
     }
-    
+
     /**
      * @return \UT_Php_Core\Interfaces\IXmlFile|null
      */
     public function asXml(): ?\UT_Php_Core\Interfaces\IXmlFile
     {
-        if($this -> extension() !== 'xml')
-        {
+        if ($this -> extension() !== 'xml') {
             return null;
         }
         return new Common\Xml($this -> path);
     }
-    
+
     /**
      * @return \UT_Php_Core\Interfaces\IPngFile|null
      */
     public function asPng(): ?\UT_Php_Core\Interfaces\IPngFile
     {
-        if($this -> extension() !== 'png')
-        {
+        if ($this -> extension() !== 'png') {
             return null;
         }
         return new Common\Png($this -> path);
     }
-    
+
     /**
      * @return \UT_Php_Core\Interfaces\IPhpFile|null
      */
     public function asPhp(): ?\UT_Php_Core\Interfaces\IPhpFile
     {
-        if($this -> extension() !== 'php')
-        {
+        if ($this -> extension() !== 'php') {
             return null;
         }
         return new Common\Php($this -> path);
     }
-    
+
     /**
      * @return \UT_Php_Core\Interfaces\IDtdFile|null
      */
     public function asDtd(): ?\UT_Php_Core\Interfaces\IDtdFile
     {
-        if($this -> extension() !== 'dtd')
-        {
+        if ($this -> extension() !== 'dtd') {
             return null;
         }
         return new Common\Dtd($this -> path);
     }
-    
+
     /**
      * @return \UT_Php_Core\Interfaces\IBmpFile|null
      */
     public function asBmp(): ?\UT_Php_Core\Interfaces\IBmpFile
     {
-        if($this -> extension() !== 'bmp')
-        {
+        if ($this -> extension() !== 'bmp') {
             return null;
         }
         return new Common\Bmp($this -> path);
     }
-    
+
     /**
      * @return bool
      */

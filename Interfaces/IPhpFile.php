@@ -1,4 +1,5 @@
 <?php
+
 namespace UT_Php_Core\Interfaces;
 
 interface IPhpFile extends IFile
