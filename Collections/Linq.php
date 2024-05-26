@@ -2,7 +2,7 @@
 
 namespace UT_Php_Core\Collections;
 
-class Linq implements \UT_Php_Core\Interfaces\ILinq
+class Linq implements ILinq
 {
     private const WHERE = 1;
     private const SELECT = 2;
@@ -47,9 +47,9 @@ class Linq implements \UT_Php_Core\Interfaces\ILinq
 
     /**
      * @param int $count
-     * @return \UT_Php_Core\Interfaces\ILinq
+     * @return ILinq
      */
-    public function skip(int $count): \UT_Php_Core\Interfaces\ILinq
+    public function skip(int $count): ILinq
     {
         $this -> query[] = [$this::SKIP, $count];
         return $this;
@@ -57,9 +57,9 @@ class Linq implements \UT_Php_Core\Interfaces\ILinq
 
     /**
      * @param \Closure $lambda
-     * @return \UT_Php_Core\Interfaces\ILinq
+     * @return ILinq
      */
-    public function where(\Closure $lambda): \UT_Php_Core\Interfaces\ILinq
+    public function where(\Closure $lambda): ILinq
     {
         $count = count($this -> query);
         $index = $count - 1;
@@ -76,9 +76,9 @@ class Linq implements \UT_Php_Core\Interfaces\ILinq
 
     /**
      * @param \Closure $lambda
-     * @return \UT_Php_Core\Interfaces\ILinq
+     * @return ILinq
      */
-    public function select(\Closure $lambda): \UT_Php_Core\Interfaces\ILinq
+    public function select(\Closure $lambda): ILinq
     {
         $this -> query[] = [$this::SELECT, $lambda];
         return $this;
@@ -86,9 +86,9 @@ class Linq implements \UT_Php_Core\Interfaces\ILinq
 
     /**
      * @param \Closure $lambda
-     * @return \UT_Php_Core\Interfaces\ILinq
+     * @return Linq
      */
-    public function groupBy(\Closure $lambda): \UT_Php_Core\Interfaces\ILinq
+    public function groupBy(\Closure $lambda): ILinq
     {
         $this -> query[] = [$this::GROUPBY, $lambda];
         $this -> isGrouped = true;
@@ -138,9 +138,9 @@ class Linq implements \UT_Php_Core\Interfaces\ILinq
 
     /**
      * @param \Closure $lambda
-     * @return \UT_Php_Core\Interfaces\ILinq
+     * @return ILinq
      */
-    public function sum(\Closure $lambda = null): \UT_Php_Core\Interfaces\ILinq
+    public function sum(\Closure $lambda = null): ILinq
     {
         $this -> query[] = [$this::SUM, $lambda];
         return $this;
@@ -148,9 +148,9 @@ class Linq implements \UT_Php_Core\Interfaces\ILinq
 
     /**
      * @param \Closure $lambda
-     * @return \UT_Php_Core\Interfaces\ILinq
+     * @return ILinq
      */
-    public function avg(\Closure $lambda = null): \UT_Php_Core\Interfaces\ILinq
+    public function avg(\Closure $lambda = null): ILinq
     {
         $self = $this -> sum($lambda);
         $self -> query[] = [$this::AVG, null];
@@ -159,13 +159,13 @@ class Linq implements \UT_Php_Core\Interfaces\ILinq
 
     /**
      * @param \Closure $lambda
-     * @param \UT_Php_Core\Enums\SortDirections $direction
-     * @return \UT_Php_Core\Interfaces\ILinq
+     * @param SortDirections $direction
+     * @return ILinq
      */
     public function orderBy(
         \Closure $lambda = null,
-        \UT_Php_Core\Enums\SortDirections $direction = \UT_Php_Core\Enums\SortDirections::Asc
-    ): \UT_Php_Core\Interfaces\ILinq {
+        SortDirections $direction = SortDirections::Asc
+    ): ILinq {
         $this -> query[] = [$this::ORDERBY, $lambda, $direction];
         return $this;
     }

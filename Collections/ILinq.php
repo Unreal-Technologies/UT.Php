@@ -1,6 +1,6 @@
 <?php
 
-namespace UT_Php_Core\Interfaces;
+namespace UT_Php_Core\Collections;
 
 interface ILinq
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace UT_Php_Core\Enums;
+namespace UT_Php_Core\Routing;
 
 enum RequestMethods
 {

@@ -2,7 +2,7 @@
 
 namespace UT_Php_Core\Collections;
 
-class Dictionary implements \UT_Php_Core\Interfaces\IDictionary
+class Dictionary implements IDictionary
 {
     /**
      * @var array
