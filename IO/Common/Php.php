@@ -123,7 +123,11 @@ class Php extends \UT_Php_Core\IO\File implements IPhpFile
                     $i++;
                 }
                 $this -> namespace = new Php\TokenNamespace(array_slice($this -> tokens, $idx, $i - $idx));
-            } elseif (is_array($token) && in_array($token[0], [369, 370, 371, 372]) && $this -> object === null) { //object
+            } elseif (
+                is_array($token) &&
+                in_array($token[0], [369, 370, 371, 372]) &&
+                $this -> object === null
+            ) { //object
                 $i = $idx;
                 $ir = $idx;
                 while ($this -> tokens[$i] !== '{') {
@@ -151,7 +155,13 @@ class Php extends \UT_Php_Core\IO\File implements IPhpFile
 
                 $isFunction = false;
                 $ir = $idx;
-                while (!in_array($this -> tokens[$ir], ['{', '}', ';']) && !is_array($this -> tokens[$ir]) || (is_array($this -> tokens[$ir]) && $this -> tokens[$ir][2] === $line)) {
+                while (
+                    !in_array($this -> tokens[$ir], ['{', '}', ';']) &&
+                    !is_array($this -> tokens[$ir]) ||
+                    (
+                        is_array($this -> tokens[$ir]) &&
+                        $this -> tokens[$ir][2] === $line)
+                ) {
                     if ($this -> tokens[$ir][0] === 347) {
                         $isFunction = true;
                         break;
