@@ -41,6 +41,6 @@ class TokenNamespace implements INamespace
                 }
                 return $x;
             })
-            -> toArray()) . ';';
+            -> toArray());
     }
 }
