@@ -14,10 +14,14 @@ class Php extends \UT_Php_Core\IO\File implements \UT_Php_Core\Interfaces\IPhpFi
      */
     private ?Php\TokenObject $object = null;
 
+    private array $traits = [];
+    
+    private array $methods = [];
+    
     /**
      * @var array
      */
-    private array $tokens;
+    private array $tokens = [];
 
     /**
      * @param string $path
@@ -27,6 +31,8 @@ class Php extends \UT_Php_Core\IO\File implements \UT_Php_Core\Interfaces\IPhpFi
         parent::__construct($path);
         $this -> tokens = token_get_all($this -> read());
         $this -> defaultParsing();
+        
+//        $this -> tokens = [];
     }
 
     /**
@@ -65,6 +71,8 @@ class Php extends \UT_Php_Core\IO\File implements \UT_Php_Core\Interfaces\IPhpFi
         $file = 'temp/' . str_replace($this -> extension(), 'txt', $this -> name());
         file_put_contents($file, print_r($this -> tokens, true));
 
+        $traits = [];
+        $methods = [];
         foreach ($this -> tokens as $idx => $token) {
             if (is_array($token) && $token[0] === 375 && $this -> namespace === null) { //Namespace
                 $i = $idx;
@@ -93,6 +101,194 @@ class Php extends \UT_Php_Core\IO\File implements \UT_Php_Core\Interfaces\IPhpFi
 
                 $this -> object = new Php\TokenObject($object);
             }
+            if(is_array($token) && $token[0] === 354) //use traits
+            {
+                $i = $idx;
+                while($this -> tokens[$i] !== ';')
+                {
+                    $i++;
+                }
+                
+                $traits[] = array_slice($this -> tokens, $idx, $i - $idx);
+            }
+            if(is_array($token) && $token[0] === 347)
+            {
+                $i = $idx;
+                while(!in_array($this -> tokens[$i], ['{', ';']))
+                {
+                    $i++;
+                }
+                
+                $ir = $idx;
+                while(!in_array($this -> tokens[$ir], ['{', '}', ';']))
+                {
+                    $ir--;
+                }
+                
+                $declaration = array_slice($this -> tokens, $ir + 1, $i - $ir - 1);
+                if ($declaration[0][0] === 397) {
+                    $declaration = array_slice($declaration, 1);
+                }
+                if ($declaration[count($declaration) - 1][0] === 397) {
+                    $declaration = array_slice($declaration, 0, count($declaration) - 1);
+                }
+                
+                $depth = 0;
+                $bs = $i;
+                $be = $bs;
+                while($this -> tokens[$be] !== '}' || $depth > 1)
+                {
+                    if($this -> tokens[$be] === '{')
+                    {
+                        $depth++;
+                    }
+                    if($this -> tokens[$be] === '}')
+                    {
+                        $depth--;
+                    }
+                    
+                    $be++;
+                }
+                
+                $body = array_slice($this -> tokens, $bs, $be - $bs + 1);
+                
+                $methods[] = [
+                    'Head' => $declaration,
+                    'Body' => $body
+                ];
+            }
         }
+        
+        $removeTraits = [];
+        foreach($traits as $idx => $trait)
+        {
+            foreach($methods as $method)
+            {
+                if($this -> containsSequence($trait, $method['Body']))
+                {
+                    $removeTraits[] = $idx;
+                    break;
+                }
+            }
+        }
+        foreach($removeTraits as $i)
+        {
+            unset($traits[$i]);
+        }
+        
+        $removeMethods = [];
+        foreach($methods as $i1 => $m1)
+        {
+            foreach($methods as $i2 => $m2)
+            {
+                if($i1 === $i2)
+                {
+                    continue;
+                }
+                if($this -> containsSequence($m1['Body'], $m2['Body']))
+                {
+                    $removeMethods[] = $i1;
+                }
+            }
+        }
+        foreach($removeMethods as $i)
+        {
+            unset($methods[$i]);
+        }
+
+        foreach($traits as $trait)
+        {
+            if($this -> isTraitMultiple($trait))
+            {
+                $this -> traits = array_merge($this -> traits, $this -> parseTraitMultiple($trait));
+            }
+            else
+            {
+                $this -> traits[] = new Php\TokenTrait($trait);
+            }
+        }
+        
+        foreach($methods as $method)
+        {
+            $this -> methods[] = $method;
+        }
+
+        echo 'temp!';
+        if (!file_exists('temp')) {
+            mkdir('temp', 0777);
+        }
+        $file = 'temp/' . str_replace($this -> extension(), 'php', $this -> name());
+        file_put_contents($file, print_r($this, true));
+    }
+    
+    /**
+     * @param array $tokens
+     * @return Php\TokenTrait[]
+     */
+    private function parseTraitMultiple(array $tokens): array
+    {
+        $list = (new \UT_Php_Core\Collections\Linq($tokens))
+            -> toArray(function($x) { return $x[0] === 313; });
+
+        $first = $list[0];
+        $startFirst = array_search($first, $tokens);
+        
+        $base = array_slice($tokens, 0, $startFirst);
+        $buffer = [];
+        foreach($list as $entry)
+        {
+            $data = $base;
+            $data[] = $entry;
+            
+            $buffer[] = new Php\TokenTrait($data);
+        }
+
+        return $buffer;
+    }
+    
+    /**
+     * @param array $tokens
+     * @return bool
+     */
+    private function isTraitMultiple(array $tokens): bool
+    {
+        $pos = array_search(',', $tokens);
+        if(!$pos && $pos !== 0)
+        {
+            return false;
+        }
+        return true;
+    }
+    
+    /**
+     * @param array $needle
+     * @param array $haystack
+     * @return bool
+     */
+    private function containsSequence(array $needle, array $haystack): bool
+    {
+        for($h=0; $h<count($haystack); $h++)
+        {
+            $shiftedHaystack = array_slice($haystack, $h);
+            
+            if($shiftedHaystack === $needle)
+            {
+                return true;
+            }
+            
+            $start = array_search($needle[0], $shiftedHaystack);
+            if(!$start && $start !== 0)
+            {
+                continue;
+            }
+            
+            $possibleHaystack = array_slice($shiftedHaystack, $start, count($needle));
+            if($possibleHaystack === $needle)
+            {
+                return true;
+            }
+        }
+        
+        return false;
     }
 }

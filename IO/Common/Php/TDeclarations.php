@@ -1,7 +1,7 @@
 <?php
 namespace UT_Php_Core\IO\Common\Php;
 
-trait DeclarationTraits
+trait TDeclarations
 {
     /**
      * @return bool
