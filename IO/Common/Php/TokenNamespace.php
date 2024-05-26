@@ -2,7 +2,7 @@
 
 namespace UT_Php_Core\IO\Common\Php;
 
-class TokenNamespace implements \UT_Php_Core\Interfaces\INamespace
+class TokenNamespace implements INamespace
 {
     /**
      * @var array
