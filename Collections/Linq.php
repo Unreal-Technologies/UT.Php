@@ -57,9 +57,9 @@ class Linq implements ILinq
 
     /**
      * @param \Closure $lambda
-     * @return ILinq
+     * @return Linq
      */
-    public function where(\Closure $lambda): ILinq
+    public function where(\Closure $lambda): Linq
     {
         $count = count($this -> query);
         $index = $count - 1;
@@ -76,9 +76,9 @@ class Linq implements ILinq
 
     /**
      * @param \Closure $lambda
-     * @return ILinq
+     * @return Linq
      */
-    public function select(\Closure $lambda): ILinq
+    public function select(\Closure $lambda): Linq
     {
         $this -> query[] = [$this::SELECT, $lambda];
         return $this;
@@ -88,7 +88,7 @@ class Linq implements ILinq
      * @param \Closure $lambda
      * @return Linq
      */
-    public function groupBy(\Closure $lambda): ILinq
+    public function groupBy(\Closure $lambda): Linq
     {
         $this -> query[] = [$this::GROUPBY, $lambda];
         $this -> isGrouped = true;
@@ -160,12 +160,12 @@ class Linq implements ILinq
     /**
      * @param \Closure $lambda
      * @param SortDirections $direction
-     * @return ILinq
+     * @return Linq
      */
     public function orderBy(
         \Closure $lambda = null,
         SortDirections $direction = SortDirections::Asc
-    ): ILinq {
+    ): Linq {
         $this -> query[] = [$this::ORDERBY, $lambda, $direction];
         return $this;
     }
