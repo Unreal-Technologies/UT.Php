@@ -7,17 +7,17 @@ final class Doctype implements IXmlDoctype
     /**
      * @var string
      */
-    private $start;
+    private string $start;
 
     /**
      * @var string
      */
-    private $end;
+    private string $end;
 
     /**
      * @var array
      */
-    private $attributes;
+    private array $attributes;
 
     /**
      * @param string $start

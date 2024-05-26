@@ -5,20 +5,20 @@ namespace UT_Php_Core\IO\Xml;
 final class Document extends Element implements IXmlDocument
 {
     /**
-     * @var Doctype
+     * @var IXmlDoctype
      */
-    private $doctype;
+    private IXmlDoctype $doctype;
 
     /**
      * @var boolean
      */
-    private $closed;
+    private bool $closed;
 
     /**
      * @param string $name
-     * @param \UT_Php_Core\Interfaces\IXmlDoctype $doctype
+     * @param IXmlDoctype $doctype
      */
-    public function __construct(string $name, \UT_Php_Core\Interfaces\IXmlDoctype $doctype = null)
+    public function __construct(string $name, IXmlDoctype $doctype = null)
     {
         $this -> closed = false;
         parent::__construct($name);
@@ -39,9 +39,9 @@ final class Document extends Element implements IXmlDocument
     }
 
     /**
-     * @return \UT_Php_Core\Interfaces\IXmlElement
+     * @return IXmlElement
      */
-    final public function asElement(): \UT_Php_Core\Interfaces\IXmlElement
+    final public function asElement(): IXmlElement
     {
         $element = new Element($this -> name());
         $children = $this -> search('/^' . $this -> id() . '$/', null, self::SEARCH_PARENT, false);
@@ -53,9 +53,9 @@ final class Document extends Element implements IXmlDocument
     }
 
     /**
-     * @return \UT_Php_Core\Interfaces\IXmlDoctype
+     * @return IXmlDoctype
      */
-    final public function doctype(): \UT_Php_Core\Interfaces\IXmlDoctype
+    final public function doctype(): IXmlDoctype
     {
         return $this -> doctype;
     }
