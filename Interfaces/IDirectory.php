@@ -10,4 +10,5 @@ interface IDirectory extends IDiskManager
     public function open(): bool;
     public function close(): void;
     public function parent(): \UT_Php_Core\IO\Directory;
+    public function contains(string $regex): bool;
 }

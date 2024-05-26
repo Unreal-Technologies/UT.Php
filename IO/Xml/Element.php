@@ -131,7 +131,7 @@ class Element implements \UT_Php_Core\Interfaces\IXmlElement
      */
     final public static function createFromFile(\UT_Php_Core\IO\Common\Xml $file, Doctype $doctype = null): Element
     {
-        return Element::createFromXml($file -> content(), $doctype);
+        return Element::createFromXml($file -> read(), $doctype);
     }
 
     /**

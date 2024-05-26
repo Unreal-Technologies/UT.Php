@@ -15,14 +15,84 @@ class File implements \UT_Php_Core\Interfaces\IFile
     private $exists;
 
     /**
-     * @param  string $path
-     * @return File
+     * @param string $path
+     * @return \UT_Php_Core\Interfaces\IFile
      */
-    public static function fromString(string $path): File
+    public static function fromString(string $path): \UT_Php_Core\Interfaces\IFile
     {
-        return new File($path);
+        $cls = get_called_class();
+        return new $cls($path);
     }
 
+    /**
+     * @param \UT_Php_Core\Interfaces\IFile $file
+     * @return \UT_Php_Core\Interfaces\IFile
+     */
+    public static function fromFile(\UT_Php_Core\Interfaces\IFile $file): \UT_Php_Core\Interfaces\IFile
+    {
+        return self::fromString($file -> path());
+    }
+    
+    /**
+     * @return \UT_Php_Core\Interfaces\IXmlFile|null
+     */
+    public function asXml(): ?\UT_Php_Core\Interfaces\IXmlFile
+    {
+        if($this -> extension() !== 'xml')
+        {
+            return null;
+        }
+        return new Common\Xml($this -> path);
+    }
+    
+    /**
+     * @return \UT_Php_Core\Interfaces\IPngFile|null
+     */
+    public function asPng(): ?\UT_Php_Core\Interfaces\IPngFile
+    {
+        if($this -> extension() !== 'png')
+        {
+            return null;
+        }
+        return new Common\Png($this -> path);
+    }
+    
+    /**
+     * @return \UT_Php_Core\Interfaces\IPhpFile|null
+     */
+    public function asPhp(): ?\UT_Php_Core\Interfaces\IPhpFile
+    {
+        if($this -> extension() !== 'php')
+        {
+            return null;
+        }
+        return new Common\Php($this -> path);
+    }
+    
+    /**
+     * @return \UT_Php_Core\Interfaces\IDtdFile|null
+     */
+    public function asDtd(): ?\UT_Php_Core\Interfaces\IDtdFile
+    {
+        if($this -> extension() !== 'dtd')
+        {
+            return null;
+        }
+        return new Common\Dtd($this -> path);
+    }
+    
+    /**
+     * @return \UT_Php_Core\Interfaces\IBmpFile|null
+     */
+    public function asBmp(): ?\UT_Php_Core\Interfaces\IBmpFile
+    {
+        if($this -> extension() !== 'bmp')
+        {
+            return null;
+        }
+        return new Common\Bmp($this -> path);
+    }
+    
     /**
      * @return bool
      */
@@ -92,10 +162,10 @@ class File implements \UT_Php_Core\Interfaces\IFile
         return Directory::fromString($new);
     }
 
-    /** 
+    /**
      * @return string
      */
-    public function content(): string
+    public function read(): string
     {
         return file_get_contents($this -> path);
     }
@@ -103,9 +173,9 @@ class File implements \UT_Php_Core\Interfaces\IFile
     /**
      * @param \UT_Php_Core\Interfaces\IDirectory $dir
      * @param string $name
-     * @return File|null
+     * @return \UT_Php_Core\Interfaces\IFile|null
      */
-    public static function fromDirectory(\UT_Php_Core\Interfaces\IDirectory $dir, string $name): ?File
+    public static function fromDirectory(\UT_Php_Core\Interfaces\IDirectory $dir, string $name): ?\UT_Php_Core\Interfaces\IFile
     {
         if (!$dir -> exists()) {
             return null;
@@ -153,11 +223,6 @@ class File implements \UT_Php_Core\Interfaces\IFile
             $segments = explode('/', $this -> path);
         }
         return $segments[count($segments) - 1];
-    }
-
-    public function contains(string $regex): bool
-    {
-        throw new \Exception('Not Implemented');
     }
 
     /**

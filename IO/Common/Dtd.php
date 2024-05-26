@@ -26,6 +26,6 @@ class Dtd extends \UT_Php_Core\IO\File implements \UT_Php_Core\Interfaces\IDtdFi
         if (!$this -> exists()) {
             return null;
         }
-        return 'data://text/plain;base64,' . base64_encode($this -> content());
+        return 'data://text/plain;base64,' . base64_encode($this -> read());
     }
 }
