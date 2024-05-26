@@ -47,18 +47,18 @@ class Directory
     private int $index = 0;
 
     /**
-     * @var \UT_Php_Core\Interfaces\IDirectory
+     * @var \UT_Php_Core\\IDirectory
      */
-    private \UT_Php_Core\Interfaces\IDirectory $root;
+    private \UT_Php_Core\IO\IDirectory $root;
 
     /**
-     * @param \UT_Php_Core\Interfaces\IDirectory $directory
-     * @param \UT_Php_Core\Interfaces\IDirectory $root
+     * @param \UT_Php_Core\IO\IDirectory $directory
+     * @param \UT_Php_Core\IO\IDirectory $root
      * @param int $offset
      */
     public function __construct(
-        \UT_Php_Core\Interfaces\IDirectory $directory,
-        \UT_Php_Core\Interfaces\IDirectory $root,
+        \UT_Php_Core\IO\IDirectory $directory,
+        \UT_Php_Core\IO\IDirectory $root,
         int $offset = 0
     ) {
         $this -> root = $root;

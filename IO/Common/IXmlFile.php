@@ -2,7 +2,7 @@
 
 namespace UT_Php_Core\IO\Common;
 
-interface IXmlFile extends \UT_Php_Core\Interfaces\IFile
+interface IXmlFile extends \UT_Php_Core\IO\IFile
 {
-    public function document(): ?IXmlDocument;
+    public function document(): ?\UT_Php_Core\IO\Xml\IXmlDocument;
 }

@@ -25,11 +25,11 @@ abstract class Image extends \UT_Php_Core\IO\File implements IImage
     private ?string $mime = null;
 
     /**
-     * @param \UT_Php_Core\Interfaces\IFile $file
+     * @param \UT_Php_Core\IO\IFile $file
      * @return Image|null
      * @throws \Exception
      */
-    public static function getImage(\UT_Php_Core\Interfaces\IFile $file): ?\UT_Php_Core\Interfaces\IImage
+    public static function getImage(\UT_Php_Core\IO\IFile $file): ?IImage
     {
         $ext = strtolower($file -> extension());
         switch ($ext) {
@@ -47,15 +47,15 @@ abstract class Image extends \UT_Php_Core\IO\File implements IImage
     abstract public function imageSave(\GdImage $image): bool;
 
     /**
-     * @param \UT_Php_Core\Interfaces\IRectangle $rectangle
-     * @param \UT_Php_Core\Interfaces\IColor $fillColor
-     * @param \UT_Php_Core\Interfaces\IColor $borderColor
+     * @param IRectangle $rectangle
+     * @param IColor $fillColor
+     * @param IColor $borderColor
      * @return void
      */
     public function gdDrawRectangle(
-        \UT_Php_Core\Interfaces\IRectangle $rectangle,
-        \UT_Php_Core\Interfaces\IColor $fillColor,
-        \UT_Php_Core\Interfaces\IColor $borderColor = null
+        IRectangle $rectangle,
+        IColor $fillColor,
+        IColor $borderColor = null
     ): void {
         $w = $rectangle -> size() -> x();
         $h = $rectangle -> size() -> y();
@@ -95,15 +95,15 @@ abstract class Image extends \UT_Php_Core\IO\File implements IImage
     }
 
     /**
-     * @param \UT_Php_Core\Interfaces\IRectangle $rectangle
-     * @param \UT_Php_Core\Interfaces\IColor $fillColor
-     * @param \UT_Php_Core\Interfaces\IColor $borderColor
+     * @param IRectangle $rectangle
+     * @param IColor $fillColor
+     * @param IColor $borderColor
      * @return void
      */
     public function gdDrawEllipse(
-        \UT_Php_Core\Interfaces\IRectangle $rectangle,
-        \UT_Php_Core\Interfaces\IColor $fillColor,
-        \UT_Php_Core\Interfaces\IColor $borderColor = null
+        IRectangle $rectangle,
+        IColor $fillColor,
+        IColor $borderColor = null
     ): void {
         $w = $rectangle -> size() -> x();
         $h = $rectangle -> size() -> y();
@@ -140,9 +140,9 @@ abstract class Image extends \UT_Php_Core\IO\File implements IImage
     }
 
     /**
-     * @return \UT_Php_Core\Interfaces\ISize2D|null
+     * @return ISize2D|null
      */
-    public function size(): ?\UT_Php_Core\Interfaces\ISize2D
+    public function size(): ?ISize2D
     {
         return $this -> size;
     }
@@ -178,10 +178,10 @@ abstract class Image extends \UT_Php_Core\IO\File implements IImage
     }
 
     /**
-     * @param  \UT_Php_Core\IO\File $file
+     * @param  \UT_Php_Core\IO\IFile $file
      * @return bool
      */
-    public function gdSaveAs(\UT_Php_Core\IO\File $file): bool
+    public function gdSaveAs(\UT_Php_Core\IO\IFile $file): bool
     {
         if ($this -> image === null) {
             return false;

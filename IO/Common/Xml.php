@@ -19,9 +19,9 @@ class Xml extends \UT_Php_Core\IO\File implements IXmlFile
     }
 
     /**
-     * @return \UT_Php_Core\Interfaces\IXmlDocument|null
+     * @return \UT_Php_Core\IO\Xml\Document
      */
-    public function document(): ?\UT_Php_Core\Interfaces\IXmlDocument
+    public function document(): ?\UT_Php_Core\IO\Xml\Document
     {
         if (!$this -> exists()) {
             return null;

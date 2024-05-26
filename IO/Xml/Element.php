@@ -4,40 +4,40 @@ namespace UT_Php_Core\IO\Xml;
 
 class Element implements IXmlElement
 {
-    /**
-     * @var array
+    /** 
+     * @var array|null
      */
-    private array $attributes = null;
+    private ?array $attributes = null;
 
     /**
-     * @var array
+     * @var array|null
      */
-    private array  $children = null;
+    private ?array $children = null;
 
     /**
-     * @var string
+     * @var string|null
      */
-    private string $text = null;
+    private ?string $text = null;
 
     /**
-     * @var string
+     * @var string|null
      */
-    private string $name = null;
+    private ?string $name = null;
 
     /**
-     * @var string
+     * @var string|null
      */
-    private string $id = null;
+    private ?string $id = null;
 
     /**
-     * @var string
+     * @var string|null
      */
-    private string $parent = null;
+    private ?string $parent = null;
 
     /**
-     * @var int
+     * @var int|null
      */
-    private int $position = null;
+    private ?int $position = null;
 
     /**
      * @param string $name
@@ -70,10 +70,10 @@ class Element implements IXmlElement
     }
 
     /**
-     * @param \UT_Php_Core\Interfaces\IXmlElement $element
+     * @param IXmlElement $element
      * @return bool
      */
-    public function remove(\UT_Php_Core\Interfaces\IXmlElement $element): bool
+    public function remove(IXmlElement $element): bool
     {
         if ($element -> parent() !== $this -> id) {
             return false;
@@ -264,7 +264,7 @@ class Element implements IXmlElement
      * @param  string $name
      * @return Element|null
      */
-    final public function createChild(string $name): ?\UT_Php_Core\Interfaces\IXmlElement
+    final public function createChild(string $name): ?Element
     {
         if ($this -> text === null) {
             $element = new Element($name);
@@ -275,10 +275,10 @@ class Element implements IXmlElement
     }
 
     /**
-     * @param \UT_Php_Core\Interfaces\IXmlElement $element
+     * @param IXmlElement $element
      * @return bool
      */
-    final public function addChild(\UT_Php_Core\Interfaces\IXmlElement $element): bool
+    final public function addChild(IXmlElement $element): bool
     {
         if ($this -> text === null) {
             $element -> parent($this -> id);
@@ -290,12 +290,12 @@ class Element implements IXmlElement
     }
 
     /**
-     * @param \UT_Php_Core\Interfaces\IXmlDoctype $doctype
-     * @return \UT_Php_Core\Interfaces\IXmlDocument
+     * @param IXmlDoctype $doctype
+     * @return Document
      */
     final public function asDocument(
-        \UT_Php_Core\Interfaces\IXmlDoctype $doctype = null
-    ): \UT_Php_Core\Interfaces\IXmlDocument {
+        IXmlDoctype $doctype = null
+    ): Document {
         if ($doctype === null) {
             $doctype = Doctype::xml();
         }

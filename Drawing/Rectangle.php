@@ -20,13 +20,13 @@ class Rectangle implements IRectangle
     private int $rotation;
 
     /**
-     * @param \UT_Php_Core\Interfaces\IPoint2D $size
-     * @param \UT_Php_Core\Interfaces\ISize2D $location
+     * @param IPoint2D $size
+     * @param ISize2D $location
      * @param int $rotation
      */
     public function __construct(
-        \UT_Php_Core\Interfaces\IPoint2D $size,
-        \UT_Php_Core\Interfaces\ISize2D $location,
+        IPoint2D $size,
+        ISize2D $location,
         int $rotation = 0
     ) {
         $this -> size = $size;
@@ -35,17 +35,17 @@ class Rectangle implements IRectangle
     }
 
     /**
-     * @return \UT_Php_Core\Interfaces\IPoint2D
+     * @return IPoint2D
      */
-    public function location(): \UT_Php_Core\Interfaces\IPoint2D
+    public function location(): IPoint2D
     {
         return $this -> location;
     }
 
     /**
-     * @return \UT_Php_Core\Interfaces\ISize2D
+     * @return ISize2D
      */
-    public function size(): \UT_Php_Core\Interfaces\ISize2D
+    public function size(): ISize2D
     {
         return $this -> size;
     }

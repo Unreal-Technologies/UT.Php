@@ -12,17 +12,17 @@ class Router implements IRouter
     /**
      * @var array
      */
-    private $routes = [];
+    private array $routes = [];
 
     /**
-     * @var \UT_Php_Core\Interfaces\IDirectory
+     * @var \UT_Php_Core\IO\IDirectory
      */
-    private $root;
+    private \UT_Php_Core\IO\IDirectory $root;
 
     /**
      * @var bool
      */
-    private $caseInsensitive = false;
+    private bool $caseInsensitive = false;
 
     /**
      * @param \UT_Php_Core\IO\IDirectory $root
