@@ -340,7 +340,7 @@ class Linq implements ILinq
 
             if ($type === $this::ORDERBY) {
                 $direction = $query[2];
-                if ($direction == \UT_Php_Core\Enums\SortDirections::Asc) {
+                if ($direction == SortDirections::Asc) {
                     ksort($buffer);
                 } else {
                     krsort($buffer);
