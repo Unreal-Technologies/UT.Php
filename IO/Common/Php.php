@@ -105,13 +105,6 @@ class Php extends \UT_Php_Core\IO\File implements IPhpFile
      */
     private function defaultParsing(): void
     {
-        echo 'temp!';
-        if (!file_exists('temp')) {
-            mkdir('temp', 0777);
-        }
-        $file = 'temp/' . str_replace($this -> extension(), 'txt', $this -> name());
-        file_put_contents($file, print_r($this -> tokens, true));
-
         $traits = [];
         $methods = [];
         $cases = [];
@@ -313,13 +306,6 @@ class Php extends \UT_Php_Core\IO\File implements IPhpFile
                 $this -> members[] = $m;
             }
         }
-
-        echo 'temp!';
-        if (!file_exists('temp')) {
-            mkdir('temp', 0777);
-        }
-        $file = 'temp/' . str_replace($this -> extension(), 'php', $this -> name());
-        file_put_contents($file, print_r($this, true));
     }
 
     /**
