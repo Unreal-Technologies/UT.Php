@@ -2,12 +2,12 @@
 
 namespace UT_Php_Core\Drawing;
 
-class Point3D extends Point2D implements \UT_Php_Core\Interfaces\IPoint3D
+class Point3D extends Point2D implements IPoint3D
 {
     /**
      * @var float
      */
-    private $z;
+    private float $z;
 
     /**
      * @param float $x

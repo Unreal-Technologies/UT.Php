@@ -2,7 +2,7 @@
 
 namespace UT_Php_Core\IO\Xml;
 
-final class Document extends Element implements \UT_Php_Core\Interfaces\IXmlDocument
+final class Document extends Element implements IXmlDocument
 {
     /**
      * @var Doctype

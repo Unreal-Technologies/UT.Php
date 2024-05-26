@@ -2,27 +2,27 @@
 
 namespace UT_Php_Core\Drawing;
 
-class Color implements \UT_Php_Core\Interfaces\IColor
+class Color implements IColor
 {
     /**
      * @var int
      */
-    private $r;
+    private int $r;
 
     /**
      * @var int
      */
-    private $g;
+    private int $g;
 
     /**
      * @var int
      */
-    private $b;
+    private int $b;
 
     /**
      * @var int
      */
-    private $a;
+    private int $a;
 
     /**
      * @param  int $r

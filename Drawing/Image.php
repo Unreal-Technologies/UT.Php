@@ -2,27 +2,27 @@
 
 namespace UT_Php_Core\Drawing;
 
-abstract class Image extends \UT_Php_Core\IO\File implements \UT_Php_Core\Interfaces\IImage
+abstract class Image extends \UT_Php_Core\IO\File implements IImage
 {
     /**
      * @var \GdImage|null
      */
-    private $image = null;
+    private mixed $image = null;
 
     /**
-     * @var \UT_Php_Core\Interfaces\ISize2D|null
+     * @var ISize2D|null
      */
-    private $size = null;
+    private ?ISize2D $size = null;
 
     /**
      * @var int|null
      */
-    private $bits = null;
+    private ?int $bits = null;
 
     /**
      * @var string|null
      */
-    private $mime = null;
+    private ?string $mime = null;
 
     /**
      * @param \UT_Php_Core\Interfaces\IFile $file

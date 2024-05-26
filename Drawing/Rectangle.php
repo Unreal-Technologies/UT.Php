@@ -2,22 +2,22 @@
 
 namespace UT_Php_Core\Drawing;
 
-class Rectangle implements \UT_Php_Core\Interfaces\IRectangle
+class Rectangle implements IRectangle
 {
     /**
-     * @var \UT_Php_Core\Interfaces\ISize2D
+     * @var ISize2D
      */
-    private $size;
+    private ISize2D $size;
 
     /**
-     * @var \UT_Php_Core\Interfaces\IPoint2D
+     * @var IPoint2D
      */
-    private $location;
+    private IPoint2D $location;
 
     /**
      * @var int
      */
-    private $rotation;
+    private int $rotation;
 
     /**
      * @param \UT_Php_Core\Interfaces\IPoint2D $size

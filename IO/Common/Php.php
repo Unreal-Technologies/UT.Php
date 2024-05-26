@@ -2,7 +2,7 @@
 
 namespace UT_Php_Core\IO\Common;
 
-class Php extends \UT_Php_Core\IO\File implements \UT_Php_Core\Interfaces\IPhpFile
+class Php extends \UT_Php_Core\IO\File implements IPhpFile
 {
     /**
      * @var Php\TokenNamespace|null

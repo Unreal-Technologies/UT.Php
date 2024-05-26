@@ -2,17 +2,17 @@
 
 namespace UT_Php_Core\Drawing;
 
-class Size2D implements \UT_Php_Core\Interfaces\ISize2D
+class Size2D implements ISize2D
 {
     /**
      * @var float
      */
-    private $w;
+    private float $w;
 
     /**
      * @var float
      */
-    private $h;
+    private float $h;
 
     /**
      * @param float $w

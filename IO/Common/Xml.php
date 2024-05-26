@@ -2,7 +2,7 @@
 
 namespace UT_Php_Core\IO\Common;
 
-class Xml extends \UT_Php_Core\IO\File implements \UT_Php_Core\Interfaces\IXmlFile
+class Xml extends \UT_Php_Core\IO\File implements IXmlFile
 {
     /**
      * @param string $path

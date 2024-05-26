@@ -2,7 +2,7 @@
 
 namespace UT_Php_Core\IO\Xml;
 
-class Element implements \UT_Php_Core\Interfaces\IXmlElement
+class Element implements IXmlElement
 {
     /**
      * @var array
