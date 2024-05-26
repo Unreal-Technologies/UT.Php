@@ -8,4 +8,6 @@ interface IPhpFile extends IFile
     public function object(): ?\UT_Php_Core\IO\Common\Php\TokenObject;
     public function traits(): array;
     public function cases(): array;
+    public function members(): array;
+    public function methods(): array;
 }

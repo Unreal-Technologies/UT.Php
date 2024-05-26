@@ -4,10 +4,12 @@ namespace UT_Php_Core\IO\Common\Php;
 
 class TokenMethod implements IMethod
 {
+    use TAccess;
+    
     /**
      * @var array
      */
-    private array $head;
+    private array $tokens;
 
     /**
      * @var array
@@ -20,7 +22,7 @@ class TokenMethod implements IMethod
      */
     public function __construct(array $head, ?array $body = null)
     {
-        $this -> head = $head;
+        $this -> tokens = $head;
         $this -> body = $body;
     }
 
@@ -29,7 +31,7 @@ class TokenMethod implements IMethod
      */
     public function declaration(): string
     {
-        return str_replace([',', '  '], [', ', ' '], implode('', (new \UT_Php_Core\Collections\Linq($this -> head))
+        return str_replace([',', '  '], [', ', ' '], implode('', (new \UT_Php_Core\Collections\Linq($this -> tokens))
             -> select(function ($x) {
                 if (is_array($x)) {
                     if (stristr($x[1], "\n")) {
@@ -47,7 +49,7 @@ class TokenMethod implements IMethod
      */
     public function name(): string
     {
-        return (new \UT_Php_Core\Collections\Linq($this -> head))
+        return (new \UT_Php_Core\Collections\Linq($this -> tokens))
             -> firstOrDefault(function ($x) {
                 return is_array($x) && $x[0] === 313;
             })[1];

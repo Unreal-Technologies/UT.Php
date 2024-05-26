@@ -22,6 +22,11 @@ class Php extends \UT_Php_Core\IO\File implements \UT_Php_Core\Interfaces\IPhpFi
     /**
      * @var array
      */
+    private array $members = [];
+    
+    /**
+     * @var array
+     */
     private array $methods = [];
 
     /**
@@ -55,6 +60,14 @@ class Php extends \UT_Php_Core\IO\File implements \UT_Php_Core\Interfaces\IPhpFi
         return $this -> namespace;
     }
 
+    /**
+     * @return Php\TokenMember[]
+     */
+    public function members(): array
+    {
+        return $this -> members;
+    }
+    
     /**
      * @return Php\TokenMethod[]
      */
@@ -102,6 +115,7 @@ class Php extends \UT_Php_Core\IO\File implements \UT_Php_Core\Interfaces\IPhpFi
         $traits = [];
         $methods = [];
         $cases = [];
+        $members = [];
         foreach ($this -> tokens as $idx => $token) {
             if (is_array($token) && $token[0] === 375 && $this -> namespace === null) { //Namespace
                 $i = $idx;
@@ -128,7 +142,40 @@ class Php extends \UT_Php_Core\IO\File implements \UT_Php_Core\Interfaces\IPhpFi
                 }
 
                 $this -> object = new Php\TokenObject($object);
-            } elseif (is_array($token) && $token[0] === 341) { //cases
+            }
+            else if(is_array($token) && $token[0] === 317) //members
+            {
+                $line = $token[2];
+                $i = $idx;
+                while ($this -> tokens[$i] !== ';') {
+                    $i++;
+                }
+                
+                $isFunction = false;
+                $ir = $idx;
+                while (!in_array($this -> tokens[$ir], ['{', '}', ';']) && !is_array($this -> tokens[$ir]) || (is_array($this -> tokens[$ir]) && $this -> tokens[$ir][2] === $line)) {
+                    if($this -> tokens[$ir][0] === 347)
+                    {
+                        $isFunction = true;
+                        break;
+                    }
+                    $ir--;
+                }
+                
+                if(!$isFunction)
+                {
+                    $member = array_slice($this -> tokens, $ir, $i - $ir);
+                    if ($member[0][0] === 397) {
+                        $member = array_slice($member, 1);
+                    }
+                    if ($member[count($member) - 1][0] === 397) {
+                        $member = array_slice($member, 0, count($member) - 1);
+                    }
+                    
+                    $members[] = $member;
+                }
+            }
+            elseif (is_array($token) && $token[0] === 341) { //cases
                 $i = $idx;
                 while ($this -> tokens[$i] !== ';') {
                     $i++;
@@ -240,7 +287,30 @@ class Php extends \UT_Php_Core\IO\File implements \UT_Php_Core\Interfaces\IPhpFi
         foreach ($cases as $case) {
             $this -> cases[] = new Php\TokenCase($case);
         }
-
+        
+        $removeMembers = [];
+        foreach ($members as $idx => $member) {
+            foreach ($methods as $method) {
+                if ($this -> containsSequence($member, $method['Body'])) {
+                    $removeMembers[] = $idx;
+                    break;
+                }
+            }
+        }
+        
+        foreach ($removeMembers as $idx) {
+            unset($members[$idx]);
+        }
+        
+        foreach($members as $member)
+        {
+            $m = new Php\TokenMember($member);
+            if($m -> isPublic() || $m -> isProtected() || $m -> isPrivate())
+            {
+                $this -> members[] = $m;
+            }
+        }
+        
         echo 'temp!';
         if (!file_exists('temp')) {
             mkdir('temp', 0777);
