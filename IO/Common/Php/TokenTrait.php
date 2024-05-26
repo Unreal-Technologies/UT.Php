@@ -14,7 +14,7 @@ class TokenTrait implements ITrait
     /**
      * @param array $tokens
      */
-    public function __construct(array $tokens)
+    public function __construct(array $tokens, ?array $args = null)
     {
         $this -> tokens = $tokens;
     }

@@ -56,6 +56,14 @@ class Php extends \UT_Php_Core\IO\File implements \UT_Php_Core\Interfaces\IPhpFi
     }
 
     /**
+     * @return Php\TokenMethod[]
+     */
+    public function methods(): array
+    {
+        return $this -> methods;
+    }
+
+    /**
      * @return Php\TokenObject|null
      */
     public function object(): ?Php\TokenObject
@@ -171,7 +179,7 @@ class Php extends \UT_Php_Core\IO\File implements \UT_Php_Core\Interfaces\IPhpFi
 
                 $methods[] = [
                     'Head' => $declaration,
-                    'Body' => $body
+                    'Body' => $this -> object() -> isInterface() ? [] : $body
                 ];
             }
         }
@@ -213,7 +221,7 @@ class Php extends \UT_Php_Core\IO\File implements \UT_Php_Core\Interfaces\IPhpFi
         }
 
         foreach ($methods as $method) {
-            $this -> methods[] = $method;
+            $this -> methods[] = new Php\TokenMethod($method['Head'], $method['Body']);
         }
 
         $removeCases = [];

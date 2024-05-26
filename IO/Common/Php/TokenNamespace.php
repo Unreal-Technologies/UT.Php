@@ -14,7 +14,7 @@ class TokenNamespace implements INamespace
     /**
      * @param array $tokens
      */
-    public function __construct(array $tokens)
+    public function __construct(array $tokens, ?array $args = null)
     {
         $this -> tokens = $tokens;
     }

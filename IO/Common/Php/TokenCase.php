@@ -14,7 +14,7 @@ class TokenCase implements ICase
     /**
      * @param array $tokens
      */
-    public function __construct(array $tokens)
+    public function __construct(array $tokens, ?array $args = null)
     {
         $this -> tokens = $tokens;
     }
