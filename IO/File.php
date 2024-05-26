@@ -92,6 +92,9 @@ class File implements \UT_Php_Core\Interfaces\IFile
         return Directory::fromString($new);
     }
 
+    /** 
+     * @return string
+     */
     public function content(): string
     {
         return file_get_contents($this -> path);
