@@ -7,37 +7,37 @@ class Element implements IXmlElement
     /**
      * @var array
      */
-    private $attributes = null;
+    private array $attributes = null;
 
     /**
      * @var array
      */
-    private $children = null;
+    private array  $children = null;
 
     /**
      * @var string
      */
-    private $text = null;
+    private string $text = null;
 
     /**
      * @var string
      */
-    private $name = null;
+    private string $name = null;
 
     /**
      * @var string
      */
-    private $id = null;
+    private string $id = null;
 
     /**
      * @var string
      */
-    private $parent = null;
+    private string $parent = null;
 
     /**
      * @var int
      */
-    private $position = null;
+    private int $position = null;
 
     /**
      * @param string $name

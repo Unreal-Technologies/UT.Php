@@ -2,7 +2,7 @@
 
 namespace UT_Php_Core\IO;
 
-class File implements \UT_Php_Core\Interfaces\IFile
+class File implements IFile
 {
     /**
      * @var string
@@ -16,27 +16,27 @@ class File implements \UT_Php_Core\Interfaces\IFile
 
     /**
      * @param string $path
-     * @return \UT_Php_Core\Interfaces\IFile
+     * @return IFile
      */
-    public static function fromString(string $path): \UT_Php_Core\Interfaces\IFile
+    public static function fromString(string $path): IFile
     {
         $cls = get_called_class();
         return new $cls($path);
     }
 
     /**
-     * @param \UT_Php_Core\Interfaces\IFile $file
-     * @return \UT_Php_Core\Interfaces\IFile
+     * @param IFile $file
+     * @return IFile
      */
-    public static function fromFile(\UT_Php_Core\Interfaces\IFile $file): \UT_Php_Core\Interfaces\IFile
+    public static function fromFile(IFile $file): IFile
     {
         return self::fromString($file -> path());
     }
 
     /**
-     * @return \UT_Php_Core\Interfaces\IXmlFile|null
+     * @return Common\IXmlFile|null
      */
-    public function asXml(): ?\UT_Php_Core\Interfaces\IXmlFile
+    public function asXml(): ?Common\IXmlFile
     {
         if ($this -> extension() !== 'xml') {
             return null;
@@ -45,9 +45,9 @@ class File implements \UT_Php_Core\Interfaces\IFile
     }
 
     /**
-     * @return \UT_Php_Core\Interfaces\IPngFile|null
+     * @return Common\IPngFile|null
      */
-    public function asPng(): ?\UT_Php_Core\Interfaces\IPngFile
+    public function asPng(): ?Common\IPngFile
     {
         if ($this -> extension() !== 'png') {
             return null;
@@ -56,9 +56,9 @@ class File implements \UT_Php_Core\Interfaces\IFile
     }
 
     /**
-     * @return \UT_Php_Core\Interfaces\IPhpFile|null
+     * @return Common\IPhpFile|null
      */
-    public function asPhp(): ?\UT_Php_Core\Interfaces\IPhpFile
+    public function asPhp(): ?Common\IPhpFile
     {
         if ($this -> extension() !== 'php') {
             return null;
@@ -67,9 +67,9 @@ class File implements \UT_Php_Core\Interfaces\IFile
     }
 
     /**
-     * @return \UT_Php_Core\Interfaces\IDtdFile|null
+     * @return Common\IDtdFile|null
      */
-    public function asDtd(): ?\UT_Php_Core\Interfaces\IDtdFile
+    public function asDtd(): ?Common\IDtdFile
     {
         if ($this -> extension() !== 'dtd') {
             return null;
@@ -78,9 +78,9 @@ class File implements \UT_Php_Core\Interfaces\IFile
     }
 
     /**
-     * @return \UT_Php_Core\Interfaces\IBmpFile|null
+     * @return Common\IBmpFile|null
      */
-    public function asBmp(): ?\UT_Php_Core\Interfaces\IBmpFile
+    public function asBmp(): ?Common\IBmpFile
     {
         if ($this -> extension() !== 'bmp') {
             return null;
@@ -100,11 +100,11 @@ class File implements \UT_Php_Core\Interfaces\IFile
     }
 
     /**
-     * @param \UT_Php_Core\Interfaces\IDirectory $dir
+     * @param IDirectory $dir
      * @return string|null
      * @throws \Exception
      */
-    public function relativeTo(\UT_Php_Core\Interfaces\IDirectory $dir): ?string
+    public function relativeTo(IDirectory $dir): ?string
     {
         if (stristr($this -> path, $dir -> path())) {
             return substr($this -> path, strlen($dir -> path()) + 1);
@@ -114,11 +114,11 @@ class File implements \UT_Php_Core\Interfaces\IFile
     }
 
     /**
-     * @param \UT_Php_Core\Interfaces\IDirectory $dir
+     * @param Directory $dir
      * @param string $name
      * @return bool
      */
-    public function copyTo(\UT_Php_Core\Interfaces\IDirectory $dir, string $name = null): bool
+    public function copyTo(IDirectory $dir, string $name = null): bool
     {
         if (!$dir -> exists()) {
             return false;
@@ -141,9 +141,9 @@ class File implements \UT_Php_Core\Interfaces\IFile
     }
 
     /**
-     * @return \UT_Php_Core\Interfaces\IDirectory|null
+     * @return IDirectory|null
      */
-    public function parent(): ?\UT_Php_Core\Interfaces\IDirectory
+    public function parent(): ?IDirectory
     {
         if (!$this -> exists()) {
             return null;
@@ -166,11 +166,11 @@ class File implements \UT_Php_Core\Interfaces\IFile
     }
 
     /**
-     * @param \UT_Php_Core\Interfaces\IDirectory $dir
+     * @param IDirectory $dir
      * @param string $name
-     * @return \UT_Php_Core\Interfaces\IFile|null
+     * @return IFile|null
      */
-    public static function fromDirectory(\UT_Php_Core\Interfaces\IDirectory $dir, string $name): ?\UT_Php_Core\Interfaces\IFile
+    public static function fromDirectory(IDirectory $dir, string $name): ?IFile
     {
         if (!$dir -> exists()) {
             return null;
