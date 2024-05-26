@@ -4,7 +4,7 @@ namespace UT_Php_Core\IO\Xml;
 
 class Element implements IXmlElement
 {
-    /** 
+    /**
      * @var array|null
      */
     private ?array $attributes = null;

@@ -139,7 +139,7 @@ final class Document extends Element implements IXmlDocument
      * @return bool
      */
     final public function validateDtd(
-            \UT_Php_Core\IO\Common\IDtdFile $dtdSchemaFile,
+        \UT_Php_Core\IO\Common\IDtdFile $dtdSchemaFile,
         string $root,
         bool $output = true,
         string $encoding = 'utf-8'

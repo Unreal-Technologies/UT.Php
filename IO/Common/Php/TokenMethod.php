@@ -5,7 +5,7 @@ namespace UT_Php_Core\IO\Common\Php;
 class TokenMethod implements IMethod
 {
     use TAccess;
-    
+
     /**
      * @var array
      */

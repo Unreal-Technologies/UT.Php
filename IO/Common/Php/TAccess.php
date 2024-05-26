@@ -1,4 +1,5 @@
 <?php
+
 namespace UT_Php_Core\IO\Common\Php;
 
 trait TAccess
@@ -13,7 +14,7 @@ trait TAccess
                 return is_array($x) && $x[0] === 362;
             }) !== null;
     }
-    
+
     /**
      * @return bool
      */
@@ -24,7 +25,7 @@ trait TAccess
                 return is_array($x) && $x[0] === 360;
             }) !== null;
     }
-    
+
     /**
      * @return bool
      */

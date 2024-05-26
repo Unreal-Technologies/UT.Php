@@ -17,7 +17,7 @@ interface IXmlDocument extends IXmlElement
     public function validateXsdStream(string $stream, bool $output = true): bool;
     public function validateXsd(\UT_Php_Core\IO\IFile $xsdSchemaFile, bool $output = true): bool;
     public function validateDtd(
-            \UT_Php_Core\IO\Common\IDtdFile $dtdSchemaFile,
+        \UT_Php_Core\IO\Common\IDtdFile $dtdSchemaFile,
         string $root,
         bool $output = true,
         string $encoding = 'utf-8'

@@ -1,24 +1,27 @@
 <?php
+
 namespace UT_Php_Core\IO\Common\Php;
 
 class TokenMember implements IMember
 {
-    use TDeclarations, TPhpParser, TAccess;
-    
+    use TDeclarations;
+    use TPhpParser;
+    use TAccess;
+
     /**
      * @var array
      */
     private array $tokens;
-    
+
     /**
      * @param array $tokens
      * @param array|null $args
      */
-    public function __construct(array $tokens, ?array $args = null) 
+    public function __construct(array $tokens, ?array $args = null)
     {
         $this -> tokens = $tokens;
     }
-    
+
     /**
      * @return string
      */
