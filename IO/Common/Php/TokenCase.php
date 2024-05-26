@@ -2,7 +2,7 @@
 
 namespace UT_Php_Core\IO\Common\Php;
 
-class TokenTrait implements ITrait
+class TokenCase implements ICase
 {
     use TPhpParser;
 

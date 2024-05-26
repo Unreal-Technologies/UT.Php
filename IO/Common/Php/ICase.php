@@ -2,6 +2,6 @@
 
 namespace UT_Php_Core\IO\Common\Php;
 
-interface ITrait extends IPhpParser
+interface ICase extends IPhpParser
 {
 }

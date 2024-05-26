@@ -1,4 +1,5 @@
 <?php
+
 namespace UT_Php_Core\IO\Common\Php;
 
 trait TDeclarations
@@ -13,7 +14,7 @@ trait TDeclarations
                 return is_array($x) && $x[0] === 358;
             }) !== null;
     }
-    
+
     /**
      * @return bool
      */

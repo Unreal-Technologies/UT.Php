@@ -5,7 +5,7 @@ namespace UT_Php_Core\IO\Common\Php;
 class TokenNamespace implements INamespace
 {
     use TPhpParser;
-    
+
     /**
      * @var array
      */

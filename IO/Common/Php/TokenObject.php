@@ -4,8 +4,9 @@ namespace UT_Php_Core\IO\Common\Php;
 
 class TokenObject implements IObject
 {
-    use TDeclarations, TPhpParser;
-    
+    use TDeclarations;
+    use TPhpParser;
+
     /**
      * @var array
      */
@@ -29,7 +30,7 @@ class TokenObject implements IObject
                 return is_array($x) && $x[0] === 369;
             }) !== null;
     }
-    
+
     /**
      * @return bool
      */
@@ -40,7 +41,7 @@ class TokenObject implements IObject
                 return is_array($x) && $x[0] === 370;
             }) !== null;
     }
-    
+
     /**
      * @return bool
      */
@@ -51,7 +52,7 @@ class TokenObject implements IObject
                 return is_array($x) && $x[0] === 371;
             }) !== null;
     }
-    
+
     /**
      * @return bool
      */
