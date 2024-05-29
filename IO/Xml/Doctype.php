@@ -2,22 +2,22 @@
 
 namespace UT_Php_Core\IO\Xml;
 
-final class Doctype implements \UT_Php_Core\Interfaces\IXmlDoctype
+final class Doctype implements IXmlDoctype
 {
     /**
      * @var string
      */
-    private $start;
+    private string $start;
 
     /**
      * @var string
      */
-    private $end;
+    private string $end;
 
     /**
      * @var array
      */
-    private $attributes;
+    private array $attributes;
 
     /**
      * @param string $start

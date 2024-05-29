@@ -2,7 +2,7 @@
 
 namespace UT_Php_Core\Collections;
 
-class Linq implements \UT_Php_Core\Interfaces\ILinq
+class Linq implements ILinq
 {
     private const WHERE = 1;
     private const SELECT = 2;
@@ -47,9 +47,9 @@ class Linq implements \UT_Php_Core\Interfaces\ILinq
 
     /**
      * @param int $count
-     * @return \UT_Php_Core\Interfaces\ILinq
+     * @return ILinq
      */
-    public function skip(int $count): \UT_Php_Core\Interfaces\ILinq
+    public function skip(int $count): ILinq
     {
         $this -> query[] = [$this::SKIP, $count];
         return $this;
@@ -57,9 +57,9 @@ class Linq implements \UT_Php_Core\Interfaces\ILinq
 
     /**
      * @param \Closure $lambda
-     * @return \UT_Php_Core\Interfaces\ILinq
+     * @return Linq
      */
-    public function where(\Closure $lambda): \UT_Php_Core\Interfaces\ILinq
+    public function where(\Closure $lambda): Linq
     {
         $count = count($this -> query);
         $index = $count - 1;
@@ -76,9 +76,9 @@ class Linq implements \UT_Php_Core\Interfaces\ILinq
 
     /**
      * @param \Closure $lambda
-     * @return \UT_Php_Core\Interfaces\ILinq
+     * @return Linq
      */
-    public function select(\Closure $lambda): \UT_Php_Core\Interfaces\ILinq
+    public function select(\Closure $lambda): Linq
     {
         $this -> query[] = [$this::SELECT, $lambda];
         return $this;
@@ -86,9 +86,9 @@ class Linq implements \UT_Php_Core\Interfaces\ILinq
 
     /**
      * @param \Closure $lambda
-     * @return \UT_Php_Core\Interfaces\ILinq
+     * @return Linq
      */
-    public function groupBy(\Closure $lambda): \UT_Php_Core\Interfaces\ILinq
+    public function groupBy(\Closure $lambda): Linq
     {
         $this -> query[] = [$this::GROUPBY, $lambda];
         $this -> isGrouped = true;
@@ -138,9 +138,9 @@ class Linq implements \UT_Php_Core\Interfaces\ILinq
 
     /**
      * @param \Closure $lambda
-     * @return \UT_Php_Core\Interfaces\ILinq
+     * @return ILinq
      */
-    public function sum(\Closure $lambda = null): \UT_Php_Core\Interfaces\ILinq
+    public function sum(\Closure $lambda = null): ILinq
     {
         $this -> query[] = [$this::SUM, $lambda];
         return $this;
@@ -148,9 +148,9 @@ class Linq implements \UT_Php_Core\Interfaces\ILinq
 
     /**
      * @param \Closure $lambda
-     * @return \UT_Php_Core\Interfaces\ILinq
+     * @return ILinq
      */
-    public function avg(\Closure $lambda = null): \UT_Php_Core\Interfaces\ILinq
+    public function avg(\Closure $lambda = null): ILinq
     {
         $self = $this -> sum($lambda);
         $self -> query[] = [$this::AVG, null];
@@ -159,25 +159,25 @@ class Linq implements \UT_Php_Core\Interfaces\ILinq
 
     /**
      * @param \Closure $lambda
-     * @param \UT_Php_Core\Enums\SortDirections $direction
-     * @return \UT_Php_Core\Interfaces\ILinq
+     * @param SortDirections $direction
+     * @return Linq
      */
     public function orderBy(
         \Closure $lambda = null,
-        \UT_Php_Core\Enums\SortDirections $direction = \UT_Php_Core\Enums\SortDirections::Asc
-    ): \UT_Php_Core\Interfaces\ILinq {
+        SortDirections $direction = SortDirections::Asc
+    ): Linq {
         $this -> query[] = [$this::ORDERBY, $lambda, $direction];
         return $this;
     }
 
     /**
-     * @param  int      $index
+     * @param  int|string      $index
      * @param  array    $buffer
      * @param  \Closure $lambda
      * @param  mixed    $item
      * @return void
      */
-    private function executeSwitchWhere(int $index, array &$buffer, \Closure $lambda, mixed $item): void
+    private function executeSwitchWhere(mixed $index, array &$buffer, \Closure $lambda, mixed $item): void
     {
         if ($lambda($item)) {
             $buffer[$index] = $item;
@@ -265,7 +265,7 @@ class Linq implements \UT_Php_Core\Interfaces\ILinq
 
     /**
      * @param  int           $type
-     * @param  int           $index
+     * @param  int|string           $index
      * @param  mixed         $buffer
      * @param  \Closure|null $lambda
      * @param  mixed         $item
@@ -275,7 +275,7 @@ class Linq implements \UT_Php_Core\Interfaces\ILinq
      */
     private function executeSwitch(
         int $type,
-        int $index,
+        mixed $index,
         mixed &$buffer,
         ?\Closure $lambda,
         mixed $item,
@@ -340,7 +340,7 @@ class Linq implements \UT_Php_Core\Interfaces\ILinq
 
             if ($type === $this::ORDERBY) {
                 $direction = $query[2];
-                if ($direction == \UT_Php_Core\Enums\SortDirections::Asc) {
+                if ($direction == SortDirections::Asc) {
                     ksort($buffer);
                 } else {
                     krsort($buffer);

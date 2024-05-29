@@ -1,6 +1,6 @@
 <?php
 
-namespace UT_Php_Core\Interfaces;
+namespace UT_Php_Core\IO\Xml;
 
 interface IXmlElement
 {
@@ -22,7 +22,6 @@ interface IXmlElement
     public function name(): string;
     public function createChild(string $name): ?IXmlElement;
     public function addChild(IXmlElement $element): bool;
-    public function asDocument(IXmlDoctype $doctype = null): IXmlDocument;
     public function search(
         string $regex,
         int $returnIndex = null,

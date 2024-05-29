@@ -2,7 +2,7 @@
 
 namespace UT_Php_Core\IO;
 
-class File implements \UT_Php_Core\Interfaces\IFile
+class File implements IFile
 {
     /**
      * @var string
@@ -15,12 +15,77 @@ class File implements \UT_Php_Core\Interfaces\IFile
     private $exists;
 
     /**
-     * @param  string $path
-     * @return File
+     * @param string $path
+     * @return IFile
      */
-    public static function fromString(string $path): File
+    public static function fromString(string $path): IFile
     {
-        return new File($path);
+        $cls = get_called_class();
+        return new $cls($path);
+    }
+
+    /**
+     * @param IFile $file
+     * @return IFile
+     */
+    public static function fromFile(IFile $file): IFile
+    {
+        return self::fromString($file -> path());
+    }
+
+    /**
+     * @return Common\IXmlFile|null
+     */
+    public function asXml(): ?Common\IXmlFile
+    {
+        if ($this -> extension() !== 'xml') {
+            return null;
+        }
+        return new Common\Xml($this -> path);
+    }
+
+    /**
+     * @return Common\IPngFile|null
+     */
+    public function asPng(): ?Common\IPngFile
+    {
+        if ($this -> extension() !== 'png') {
+            return null;
+        }
+        return new Common\Png($this -> path);
+    }
+
+    /**
+     * @return Common\IPhpFile|null
+     */
+    public function asPhp(): ?Common\IPhpFile
+    {
+        if ($this -> extension() !== 'php') {
+            return null;
+        }
+        return new Common\Php($this -> path);
+    }
+
+    /**
+     * @return Common\IDtdFile|null
+     */
+    public function asDtd(): ?Common\IDtdFile
+    {
+        if ($this -> extension() !== 'dtd') {
+            return null;
+        }
+        return new Common\Dtd($this -> path);
+    }
+
+    /**
+     * @return Common\IBmpFile|null
+     */
+    public function asBmp(): ?Common\IBmpFile
+    {
+        if ($this -> extension() !== 'bmp') {
+            return null;
+        }
+        return new Common\Bmp($this -> path);
     }
 
     /**
@@ -35,11 +100,11 @@ class File implements \UT_Php_Core\Interfaces\IFile
     }
 
     /**
-     * @param \UT_Php_Core\Interfaces\IDirectory $dir
+     * @param IDirectory $dir
      * @return string|null
      * @throws \Exception
      */
-    public function relativeTo(\UT_Php_Core\Interfaces\IDirectory $dir): ?string
+    public function relativeTo(IDirectory $dir): ?string
     {
         if (stristr($this -> path, $dir -> path())) {
             return substr($this -> path, strlen($dir -> path()) + 1);
@@ -49,11 +114,11 @@ class File implements \UT_Php_Core\Interfaces\IFile
     }
 
     /**
-     * @param \UT_Php_Core\Interfaces\IDirectory $dir
+     * @param Directory $dir
      * @param string $name
      * @return bool
      */
-    public function copyTo(\UT_Php_Core\Interfaces\IDirectory $dir, string $name = null): bool
+    public function copyTo(IDirectory $dir, string $name = null): bool
     {
         if (!$dir -> exists()) {
             return false;
@@ -76,9 +141,9 @@ class File implements \UT_Php_Core\Interfaces\IFile
     }
 
     /**
-     * @return \UT_Php_Core\Interfaces\IDirectory|null
+     * @return IDirectory|null
      */
-    public function parent(): ?\UT_Php_Core\Interfaces\IDirectory
+    public function parent(): ?IDirectory
     {
         if (!$this -> exists()) {
             return null;
@@ -92,20 +157,20 @@ class File implements \UT_Php_Core\Interfaces\IFile
         return Directory::fromString($new);
     }
 
-    /** 
+    /**
      * @return string
      */
-    public function content(): string
+    public function read(): string
     {
         return file_get_contents($this -> path);
     }
 
     /**
-     * @param \UT_Php_Core\Interfaces\IDirectory $dir
+     * @param IDirectory $dir
      * @param string $name
-     * @return File|null
+     * @return IFile|null
      */
-    public static function fromDirectory(\UT_Php_Core\Interfaces\IDirectory $dir, string $name): ?File
+    public static function fromDirectory(IDirectory $dir, string $name): ?IFile
     {
         if (!$dir -> exists()) {
             return null;
@@ -153,11 +218,6 @@ class File implements \UT_Php_Core\Interfaces\IFile
             $segments = explode('/', $this -> path);
         }
         return $segments[count($segments) - 1];
-    }
-
-    public function contains(string $regex): bool
-    {
-        throw new \Exception('Not Implemented');
     }
 
     /**

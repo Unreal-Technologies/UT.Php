@@ -1,8 +1,8 @@
 <?php
 
-namespace UT_Php_Core\Interfaces;
+namespace UT_Php_Core\Drawing;
 
-interface IImage extends IFile
+interface IImage extends \UT_Php_Core\IO\IFile
 {
     public function imageCreate(): mixed;
     public function imageSave(\GdImage $image): bool;

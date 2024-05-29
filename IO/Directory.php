@@ -2,7 +2,7 @@
 
 namespace UT_Php_Core\IO;
 
-class Directory implements \UT_Php_Core\Interfaces\IDirectory
+class Directory implements IDirectory
 {
     /**
      * @var string
@@ -45,11 +45,11 @@ class Directory implements \UT_Php_Core\Interfaces\IDirectory
     }
 
     /**
-     * @param \UT_Php_Core\Interfaces\IDirectory $dir
+     * @param IDirectory $dir
      * @param string $name
      * @return Directory|null
      */
-    public static function fromDirectory(\UT_Php_Core\Interfaces\IDirectory $dir, string $name): ?Directory
+    public static function fromDirectory(IDirectory $dir, string $name): ?Directory
     {
         if (!$dir -> exists()) {
             return null;

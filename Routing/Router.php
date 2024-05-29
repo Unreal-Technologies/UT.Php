@@ -2,7 +2,7 @@
 
 namespace UT_Php_Core\Routing;
 
-class Router implements \UT_Php_Core\Interfaces\IRouter
+class Router implements IRouter
 {
     private const DEFAULT_HTACCESS = 'UmV3cml0ZUVuZ2luZSBPbg0KUm'
             . 'V3cml0ZUNvbmQgJXtSRVFVRVNUX0ZJTEVOQU1FfSAhLWYNClJ'
@@ -12,23 +12,23 @@ class Router implements \UT_Php_Core\Interfaces\IRouter
     /**
      * @var array
      */
-    private $routes = [];
+    private array $routes = [];
 
     /**
-     * @var \UT_Php_Core\Interfaces\IDirectory
+     * @var \UT_Php_Core\IO\IDirectory
      */
-    private $root;
+    private \UT_Php_Core\IO\IDirectory $root;
 
     /**
      * @var bool
      */
-    private $caseInsensitive = false;
+    private bool $caseInsensitive = false;
 
     /**
-     * @param \UT_Php_Core\Interfaces\IDirectory $root
+     * @param \UT_Php_Core\IO\IDirectory $root
      * @param bool $caseInsensitive
      */
-    public function __construct(\UT_Php_Core\Interfaces\IDirectory $root, bool $caseInsensitive = false)
+    public function __construct(\UT_Php_Core\IO\IDirectory $root, bool $caseInsensitive = false)
     {
         $this -> root = $root;
         $this -> caseInsensitive = $caseInsensitive;
@@ -40,9 +40,9 @@ class Router implements \UT_Php_Core\Interfaces\IRouter
     }
 
     /**
-     * @return \UT_Php_Core\Interfaces\IDirectory
+     * @return \UT_Php_Core\IO\IDirectory
      */
-    public function root(): \UT_Php_Core\Interfaces\IDirectory
+    public function root(): \UT_Php_Core\IO\IDirectory
     {
         return $this -> root;
     }
@@ -53,7 +53,7 @@ class Router implements \UT_Php_Core\Interfaces\IRouter
      * @param \Closure $target
      * @return void
      */
-    public function add(\UT_Php_Core\Enums\RequestMethods $method, string $url, \Closure $target): void
+    public function add(RequestMethods $method, string $url, \Closure $target): void
     {
         $m = strtoupper($method -> name);
 

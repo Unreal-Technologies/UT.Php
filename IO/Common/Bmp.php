@@ -2,7 +2,7 @@
 
 namespace UT_Php_Core\IO\Common;
 
-class Bmp extends \UT_Php_Core\Drawing\Image implements \UT_Php_Core\Interfaces\IBmpFile
+class Bmp extends \UT_Php_Core\Drawing\Image implements IBmpFile
 {
     /**
      * @return mixed

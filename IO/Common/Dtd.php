@@ -2,7 +2,7 @@
 
 namespace UT_Php_Core\IO\Common;
 
-class Dtd extends \UT_Php_Core\IO\File implements \UT_Php_Core\Interfaces\IDtdFile
+class Dtd extends \UT_Php_Core\IO\File implements IDtdFile
 {
     /**
      * @param string $path
@@ -26,6 +26,6 @@ class Dtd extends \UT_Php_Core\IO\File implements \UT_Php_Core\Interfaces\IDtdFi
         if (!$this -> exists()) {
             return null;
         }
-        return 'data://text/plain;base64,' . base64_encode($this -> content());
+        return 'data://text/plain;base64,' . base64_encode($this -> read());
     }
 }

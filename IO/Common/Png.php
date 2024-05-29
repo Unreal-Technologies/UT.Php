@@ -2,7 +2,7 @@
 
 namespace UT_Php_Core\IO\Common;
 
-class Png extends \UT_Php_Core\Drawing\Image implements \UT_Php_Core\Interfaces\IPngFile
+class Png extends \UT_Php_Core\Drawing\Image implements IPngFile
 {
     /**
      * @return mixed

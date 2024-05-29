@@ -10,12 +10,12 @@ abstract class PageController
     private $title = 'nyi';
 
     /**
-     * @var UT_Php_Core\Interfaces\IFile[]
+     * @var \UT_Php_Core\IO\IFile[]
      */
     private $css = [];
 
     /**
-     * @var \UT_Php_Core\Interfaces\IRouter
+     * @var \UT_Php_Core\Routing\IRouter
      */
     private $router;
 
@@ -25,17 +25,17 @@ abstract class PageController
     abstract public function render(): string;
 
     /**
-     * @return \UT_Php_Core\Interfaces\IDirectory
+     * @return \UT_Php_Core\IO\IDirectory
      */
-    final protected function root(): \UT_Php_Core\Interfaces\IDirectory
+    final protected function root(): \UT_Php_Core\IO\IDirectory
     {
         return $this -> router -> root();
     }
 
     /**
-     * @param \UT_Php_Core\Interfaces\IRouter
+     * @param \UT_Php_Core\Routing\IRouter
      */
-    final public function __construct(\UT_Php_Core\Interfaces\IRouter $router)
+    final public function __construct(\UT_Php_Core\Routing\IRouter $router)
     {
         $this -> router = $router;
         $this -> css[] = \UT_Php_Core\IO\File::fromString('default.css');

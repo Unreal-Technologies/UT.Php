@@ -1,6 +1,6 @@
 <?php
 
-namespace UT_Php_Core\Interfaces;
+namespace UT_Php_Core\Collections;
 
 interface ILinq
 {
@@ -12,9 +12,9 @@ interface ILinq
     public function count(): int;
     public function sum(\Closure $lambda = null): ILinq;
     public function avg(\Closure $lambda = null): ILinq;
-    public function skip(int $count): \UT_Php_Core\Interfaces\ILinq;
+    public function skip(int $count): ILinq;
     public function orderBy(
         \Closure $lambda = null,
-        \UT_Php_Core\Enums\SortDirections $direction = \UT_Php_Core\Enums\SortDirections::Asc
+        SortDirections $direction = SortDirections::Asc
     ): ILinq;
 }

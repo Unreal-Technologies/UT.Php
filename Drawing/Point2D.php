@@ -2,17 +2,17 @@
 
 namespace UT_Php_Core\Drawing;
 
-class Point2D implements \UT_Php_Core\Interfaces\IPoint2D
+class Point2D implements IPoint2D
 {
     /**
      * @var float
      */
-    private $x;
+    private float $x;
 
     /**
      * @var float
      */
-    private $y;
+    private float $y;
 
     /**
      * @param float $x

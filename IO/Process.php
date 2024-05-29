@@ -44,7 +44,7 @@ class Process
         $sortedData = (new \UT_Php_Core\Collections\Linq($data))
             -> orderBy(function ($x) {
                 return $x['Session']['Name'];
-            }, \UT_Php_Core\Enums\SortDirections::Asc)
+            }, \UT_Php_Core\Collections\SortDirections::Asc)
             -> toArray();
 
         $buffer = [];
@@ -62,7 +62,7 @@ class Process
             $sortedItems = (new \UT_Php_Core\Collections\Linq($items))
                 -> orderBy(function ($x) {
                     return $x['Process'];
-                }, \UT_Php_Core\Enums\SortDirections::Asc)
+                }, \UT_Php_Core\Collections\SortDirections::Asc)
                 -> toArray();
 
             $prev = null;
