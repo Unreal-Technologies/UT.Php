@@ -4,6 +4,9 @@ namespace UT_Php_Core\IO\Common;
 
 class Php extends \UT_Php_Core\IO\File implements IPhpFile
 {
+    private const EOL = "\r\n";
+    private const TAB = "    ";
+
     /**
      * @var Php\TokenNamespace|null
      */
@@ -20,7 +23,7 @@ class Php extends \UT_Php_Core\IO\File implements IPhpFile
     private array $traits = [];
 
     /**
-     * @var array
+     * @var Php\TokenMember[]
      */
     private array $members = [];
 
@@ -33,6 +36,11 @@ class Php extends \UT_Php_Core\IO\File implements IPhpFile
      * @var Php\TokenCase[]
      */
     private array $cases = [];
+
+    /**
+     * @var Php\TokenMember[]
+     */
+    private array $constants = [];
 
     /**
      * @var array
@@ -48,8 +56,56 @@ class Php extends \UT_Php_Core\IO\File implements IPhpFile
         $this -> tokens = token_get_all($this -> read());
         $this -> defaultParsing();
 
-        $this -> tokens = [];
-        unset($this -> tokens);
+//        $this -> tokens = [];
+//        unset($this -> tokens);
+    }
+
+    /**
+     * @param bool $methodContent
+     * @param bool $singleLine
+     * @return string
+     */
+    public function compose(bool $methodContent = true, bool $singleLine = false): string
+    {
+        $eol = self::EOL;
+        $tab = self::TAB;
+        if ($singleLine) {
+            $eol = '';
+            $tab = '';
+        }
+
+        $isInterface = $this -> object -> isInterface();
+
+        $stream = $this -> object() -> declaration() . $eol;
+        $stream .= '{' . $eol;
+        foreach ($this -> traits() as $trait) {
+            $stream .= $tab . $trait -> declaration() . ';' . $eol;
+        }
+        foreach ($this -> cases() as $case) {
+            $stream .= $tab . $case -> declaration() . ';' . $eol;
+        }
+        foreach ($this -> constants() as $constant) {
+            $stream .= $tab . $constant -> declaration() . ';' . $eol;
+        }
+        foreach ($this -> members as $member) {
+            $stream .= $tab . $member -> declaration() . ';' . $eol;
+        }
+        foreach ($this -> methods() as $method) {
+            if ($methodContent && !$isInterface) {
+                $stream .= $tab . $method -> declaration() . $eol;
+                $stream .= $tab . $method -> body() . $eol;
+                continue;
+            }
+            $stream .= $tab . $method -> declaration() . ';' . $eol;
+        }
+        $stream .= '}' . $eol;
+
+        return $stream;
+    }
+
+    public function constants(): array
+    {
+        return $this -> constants;
     }
 
     /**
@@ -101,6 +157,14 @@ class Php extends \UT_Php_Core\IO\File implements IPhpFile
     }
 
     /**
+     * @return array
+     */
+    public function tokens(): array
+    {
+        return $this -> tokens;
+    }
+
+    /**
      * @return void
      */
     private function defaultParsing(): void
@@ -109,6 +173,7 @@ class Php extends \UT_Php_Core\IO\File implements IPhpFile
         $methods = [];
         $cases = [];
         $members = [];
+        $constants = [];
         foreach ($this -> tokens as $idx => $token) {
             if (is_array($token) && $token[0] === 375 && $this -> namespace === null) { //Namespace
                 $i = $idx;
@@ -180,6 +245,40 @@ class Php extends \UT_Php_Core\IO\File implements IPhpFile
                 }
 
                 $cases[] = array_slice($this -> tokens, $idx, $i - $idx);
+            } elseif (is_array($token) && $token[0] === 349) { //constants
+                $line = $token[2];
+                $i = $idx;
+                while ($this -> tokens[$i] !== ';') {
+                    $i++;
+                }
+
+                $isFunction = false;
+                $ir = $idx;
+                while (
+                    !in_array($this -> tokens[$ir], ['{', '}', ';']) &&
+                    !is_array($this -> tokens[$ir]) ||
+                    (
+                        is_array($this -> tokens[$ir]) &&
+                        $this -> tokens[$ir][2] === $line)
+                ) {
+                    if ($this -> tokens[$ir][0] === 347) {
+                        $isFunction = true;
+                        break;
+                    }
+                    $ir--;
+                }
+
+                if (!$isFunction) {
+                    $constant = array_slice($this -> tokens, $ir, $i - $ir);
+                    if ($constant[0][0] === 397) {
+                        $constant = array_slice($constant, 1);
+                    }
+                    if ($constant[count($constant) - 1][0] === 397) {
+                        $constant = array_slice($constant, 0, count($constant) - 1);
+                    }
+
+                    $constants[] = $constant;
+                }
             } elseif (is_array($token) && $token[0] === 354) { //use traits
                 $i = $idx;
                 while ($this -> tokens[$i] !== ';') {
@@ -284,6 +383,10 @@ class Php extends \UT_Php_Core\IO\File implements IPhpFile
 
         foreach ($cases as $case) {
             $this -> cases[] = new Php\TokenCase($case);
+        }
+
+        foreach ($constants as $constant) {
+            $this -> constants[] = new Php\TokenMember($constant);
         }
 
         $removeMembers = [];

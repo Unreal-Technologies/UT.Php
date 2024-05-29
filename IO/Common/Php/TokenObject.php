@@ -10,7 +10,7 @@ class TokenObject implements IObject
     /**
      * @var array
      */
-    private array $tokens;
+    protected array $tokens;
 
     /**
      * @param array $tokens
@@ -18,6 +18,58 @@ class TokenObject implements IObject
     public function __construct(array $tokens, ?array $args = null)
     {
         $this -> tokens = $tokens;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function extends(): ?string
+    {
+        $extends = (new \UT_Php_Core\Collections\Linq($this -> tokens))
+            -> firstOrDefault(function ($x) {
+                return is_array($x) && $x[0] === 373;
+            });
+        if ($extends === null) {
+            return null;
+        }
+
+        $pos = array_search($extends, $this -> tokens);
+        $segment = array_slice($this -> tokens, $pos);
+
+        return (new \UT_Php_Core\Collections\Linq($segment))
+            -> where(function ($x) {
+                return is_array($x) && in_array($x[0], [313, 316]);
+            })
+            -> select(function (array $x) {
+                return $x[1];
+            })
+            -> firstOrDefault();
+    }
+
+    /**
+     * @return array
+     */
+    public function implements(): array
+    {
+        $implements = (new \UT_Php_Core\Collections\Linq($this -> tokens))
+            -> firstOrDefault(function ($x) {
+                return is_array($x) && $x[0] === 374;
+            });
+        if ($implements === null) {
+            return [];
+        }
+
+        $pos = array_search($implements, $this -> tokens);
+        $segment = array_slice($this -> tokens, $pos);
+
+        return (new \UT_Php_Core\Collections\Linq($segment))
+            -> where(function ($x) {
+                return is_array($x) && in_array($x[0], [313, 316]);
+            })
+            -> select(function (array $x) {
+                return $x[1];
+            })
+            -> toArray();
     }
 
     /**

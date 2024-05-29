@@ -9,7 +9,7 @@ class TokenNamespace implements INamespace
     /**
      * @var array
      */
-    private array $tokens;
+    protected array $tokens;
 
     /**
      * @param array $tokens

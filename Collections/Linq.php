@@ -171,13 +171,13 @@ class Linq implements ILinq
     }
 
     /**
-     * @param  int      $index
+     * @param  int|string      $index
      * @param  array    $buffer
      * @param  \Closure $lambda
      * @param  mixed    $item
      * @return void
      */
-    private function executeSwitchWhere(int $index, array &$buffer, \Closure $lambda, mixed $item): void
+    private function executeSwitchWhere(mixed $index, array &$buffer, \Closure $lambda, mixed $item): void
     {
         if ($lambda($item)) {
             $buffer[$index] = $item;
@@ -265,7 +265,7 @@ class Linq implements ILinq
 
     /**
      * @param  int           $type
-     * @param  int           $index
+     * @param  int|string           $index
      * @param  mixed         $buffer
      * @param  \Closure|null $lambda
      * @param  mixed         $item
@@ -275,7 +275,7 @@ class Linq implements ILinq
      */
     private function executeSwitch(
         int $type,
-        int $index,
+        mixed $index,
         mixed &$buffer,
         ?\Closure $lambda,
         mixed $item,

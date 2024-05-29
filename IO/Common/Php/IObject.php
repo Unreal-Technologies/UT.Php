@@ -10,4 +10,6 @@ interface IObject extends IPhpParser
     public function isTrait(): bool;
     public function isAbstract(): bool;
     public function isFinal(): bool;
+    public function extends(): ?string;
+    public function implements(): array;
 }

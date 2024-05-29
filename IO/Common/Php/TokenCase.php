@@ -9,7 +9,7 @@ class TokenCase implements ICase
     /**
      * @var array
      */
-    private array $tokens;
+    protected array $tokens;
 
     /**
      * @param array $tokens
